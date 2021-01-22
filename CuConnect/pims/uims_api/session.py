@@ -10,7 +10,8 @@ AUTHENTICATE_URL = BASE_URL + "/uims/"
 ENDPOINTS = {
     "Attendance": "frmStudentCourseWiseAttendanceSummary.aspx",
     "Timetable": "frmMyTimeTable.aspx",
-    "Announcements" : "StaffHome.aspx/DisplayAnnouncements"
+    "Announcements" : "StaffHome.aspx/DisplayAnnouncements",
+    "Profile": "frmStudentProfile.aspx"
 }
 # Workaround fix for new url
 ATTENDANCE_STATIC_EXTRA = "?type=etgkYfqBdH1fSfc255iYGw=="
@@ -30,6 +31,7 @@ class SessionUIMS:
         self._timetable = None
         self._reportId = None
         self._sessionId = None
+        self._profile = None 
 
     def _login(self):
         response = requests.get(AUTHENTICATE_URL)
@@ -82,6 +84,31 @@ class SessionUIMS:
             self._attendance = self._get_attendance()
 
         return self._attendance
+
+    @property
+    def profile(self):
+        if self._profile is None:
+            self._profile = self._get_profile()
+
+        return self._profile
+
+    def _get_profile(self):
+        profile_url = "https://uims.cuchd.in/UIMS/frmStudentProfile.aspx"
+        response = requests.get(profile_url, cookies=self.cookies)
+        # Checking for error in response as status code returned is 200
+        if(response.text.find(ERROR_HEAD) != -1):
+            raise UIMSInternalError('UIMS internal error occured')
+        soup = BeautifulSoup(response.text, "html.parser")
+        viewstate_tag = soup.find("input", {"name": "__VIEWSTATE"})
+        data = {
+            "__VIEWSTATE": viewstate_tag["value"],
+            '__EVENTTARGET': 'ctl00$ContentPlaceHolder1$ReportViewer1$ctl09$Reserved_AsyncLoadTarget',
+        }
+        response = requests.post(profile_url, data=data, cookies=self.cookies)
+        with open("profile.html", "w") as file:
+            file.write(response.text)
+        return "Success!"
+
 
     def _get_attendance(self):
         # The attendance URL looks like
