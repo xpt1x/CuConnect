@@ -4,6 +4,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 # Create your views here.
 
+
 @api_view(http_method_names=['POST'])
 def Validate(req):
     if not req.POST['uid']:
@@ -20,3 +21,21 @@ def Validate(req):
             return Response({'error': 'Looks like this Module is inactive on UIMS'})
     else:
         return Response({'success': True})
+
+
+@api_view(http_method_names=['POST'])
+def get_full_name(req):
+    if not req.POST['uid']:
+        return Response({'error': 'No UIMS Uid'})
+    if not req.POST['password']:
+        return Response({'error': 'No UIMS Password'})
+
+    try:
+        new_acc = SessionUIMS(req.POST['uid'], req.POST['password'])
+    except Exception as e:
+        if e.__class__ == IncorrectCredentialsError:
+            return Response({'error': 'Invalid credentials'})
+        else:
+            return Response({'error': 'Looks like this Module is inactive on UIMS'})
+    else:
+        return Response({'full_name': new_acc.full_name})
