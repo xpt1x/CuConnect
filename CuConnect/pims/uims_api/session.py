@@ -105,9 +105,14 @@ class SessionUIMS:
             '__EVENTTARGET': 'ctl00$ContentPlaceHolder1$ReportViewer1$ctl09$Reserved_AsyncLoadTarget',
         }
         response = requests.post(profile_url, data=data, cookies=self.cookies)
+        soup = BeautifulSoup(response.text, "html.parser")
         with open("profile.html", "w") as file:
-            file.write(response.text)
-        return "Success!"
+            file.write(soup.prettify())
+
+        report_div_id_block = response.text.find("ReportDivId")
+        report_div_id_start = report_div_id_block + response.text[report_div_id_block:].find(':"')
+        report_div_id_end = report_div_id_start+2 + response.text[report_div_id_start+2:].find('"')
+        return response.text[report_div_id_start+2:report_div_id_end]
 
 
     def _get_attendance(self):
