@@ -31,7 +31,7 @@ class SessionUIMS:
         self._timetable = None
         self._reportId = None
         self._sessionId = None
-        self._profile = None 
+        self._full_name = None 
 
     def _login(self):
         response = requests.get(AUTHENTICATE_URL)
@@ -86,13 +86,13 @@ class SessionUIMS:
         return self._attendance
 
     @property
-    def profile(self):
-        if self._profile is None:
-            self._profile = self._get_profile()
+    def full_name(self):
+        if self._full_name is None:
+            self._full_name = self._get_full_name()
 
-        return self._profile
+        return self._full_name
 
-    def _get_profile(self):
+    def _get_full_name(self):
         profile_url = "https://uims.cuchd.in/UIMS/frmStudentProfile.aspx"
         response = requests.get(profile_url, cookies=self.cookies)
         # Checking for error in response as status code returned is 200
@@ -106,13 +106,7 @@ class SessionUIMS:
         }
         response = requests.post(profile_url, data=data, cookies=self.cookies)
         soup = BeautifulSoup(response.text, "html.parser")
-        with open("profile.html", "w") as file:
-            file.write(soup.prettify())
-
-        report_div_id_block = response.text.find("ReportDivId")
-        report_div_id_start = report_div_id_block + response.text[report_div_id_block:].find(':"')
-        report_div_id_end = report_div_id_start+2 + response.text[report_div_id_start+2:].find('"')
-        return response.text[report_div_id_start+2:report_div_id_end]
+        return soup.find("div", {"class": "user-n-mob"}).get_text().strip()
 
 
     def _get_attendance(self):
