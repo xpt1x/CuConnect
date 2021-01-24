@@ -2,7 +2,12 @@ from uims_api import SessionUIMS
 from uims_api.exceptions import IncorrectCredentialsError, UIMSInternalError
 
 
-def create_uims_account(req):
+def create_uims_session(req):
+    """
+    Creates a new UIMS session
+    @param request
+    :Return status 1 or -1, object (error/SessionObject)
+    """
     if not req.POST["uid"]:
         return (-1, "No UID Provided")
     if not req.POST["password"]:
