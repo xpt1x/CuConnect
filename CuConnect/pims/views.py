@@ -1,41 +1,44 @@
-from uims_api import SessionUIMS
-from uims_api.exceptions import IncorrectCredentialsError, UIMSInternalError
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-# Create your views here.
+from .helper import create_uims_session
+from .models import Post, Comment
+from rest_framework import viewsets
+from .serializers import PostSerializer, CommentSerializer
 
 
-@api_view(http_method_names=['POST'])
+class PostViewSet(viewsets.ModelViewSet):
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
+
+
+class CommentViewSet(viewsets.ModelViewSet):
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
+
+
+@api_view(http_method_names=["POST"])
 def Validate(req):
-    if not req.POST['uid']:
-        return Response({'error': 'No UIMS Uid'})
-    if not req.POST['password']:
-        return Response({'error': 'No UIMS Password'})
-
-    try:
-        SessionUIMS(req.POST['uid'], req.POST['password'])
-    except Exception as e:
-        if e.__class__ == IncorrectCredentialsError:
-            return Response({'error': 'Invalid credentials'})
-        else:
-            return Response({'error': 'Looks like this Module is inactive on UIMS'})
+    status, obj = create_uims_session(req)
+    if status == -1:
+        return Response({"error": obj})
     else:
-        return Response({'success': True})
+        return Response({"success": True})
 
 
-@api_view(http_method_names=['POST'])
+@api_view(http_method_names=["POST"])
 def get_full_name(req):
-    if not req.POST['uid']:
-        return Response({'error': 'No UIMS Uid'})
-    if not req.POST['password']:
-        return Response({'error': 'No UIMS Password'})
-
-    try:
-        new_acc = SessionUIMS(req.POST['uid'], req.POST['password'])
-    except Exception as e:
-        if e.__class__ == IncorrectCredentialsError:
-            return Response({'error': 'Invalid credentials'})
-        else:
-            return Response({'error': 'Looks like this Module is inactive on UIMS'})
+    status, obj = create_uims_session(req)
+    if status == -1:
+        return Response({"error": obj})
     else:
-        return Response({'full_name': new_acc.full_name})
+        return Response({"full_name": obj.full_name})
+
+
+@api_view(http_method_names=["GET"])
+def get_post_comments(req):
+    posts = Post.objects.filter(title="xyz")
+    comments = []
+    for post in posts:
+        comments.append(post.comments.all())
+    print(comments)
+    return Response({'comments': True})
