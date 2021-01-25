@@ -11,6 +11,7 @@ class Post(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     likes = models.IntegerField(default=0, blank=False, null=False)
     image = models.ImageField(upload_to=upload_image, blank=False, null=False)
+    timestamp = models.DateTimeField(auto_now_add=True, null=True)
 
     def __str__(self):
         return self.title
@@ -19,6 +20,7 @@ class Post(models.Model):
 class Comment(models.Model):
     msg = models.CharField(max_length=64, blank=False, null=False)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
+    timestamp = models.DateTimeField(auto_now_add=True, null=True)
     post = models.ForeignKey(
         Post, on_delete=models.CASCADE, related_name='comments')
 
