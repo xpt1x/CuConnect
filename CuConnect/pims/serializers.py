@@ -5,15 +5,15 @@ from .models import Post, Comment, UserProfile
 class PostSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Post
-        fields = '__all__'
+        fields = ['id', 'url','title', 'author', 'likes', 'image', 'timestamp', 'comments']
 
 
 class CommentSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Comment
-        fields = '__all__'
+        fields = ['id', 'url', 'msg', 'timestamp', 'author', 'post']
 
 class UserProfileSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = UserProfile
-        fields = ['display_name', 'user_id', 'posts']
+        fields = ['id', 'url', 'display_name', 'user_id', 'posts']

@@ -1,0 +1,880 @@
+
+
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head><meta charset="utf-8" /><meta name="theme-color" content="#ce3333" /><meta http-equiv="X-UA-Compatible" content="IE=edge" /><meta name="viewport" content="width=device-width, initial-scale=1" /><link rel="dns-prefetch" href="https://uims.cuchd.in" /><link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet" /><title>
+	Chandigarh University Management System
+</title><link rel="stylesheet" href="assets/css/bootstrap.min.css" /><link rel="stylesheet" href="assets/css/font-awesome.min.css" /><link rel="stylesheet" href="assets/css/style.css" /><link rel="stylesheet" href="assets/css/material-btn.css" /><link rel="stylesheet" href="assets/css/responsive.css" /><link rel="stylesheet" href="n-css/sidenav.css" /><link rel="stylesheet" href="n-css/scrollbar.css" /><link rel="stylesheet" href="css/toastr8.min.css" /><link rel="stylesheet" href="css/sweet-alert.css" /><link rel="stylesheet" href="Scripts/jquery-ui.css" /><link href="css/apprise.min.css" rel="stylesheet" /><link rel="stylesheet" href="Help/help-css.css" />
+    <script src="Scripts/apprise-1.5.min.js"></script>
+    <script type="text/javascript" src="Scripts/jquery-2.0.3.min.js"></script>
+    <script type="text/javascript" src="Scripts/sweet-alert.min.js"></script>
+    <!--- Analytics CUCHD --->
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-108822757-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-108822757-1');
+    </script>
+    <style>
+        body, html {
+            height: 100%;
+            width: 100%;
+        }
+
+        #div_exam img {
+            width: 100%;
+        }
+
+        #div_exam {
+            width: 146px;
+            position: absolute;
+            left: 0;
+            top: 10px;
+        }
+
+        .header-right {
+            position: relative;
+        }
+
+        #menu-loading {
+            display: none;
+            width: 20px;
+            height: 20px;
+            position: absolute;
+            top: 9px;
+            left: 50%;
+        }
+
+        #short_links .col-sm-3 {
+            width: 20%;
+        }
+
+        .logo {
+            position: relative;
+        }
+
+            .logo i {
+                position: absolute;
+                top: 50%;
+                right: -30px;
+                width: 20px;
+                height: 20px;
+                line-height: 20px;
+                border-radius: 50%;
+                transform: translateY(-50%);
+                font-size: 36px;
+            }
+
+        #footer {
+            position: relative;
+        }
+
+        #a_bugreport {
+            position: absolute;
+            right: 13px;
+            bottom: 28px;
+            color: red;
+            font-size: 13px;
+        }
+
+        div[id*="divUniEmail"] {
+            position: absolute;
+            top: 54px;
+            background: #fff;
+            padding: 10px;
+            height: auto;
+            z-index: 99;
+            border-radius: 2px;
+            border: 1px solid #cecece;
+            display: none;
+            z-index: 999999;
+            right: 10px;
+            transition: all 0.4s ease-in-out 0s;
+            -webkit-transition: all 0.4s ease-in-out 0s;
+        }
+
+        div[id*="div_OE"] {
+            position: relative;
+        }
+
+        #short_links {
+            overflow: visible !important;
+        }
+
+        @media only screen and (max-width: 767px) {
+            #short_links .col-sm-3 {
+                width: 50%;
+            }
+
+                #short_links .col-sm-3:last-child {
+                    padding-right: 7px;
+                }
+        }
+    </style>
+    
+<link href="App_Themes/Default/Default.css" type="text/css" rel="stylesheet" /></head>
+<body class="body-gradient">
+    <form method="post" action="./frmStudentProfile.aspx" id="form1">
+<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="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" />
+
+
+<script src="/UIMS/ScriptResource.axd?d=D9drwtSJ4hBA6O8UhT6CQjTLvrXZy4ZNbPp9Xm4a4V4a0hTN7GbgUQcovr6RelnnaJEhWDdI-AyGuv_r0HkYOeEB8R32dVDdvn6a3-CFYafiAghqHEIH7PvSnrUHzBNs5cjWKRiGj-f-O_5PyKNm2Jwe4YQWtaaeuf14aeZnuz01&amp;t=ffffffffcd368728" type="text/javascript"></script>
+<script type="text/javascript">
+//<![CDATA[
+if (typeof(Sys) === 'undefined') throw new Error('ASP.NET Ajax client-side framework failed to load.');
+//]]>
+</script>
+
+<script src="/UIMS/Reserved.ReportViewerWebControl.axd?OpType=Resource&amp;Version=11.0.2802.16&amp;Name=ViewerScript" type="text/javascript"></script>
+<script src="/UIMS/ScriptResource.axd?d=D1hOhMuFPfzUyl--01QXmmsxr4-EcUo6oCqFvKaLiQWVPIuDNSTXxOJBV4os4dW8EgqHjCUkf5omb9iMWL1HIA8N9_eESJ82XF1wBGIz0Kxh8e_Aw4LLaWzE_Tb0lYqi6qbcS4-3hMAOd6jf2j792D56jZtPhYz-aYarHwgFbV41&amp;t=ffffffffcd368728" type="text/javascript"></script>
+<script src="/UIMS/ScriptResource.axd?d=V7lYofBNDiSYOgSlDiTISo7FiWjbDowSNznONpMN_3A_s2o_QR8lOgsUQ7wOrpP2rukSzAthvU5tQjkPkgzFKcXmWaH2JbM_GGfSdJIxIZRLWPheafYDzg1cnxY3V2ygL30ZQnbKwT0XlXUx_5qlgh6qz6CKTb81kJZHb6A3lkI1&amp;t=ffffffff9b7d03cf" type="text/javascript"></script>
+<script src="/UIMS/ScriptResource.axd?d=8HBMVpJM49mm80uR-ggjY720qFNGG8W8NElHfCW3TkhLZnvFwIuSnQ2Etwdp8o_UZ72CMKZ-v62Km5qssQ-sZwGnEo_Mh5vUv3o9V_5tHLnaZrRpT6Vd_SIrwVDoDK25ZYUGd1yubzlgDMqUcj8QOw2&amp;t=ffffffff9b7d03cf" type="text/javascript"></script>
+<script src="/UIMS/ScriptResource.axd?d=vQR2N7McTtmzjONdj8pDQAHhRS2OO8Rod4yerzvYK_PTVM5fw0cuHlOKX0QgXSdLYNM1QLH5hVYidmp81wVtH1DSw-kKmAmFdA1OrxBiOfEGdNu8axJasJrW3oLQenxXpZYUrxePewUVGif0Tgo9N9zVfHCefQzdHrN9dacIsWA1&amp;t=ffffffff9b7d03cf" type="text/javascript"></script>
+<script src="/UIMS/ScriptResource.axd?d=8CjII1v0OLoMNKf5zGXmegcerQXdEvvqPAV0DDe0YaNMm0AGujMwaR8a_2GqZHBlE8Ir8EWQoVVvUx58op2BaKgbwY-9EDxhz-1vtwpA_oMKrkseW4iJ5WMCerS3iunHTqI8Qe9wWd16mqUaKICt0sqPnzrVAp7uhQ_8oQe3y_41&amp;t=ffffffff9b7d03cf" type="text/javascript"></script>
+<script src="/UIMS/ScriptResource.axd?d=yoepU9WTnNLBrovfoMoPb_a1WQMXWnM7VLoTkU4VoLvN1lBslVIgVF5dbwZ_bHvo_LX6KbG1m_H3kVZ5lSee-2wJWV4F9M6GDoBmBjzHw4dS74h_QK24i1ILVQolUPkVSvBG7yxopOsFXeF1rnwjYRnD03whGtxTHLBZRx7Ot_qPgumHv9Z_d_xa9VL30GQuR_5E1aMiw6LgtZreuv6rfg2&amp;t=ffffffff9b7d03cf" type="text/javascript"></script>
+<input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="F4C01F02" />
+<input type="hidden" name="__EVENTVALIDATION" id="__EVENTVALIDATION" value="mT+X1aLhFHU+pl1CpyLAsLO62O+f+E1ZVersd6SJwc0fwPx0iHky1sMV5AIGCXedBiS9Ub15ZWs4ckzFogGi3+UdP9mmc88abAa6kXq7Qi8enQcRGZzkGKE0GlOllxvZdHz+J2bDV3zSQwLItpfjtyKlDIEELKAtbRWmwRrnZypBHCHgWAJCHYhKfAU9WibjhZzlWyGrOiRH94L34k7rU7qEQA0J3wlU1VD1yfU9Ejk02ER+HDr1ScEwHPPKkCQRGq7L15mqzlowkvwOtj0GoyFEsuzSpecJtZwSKxHzxHvF5SWPJUVyMTOAhg3qe4cWnSZmt0dhstze1U/ZYdoQ7YBalMZOJsEZp0I53so7qooM3GYyIXGSzCYYHG0qVan4EDVmcnjwkfwq/h1uaAYP1t3ttOvpObX+htgtXzTAUn+FrxvXatPXrN3zWOw6Wsta8EKjqqfgDIS8xvMS7848HOTSPSVz4xIaTTETSVE3UgmojOxs1DRWsR58uEXVEwMoYxoVqmtBLpC3fc+yiYQxyEJj1OBzHxlr4vY0tWk67k7WT1XvNeaBmkfLN0SaMAsukR0IM7ZMbwtQSNjPOHmFVbkbNkNdhZmRQQ6ATBpvgehMQbzBeHRF13UsH1Qlq5+sCWc1WFJpY0ULu3D3ekV5kjR6/ZT7nPgaVUW9TnTLeaY3pSVLtbv7ErBj8HTFGT7Y0iaKK7s67y1l1P9GK2m9bF7LO4psC1tflcJfWqed1/jCzpMvL9YwQavh+UWM0tj6tyVlJX2xyt5tOJzxN4plCF+GioPZyk90YAudt4kO3MwPhZH0156AL6lcZXFUafY9aFsthO/uQciomcvZY8p5VXJRJjWCZtdQjA6YekICJZBdqrMormDAQhJvw4sGV2cqsGCJqtamisv0nScrwz//lvJJUXOuxnKfCpXfvPjtReVMSvLWYoekUkz9G3FCpdtOPQmDyD3EyMnp7BBWooS/q2n9+gPyII1aZB/k1kGs5DunXaxNHEUjmYFPJbWeBq1WnSnkOaVyLI3sXemwIiiNkojlloxOmnWtu1SRWhQqxc02lUnK/smpJYU7xRaTI69I0OZWTtuv4B94YLk6LXOV0tCSlwfZXNuNbPaqZhsL5mnBxHGHEIxcKg+eHVDLMbdkFBm6H2F+i1VyNingRl1bMl2/ySrvkWNqomSfhwVqGDJIK5D+/lPj2GJsDAytXh+lkYzvJWjVdq9CMKhi2lxxWLKoo7LIpGvje1tDap4uYdoyqMu7yS5sDugdPwqT36lGwqXYEX0gSh3NJqqfgvS5GQ==" />
+        <input type="hidden" name="ctl00$hfInfoMessage" id="hfInfoMessage" />
+        <input type="hidden" name="ctl00$hfUserTheme" id="hfUserTheme" />
+        <input type="hidden" name="ctl00$hfWindowScroll" id="hfWindowScroll" />
+
+        <input type="hidden" name="ctl00$hfMessagePageNumber" id="hfMessagePageNumber" />
+        <input type="hidden" name="ctl00$hfIsNewMessage" id="hfIsNewMessage" />
+        <input type="hidden" name="ctl00$hfAlertPageNumber" id="hfAlertPageNumber" />
+        <input type="hidden" name="ctl00$hfIsNewAlert" id="hfIsNewAlert" />
+        <input type="hidden" name="ctl00$hfAlertsCount" id="hfAlertsCount" />
+        <input type="hidden" name="ctl00$hfMessagesCount" id="hfMessagesCount" />
+        <input type="hidden" name="ctl00$hfIsMobile" id="hfIsMobile" />
+
+
+        
+
+
+        <div id="loader-wrapper">
+            <div id="loader">
+                <img src="assets/uploads/loader.gif">
+                <p>Loading...</p>
+            </div>
+        </div>
+
+        <div class="main-wrapper">
+            <header id="header" class="clearfix">
+                <div class="header-left pull-left">
+                    <div class="toggle-btn">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                    <a class="logo">
+                        
+                        <img id="img_logo" alt="logo" src="assets\uploads\login-logo-main.png" />
+                    </a>
+                </div>
+                <div class="page-search pull-left">
+
+                    <div class="page-search-input">
+                        <small id="s-total-search"></small>
+                        <input type="text" class="inp-box" autocomplete="off" id="txtUserSearch001_PC" placeholder="Search & Bookmark your page" />
+                        <img src="assets/uploads/loader.gif" id="menu-loading" />
+                        <span id="close-mob-search" class="close-s hidden"><i class="fa fa-times" aria-hidden="true"></i></span>
+                    </div>
+
+                    <div class="NavigationSearchPC">
+                    </div>
+                </div>
+                <div class="header-right pull-right">
+                    
+                    <div class="nav-right-side pull-right clearfix">
+                        <div class="all-notifications">
+                            <ul>
+                                <li>
+                                    <div class="info-icon" id="div_NotiCount"><i class="fa fa-bell" aria-hidden="true"></i><span class="other-notify hidden" id="spanNoti_Count"></span></div>
+                                    <div class="notify-dropdown" id="noti_content">
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="info-icon" id="div_LibCount"><i class="fa fa-book" aria-hidden="true"></i><span class="lab-notify hidden" id="spanLib_Count"></span></div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="user-profile-link">
+                            
+                            <h6>
+                                SWARNIM</h6>
+                            <span>
+                                <img src="data:image;base64,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" id="imgFullProfilePic" alt="user" /></span>
+                            <div class="user-dropdown">
+                                <div class="user-n-mob">
+                                    <h5>
+                                        SWARNIM DOEGAR</h5>
+                                </div>
+                                <ul>
+                                    <li id="liProfile"><a href="frmStudentProfile.aspx"><span><i class="fa fa-user-circle" aria-hidden="true"></i></span>My Profile</a></li>
+                                    <li><a><span><i class="fa fa-id-badge" aria-hidden="true"></i></span>
+                                        18BCS2430</a></li>
+
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="home-links">
+                            <ul>
+                                <li><a href="StudentHome.aspx" id="aHome"><i class="fa fa-home" aria-hidden="true"></i></a></li>
+                                <li>
+                                    <a><i class="fa fa-cog" aria-hidden="true"></i></a>
+                                    <div class="setting-dropdown">
+                                        <ul>
+                                            <li>
+                                                <a id="lbtnChangePassword" href="javascript:__doPostBack(&#39;ctl00$lbtnChangePassword&#39;,&#39;&#39;)" style="text-decoration: none;">Change Password</a></li>
+                                            <li id="liWifiPassword">
+                                                <a id="lbtnChangeWifiPassword" href="javascript:__doPostBack(&#39;ctl00$lbtnChangeWifiPassword&#39;,&#39;&#39;)" style="text-decoration: none;">Change Internet Password</a></li>
+                                            <li><a onclick="Logout()">Log out</a></li>
+                                        </ul>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <div id="uims_sidebar" class="uims-sidebar">
+                <a class="hidden nav-logo">
+                    <img src="assets/uploads/login-logo-main.png" alt="logo"></a>
+                <div class="scroll-bar">
+                    <ul id="menu-content" class="menu-content collapse out">
+                        
+                                <li data-toggle="collapse" data-target='#3563' class="collapsed">
+                                    <a href='javascript:void(0);' class="a-uims-nav"><i></i>
+                                        Academics<span class="arrow"></span></a>
+                                    
+                                </li>
+                                <ul id='3563' class='sub-menu collapse'><li><a class='a-uims-nav' href='frmStudentAssignmentUpload.aspx'>Assignment Upload</a></li><li><a class='a-uims-nav' href='frmStudentCourseWiseAttendanceSummary.aspx?type=etgkYfqBdH1fSfc255iYGw=='>My Attendance</a></li><li><a class='a-uims-nav' href='frmStudentCourseWiseAttendanceSummary.aspx?type=oWDaGIEioz7J86XGgqG4pg=='>My Attendance Winter Session</a></li><li><a class='a-uims-nav' href='frmMyCourse.aspx'>My Courses</a></li><li><a class='a-uims-nav' href='frmMyTimeTable.aspx'>My Time Table</a></li><li><a class='a-uims-nav' href='frmResourceLibrary.aspx'>Resource Library</a></li><li><a class='a-uims-nav' href='frmScheme.aspx'>Scheme & Syllabus</a></li><li data-toggle='collapse' data-target='#2932' class='collapsed'><a class='a-uims-nav' href='javascript:void(0);'>Student Leave Application<span class='arrow'></span></a></li><ul id='2932' class='sub-menu collapse'><li><a class='a-uims-nav' href='frmStudentLeaveApply.aspx'>Apply Leave</a></li></ul><li><a class='a-uims-nav' href='frmCRFeedbackForm.aspx'>True Opinion Platform (TOP)</a></li><li><a class='a-uims-nav' href='frmStuSyllabusResources.aspx'>View Syllabus Resource</a></li></ul>
+                            
+                                <li data-toggle="collapse" data-target='#2403' class="collapsed">
+                                    <a href='javascript:void(0);' class="a-uims-nav"><i></i>
+                                        Accounts<span class="arrow"></span></a>
+                                    
+                                </li>
+                                <ul id='2403' class='sub-menu collapse'><li><a class='a-uims-nav' href='frmAccountsStudentReceiptList.aspx'>Accounts Reciept</a></li><li><a class='a-uims-nav' href='frmAccountStudentDetails.aspx'>Accounts Statement/ Fee Payment</a></li></ul>
+                            
+                                <li data-toggle="collapse" data-target='#3566' class="collapsed">
+                                    <a href='javascript:void(0);' class="a-uims-nav"><i></i>
+                                        Administration<span class="arrow"></span></a>
+                                    
+                                </li>
+                                <ul id='3566' class='sub-menu collapse'><li><a class='a-uims-nav' href='frmICTSServices.aspx'>ICTS Services</a></li><li><a class='a-uims-nav' href='OIRServices.aspx'>OIR Services</a></li></ul>
+                            
+                                <li data-toggle="collapse" data-target='#2979' class="collapsed">
+                                    <a href='frmAdmissionReferral.aspx' class="a-uims-nav"><i></i>
+                                        Admission Referral Form<span class="arrow"></span></a>
+                                    
+                                </li>
+                                
+                            
+                                <li data-toggle="collapse" data-target='#3062' class="collapsed">
+                                    <a href='frmresources.aspx?type=iQaF630wMB2Apcb05DQGhw==' class="a-uims-nav"><i></i>
+                                        Club Activities<span class="arrow"></span></a>
+                                    
+                                </li>
+                                
+                            
+                                <li data-toggle="collapse" data-target='#3637' class="collapsed">
+                                    <a href='frmDigitechStudent.aspx' class="a-uims-nav"><i></i>
+                                        Digitech Registration<span class="arrow"></span></a>
+                                    
+                                </li>
+                                
+                            
+                                <li data-toggle="collapse" data-target='#2342' class="collapsed">
+                                    <a href='javascript:void(0);' class="a-uims-nav"><i></i>
+                                        E Library<span class="arrow"></span></a>
+                                    
+                                </li>
+                                <ul id='2342' class='sub-menu collapse'><li><a class='a-uims-nav' href='frmOpenAuthentication.aspx?id=PA8f2gBZPN2G5vACgUpS8q8aPNbtEWoFpGvx9fSSTn5SBSUkvaW1F4+WDbeuEVgrByLqYAw71dFjOnpINJQkb1nS/VwF0vUGdaNa/ZxXLbPWzD1EDuitwgCqnL4LzayY'>EBSCO eBook Academic Collection</a></li><li><a class='a-uims-nav' href='frmOpenAuthentication.aspx?id=PA8f2gBZPN2G5vACgUpS8q8aPNbtEWoFpGvx9fSSTn5SBSUkvaW1F4+WDbeuEVgrByLqYAw71dFjOnpINJQkb1nS/VwF0vUGdaNa/ZxXLbMj6WG9aUk6g/X7ApvmbBzR'>EBSCO Management Collection</a></li><li><a class='a-uims-nav' href='frmOpenAuthentication.aspx?id=PA8f2gBZPN2G5vACgUpS8q8aPNbtEWoFpGvx9fSSTn5SBSUkvaW1F4+WDbeuEVgrByLqYAw71dFjOnpINJQkb1nS/VwF0vUGdaNa/ZxXLbMa+4YBf7yAR+H/jNSXzgUV'>EBSCOhost  E-Journal Access(Art and Architecture)</a></li><li><a class='a-uims-nav' href='frmOpenAuthentication.aspx?id=QV5dHL7jXjFoMfhJzyRSB8mHytDcqoV5f4Wom3J0nlRXzfF6WI0M1CH0kkL/8BpGQpb7uMfdWl8yF4aRUmP6Zsn6AQJaRnEB7/gtSzVR1p585pFZUqCcLP0Md1FrzDxE'>J-Gate (Science & Technology)</a></li><li><a class='a-uims-nav' href='frmOpenAuthentication.aspx?id=QV5dHL7jXjFoMfhJzyRSB8mHytDcqoV5f4Wom3J0nlRXzfF6WI0M1CH0kkL/8BpGQpb7uMfdWl8yF4aRUmP6Zsn6AQJaRnEB7/gtSzVR1p585pFZUqCcLP0Md1FrzDxE'>J-Gate (Soc. Science and Humanities)</a></li><li><a class='a-uims-nav' href='frmOpenAuthentication.aspx?id=PA8f2gBZPN2G5vACgUpS8q8aPNbtEWoFpGvx9fSSTn5rGd65jzE8cRuauaYj2tJnH0PJZ8oauJ+rb9nxzuaAexyENYqhaXlaXq/+C2p07L/8z27ruNOLpK4peo2XgI8A'>Publication Finder</a></li><li><a class='a-uims-nav' href='frmOpenAuthentication.aspx?id=nfiADxpckRxbzXbfgdwrIInRiQfwBTLb6/+Drz4Hfuu1f/+GiF1v7htWc6qZ4UfeZ8rCtYt+mAXwUTxgui+nIVYMH/X2+Mz5T0N9xRCq1O7h9QK5KPVsxhQgLnm25vNLWngZ7jKKbHleD9V5LzqaNEdPHmQrgYDKSejwnT8cE+y+fkzv+sKNmr1tKO6Ax8X20DEzMdIuHk6qSwoUsEES/mvO9tbVtnt1MFx0J9xqrshfF359RI86VFsSRY6J30wDg9WSMpPa4j3V28dJRMP5MvBH+hj+t0X5vazU4wBNAqs='>Web of Science</a></li></ul>
+                            
+                                <li data-toggle="collapse" data-target='#3565' class="collapsed">
+                                    <a href='javascript:void(0);' class="a-uims-nav"><i></i>
+                                        Examination<span class="arrow"></span></a>
+                                    
+                                </li>
+                                <ul id='3565' class='sub-menu collapse'><li><a class='a-uims-nav' href='frmMockTest.aspx'>Mock Test</a></li><li><a class='a-uims-nav' href='frmStudentDatesheet.aspx'>My Date Sheet</a></li><li data-toggle='collapse' data-target='#2190' class='collapsed'><a class='a-uims-nav' href='javascript:void(0);'>Result<span class='arrow'></span></a></li><ul id='2190' class='sub-menu collapse'><li><a class='a-uims-nav' href='result.aspx'>Result ( Regular )</a></li></ul><li><a class='a-uims-nav' href='frmAMCATStudentResult.aspx?type=6kjkaB6U01jsNZdSPYT2YA=='>Student AMCAT Result</a></li><li data-toggle='collapse' data-target='#2600' class='collapsed'><a class='a-uims-nav' href='javascript:void(0);'>Student Marks View<span class='arrow'></span></a></li><ul id='2600' class='sub-menu collapse'><li><a class='a-uims-nav' href='frmStudentReappearMarksView.aspx'>Student Marks View Reappear</a></li><li><a class='a-uims-nav' href='frmStudentMarksView.aspx'>Student Marks View Regular</a></li></ul><li><a class='a-uims-nav' href='frmAMCATStudentResult.aspx?type=S4w6En2dn/RLwsoo51Osyw=='>Student Technical Result</a></li><li><a class='a-uims-nav' href='frmStuQuestionSolution.aspx'>View Question Solution</a></li></ul>
+                            
+                                <li data-toggle="collapse" data-target='#2836' class="collapsed">
+                                    <a href='frmStudentHostelLeave.aspx' class="a-uims-nav"><i></i>
+                                        Hostel Leave<span class="arrow"></span></a>
+                                    
+                                </li>
+                                
+                            
+                                <li data-toggle="collapse" data-target='#3567' class="collapsed">
+                                    <a href='javascript:void(0);' class="a-uims-nav"><i></i>
+                                        Library<span class="arrow"></span></a>
+                                    
+                                </li>
+                                <ul id='3567' class='sub-menu collapse'><li><a class='a-uims-nav' href='frmLibraryRepository.aspx'>CU E-Repository </a></li><li><a class='a-uims-nav' href='frmWebOpac.aspx'>Library Books ( OPAC )</a></li></ul>
+                            
+                                <li data-toggle="collapse" data-target='#2899' class="collapsed">
+                                    <a href='frmPlacementInternship.aspx' class="a-uims-nav"><i></i>
+                                        Placement Internship<span class="arrow"></span></a>
+                                    
+                                </li>
+                                
+                            
+                                <li data-toggle="collapse" data-target='#2185' class="collapsed">
+                                    <a href='frmStudentProfile.aspx' class="a-uims-nav"><i></i>
+                                        Profile<span class="arrow"></span></a>
+                                    
+                                </li>
+                                
+                            
+                                <li data-toggle="collapse" data-target='#2192' class="collapsed">
+                                    <a href='javascript:void(0);' class="a-uims-nav"><i></i>
+                                        Student Relation Management System<span class="arrow"></span></a>
+                                    
+                                </li>
+                                <ul id='2192' class='sub-menu collapse'><li><a class='a-uims-nav' href='frmSWCRequest.aspx'>Online Student Care Center Requests</a></li><li><a class='a-uims-nav' href='frmTalentSearchProgram.aspx'>Talent Search Program</a></li></ul>
+                            
+                                <li data-toggle="collapse" data-target='#3129' class="collapsed">
+                                    <a href='frmStudentTrackMyBus.aspx' class="a-uims-nav"><i></i>
+                                        Track My Bus<span class="arrow"></span></a>
+                                    
+                                </li>
+                                
+                            
+                                <li data-toggle="collapse" data-target='#2233' class="collapsed">
+                                    <a href='frmTrainingResource.aspx' class="a-uims-nav"><i></i>
+                                        Training Resources<span class="arrow"></span></a>
+                                    
+                                </li>
+                                
+                            
+                    </ul>
+                </div>
+            </div>
+            <div class="body-overlay"></div>
+
+            <div class="inner-wrapper">
+                <div class="container-fluid">
+                    <div class="margin-15"></div>
+                    <div id="short_links" class="short-links box-shadow-common">
+                        <div class="row">
+                            <div id="div_top_1" class="col-sm-3 col-xs-6 padd-r-0">
+                                <a href="frmImportantlink.aspx" class="waves-effect waves-red"><i class="fa fa-check-square-o" aria-hidden="true"></i>Important Links</a>
+                            </div>
+                            <div id="div_top_2" class="col-sm-3 col-xs-6 padd-0">
+                                <a id="lbtnFeePayment" class="waves-effect waves-red" href="javascript:__doPostBack(&#39;ctl00$lbtnFeePayment&#39;,&#39;&#39;)" style="text-decoration: none;"><i class="fa fa-reply-all" aria-hidden="true"></i>Fee Payment</a>
+                            </div>
+                            <div id="div_top_3" class="col-sm-3 col-xs-6 padd-0">
+                                <a id="lbtnculive" class="waves-effect waves-red" href="javascript:__doPostBack(&#39;ctl00$lbtnculive&#39;,&#39;&#39;)"><i class="fa fa-desktop" aria-hidden="true"></i>CU Live</a>
+                                
+                            </div>
+                            <div id="div_top_4" class="col-sm-3 col-xs-6 padd-0">
+                                <a class="waves-effect waves-red" href="frmSWCRequest.aspx"><i class="fa fa-search" aria-hidden="true"></i>Student Center</a>
+                            </div>
+                            <div id="div_top_5" class="col-sm-3 col-xs-6 padd-0">
+                                <a id="lbtnAntiRagging" class="waves-effect waves-red" href="javascript:__doPostBack(&#39;ctl00$lbtnAntiRagging&#39;,&#39;&#39;)" style="text-decoration: none;"><i class="fa fa-reply-all" aria-hidden="true"></i>Anti Ragging</a>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    
+                    
+                    <div class="margin-15"></div>
+                    
+                    
+
+    <table style="height:100%; width:100%;">
+        <tr>
+            <td></td>
+        </tr>
+        <tr>
+            <td><div class="form_header">My Profile</div></td>
+        </tr>
+        
+        <tr>
+            <td><noscript>
+	&nbsp;Your browser does not support scripts or has been configured not to allow scripts.
+</noscript><span id="ctl00_ContentPlaceHolder1_ReportViewer1_ReportViewer"><div id="ctl00_ContentPlaceHolder1_ReportViewer1" onclick="if ($get(&#39;ctl00_ContentPlaceHolder1_ReportViewer1_ctl04&#39;) != null &amp;&amp; $get(&#39;ctl00_ContentPlaceHolder1_ReportViewer1_ctl04&#39;).control != null) $get(&#39;ctl00_ContentPlaceHolder1_ReportViewer1_ctl04&#39;).control.HideActiveDropDown();" onactivate="if ($get(&#39;ctl00_ContentPlaceHolder1_ReportViewer1_ctl04&#39;) != null &amp;&amp; $get(&#39;ctl00_ContentPlaceHolder1_ReportViewer1_ctl04&#39;).control != null) $get(&#39;ctl00_ContentPlaceHolder1_ReportViewer1_ctl04&#39;).control.HideActiveDropDown();">
+	<div id="ctl00_ContentPlaceHolder1_ReportViewer1_HttpHandlerMissingErrorMessage" style="padding:10px;display:none;overflow:auto;font-size:.85em;">
+		<h2>
+			Report Viewer Configuration Error
+		</h2><p>The Report Viewer Web Control HTTP Handler has not been registered in the application&#39;s web.config file.  Add &lt;add verb=&quot;*&quot; path=&quot;Reserved.ReportViewerWebControl.axd&quot; type = &quot;Microsoft.Reporting.WebForms.HttpHandler, Microsoft.ReportViewer.WebForms, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91&quot; /&gt; to the system.web/httpHandlers section of the web.config file, or add &lt;add name=&quot;ReportViewerWebControlHandler&quot; preCondition=&quot;integratedMode&quot; verb=&quot;*&quot; path=&quot;Reserved.ReportViewerWebControl.axd&quot; type=&quot;Microsoft.Reporting.WebForms.HttpHandler, Microsoft.ReportViewer.WebForms, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91&quot; /&gt; to the system.webServer/handlers section for Internet Information Services 7 or later.</p>
+	</div><span id="ctl00_ContentPlaceHolder1_ReportViewer1_ctl03"><input type="hidden" name="ctl00$ContentPlaceHolder1$ReportViewer1$ctl03$ctl00" id="ctl00_ContentPlaceHolder1_ReportViewer1_ctl03_ctl00" /><input type="hidden" name="ctl00$ContentPlaceHolder1$ReportViewer1$ctl03$ctl01" id="ctl00_ContentPlaceHolder1_ReportViewer1_ctl03_ctl01" /></span><input type="hidden" name="ctl00$ContentPlaceHolder1$ReportViewer1$ctl10" id="ctl00_ContentPlaceHolder1_ReportViewer1_ctl10" /><input type="hidden" name="ctl00$ContentPlaceHolder1$ReportViewer1$ctl11" id="ctl00_ContentPlaceHolder1_ReportViewer1_ctl11" /><div id="ctl00_ContentPlaceHolder1_ReportViewer1_AsyncWait" style="opacity:0.7;position:absolute;display:none;filter:alpha(opacity=70);">
+
+	</div><div id="ctl00_ContentPlaceHolder1_ReportViewer1_AsyncWait_Wait" style="display:none;position:absolute;">
+		<table height="100%">
+			<tr>
+				<td width="32px" height="32px"><img src="/UIMS/Reserved.ReportViewerWebControl.axd?OpType=Resource&amp;Version=11.0.2802.16&amp;Name=Microsoft.Reporting.WebForms.Icons.SpinningWheel.gif" alt="Loading..." height="32" width="32" /></td><td valign="middle" align="center"><span><font face="Verdana" size="4">Loading...</font></span><div>
+					<a href="javascript:$get(&#39;ctl00_ContentPlaceHolder1_ReportViewer1_AsyncWait&#39;).control._cancelCurrentPostback();" style="color:#3366CC;"><font face="Verdana" size="1">Cancel</font></a>
+				</div></td>
+			</tr>
+		</table>
+	</div><input type="hidden" name="ctl00$ContentPlaceHolder1$ReportViewer1$AsyncWait$HiddenCancelField" id="ctl00_ContentPlaceHolder1_ReportViewer1_AsyncWait_HiddenCancelField" value="False" /><table cellpadding="0" cellspacing="0" id="ctl00_ContentPlaceHolder1_ReportViewer1_fixedTable" width="100%" height="100%">
+		<tr bgcolor="#ECE9D8">
+			<td width="25%" style="display:none;"></td><td width="6" style="display:none;"></td><td width="100%"></td>
+		</tr><tr id="ParametersRowctl00_ContentPlaceHolder1_ReportViewer1" style="display:none;">
+			<td colspan="3"></td>
+		</tr><tr style="display:none;">
+			<td colspan="3" align="center" bgcolor="#ECE9D8"><font size="1"><div id="ctl00_ContentPlaceHolder1_ReportViewer1_ToggleParam">
+				<input type="image" name="ctl00$ContentPlaceHolder1$ReportViewer1$ToggleParam$img" id="ctl00_ContentPlaceHolder1_ReportViewer1_ToggleParam_img" title="Show / Hide Parameters" src="/UIMS/Reserved.ReportViewerWebControl.axd?OpType=Resource&amp;Version=11.0.2802.16&amp;Name=Microsoft.Reporting.WebForms.Icons.SplitterHorizCollapse.png" alt="Show / Hide Parameters" align="middle" onclick="void(0);" style="cursor:pointer;" /><input type="hidden" name="ctl00$ContentPlaceHolder1$ReportViewer1$ToggleParam$store" id="ctl00_ContentPlaceHolder1_ReportViewer1_ToggleParam_store" /><input type="hidden" name="ctl00$ContentPlaceHolder1$ReportViewer1$ToggleParam$collapse" id="ctl00_ContentPlaceHolder1_ReportViewer1_ToggleParam_collapse" value="false" />
+			</div></font></td>
+		</tr><tr>
+			<td colspan="3"><div id="ctl00_ContentPlaceHolder1_ReportViewer1_ctl05"><font face="Verdana" size="1">
+				<div>
+					<div class=" " valign="top" style="display:inline-block;"><font face="Verdana" size="1">
+						<table cellpadding="0" cellspacing="0" style="display:inline;">
+							<tr>
+								<td height="28px"><div id="ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl00_First">
+									<div id="ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl00_First_ctl00" style="display:none;border:1px transparent Solid;">
+										<table title="First Page">
+											<tr>
+												<td><input type="image" name="ctl00$ContentPlaceHolder1$ReportViewer1$ctl05$ctl00$First$ctl00$ctl00" id="ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl00_First_ctl00_ctl00" title="First Page" src="/UIMS/Reserved.ReportViewerWebControl.axd?OpType=Resource&amp;Version=11.0.2802.16&amp;Name=Microsoft.Reporting.WebForms.Icons.FirstPage.gif" alt="First Page" /><input type="image" name="ctl00$ContentPlaceHolder1$ReportViewer1$ctl05$ctl00$First$ctl00$ctl01" id="ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl00_First_ctl00_ctl01" title="First Page" src="/UIMS/Reserved.ReportViewerWebControl.axd?OpType=Resource&amp;Version=11.0.2802.16&amp;Name=Microsoft.Reporting.WebForms.Icons.LastPage.gif" alt="First Page" style="display:none;" /></td>
+											</tr>
+										</table>
+									</div><div id="ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl00_First_ctl01" class="aspNetDisabled" disabled="disabled" style="border:1px transparent Solid;">
+										<table title="First Page">
+											<tr>
+												<td><input type="image" name="ctl00$ContentPlaceHolder1$ReportViewer1$ctl05$ctl00$First$ctl01$ctl00" disabled="disabled" id="ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl00_First_ctl01_ctl00" title="First Page" src="/UIMS/Reserved.ReportViewerWebControl.axd?OpType=Resource&amp;Version=11.0.2802.16&amp;Name=Microsoft.Reporting.WebForms.Icons.FirstPageDisabled.gif" alt="First Page" style="cursor:default;" /><input type="image" name="ctl00$ContentPlaceHolder1$ReportViewer1$ctl05$ctl00$First$ctl01$ctl01" disabled="disabled" id="ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl00_First_ctl01_ctl01" title="First Page" src="/UIMS/Reserved.ReportViewerWebControl.axd?OpType=Resource&amp;Version=11.0.2802.16&amp;Name=Microsoft.Reporting.WebForms.Icons.LastPageDisabled.gif" alt="First Page" style="display:none;cursor:default;" /></td>
+											</tr>
+										</table>
+									</div>
+								</div></td><td width="4px"></td><td height="28px"><div id="ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl00_Previous">
+									<div id="ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl00_Previous_ctl00" style="display:none;border:1px transparent Solid;">
+										<table title="Previous Page">
+											<tr>
+												<td><input type="image" name="ctl00$ContentPlaceHolder1$ReportViewer1$ctl05$ctl00$Previous$ctl00$ctl00" id="ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl00_Previous_ctl00_ctl00" title="Previous Page" src="/UIMS/Reserved.ReportViewerWebControl.axd?OpType=Resource&amp;Version=11.0.2802.16&amp;Name=Microsoft.Reporting.WebForms.Icons.PrevPage.gif" alt="Previous Page" /><input type="image" name="ctl00$ContentPlaceHolder1$ReportViewer1$ctl05$ctl00$Previous$ctl00$ctl01" id="ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl00_Previous_ctl00_ctl01" title="Previous Page" src="/UIMS/Reserved.ReportViewerWebControl.axd?OpType=Resource&amp;Version=11.0.2802.16&amp;Name=Microsoft.Reporting.WebForms.Icons.NextPage.gif" alt="Previous Page" style="display:none;" /></td>
+											</tr>
+										</table>
+									</div><div id="ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl00_Previous_ctl01" class="aspNetDisabled" disabled="disabled" style="border:1px transparent Solid;">
+										<table title="Previous Page">
+											<tr>
+												<td><input type="image" name="ctl00$ContentPlaceHolder1$ReportViewer1$ctl05$ctl00$Previous$ctl01$ctl00" disabled="disabled" id="ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl00_Previous_ctl01_ctl00" title="Previous Page" src="/UIMS/Reserved.ReportViewerWebControl.axd?OpType=Resource&amp;Version=11.0.2802.16&amp;Name=Microsoft.Reporting.WebForms.Icons.PrevPageDisabled.gif" alt="Previous Page" style="cursor:default;" /><input type="image" name="ctl00$ContentPlaceHolder1$ReportViewer1$ctl05$ctl00$Previous$ctl01$ctl01" disabled="disabled" id="ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl00_Previous_ctl01_ctl01" title="Previous Page" src="/UIMS/Reserved.ReportViewerWebControl.axd?OpType=Resource&amp;Version=11.0.2802.16&amp;Name=Microsoft.Reporting.WebForms.Icons.NextPageDisabled.gif" alt="Previous Page" style="display:none;cursor:default;" /></td>
+											</tr>
+										</table>
+									</div>
+								</div></td><td width="4px"></td><td height="28px"><input name="ctl00$ContentPlaceHolder1$ReportViewer1$ctl05$ctl00$CurrentPage" type="text" value="1" maxlength="8" size="3" id="ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl00_CurrentPage" disabled="disabled" title="Current Page" class="aspNetDisabled" /></td><td width="4px"></td><td height="28px"><span><font face="Verdana" size="1">of</font></span></td><td width="4px"></td><td height="28px"><span id="ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl00_TotalPages" style="white-space:nowrap;"><font face="Verdana" size="1">1</font></span></td><td width="4px"></td><td height="28px"><div id="ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl00_Next">
+									<div id="ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl00_Next_ctl00" style="display:none;border:1px transparent Solid;">
+										<table title="Next Page">
+											<tr>
+												<td><input type="image" name="ctl00$ContentPlaceHolder1$ReportViewer1$ctl05$ctl00$Next$ctl00$ctl00" id="ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl00_Next_ctl00_ctl00" title="Next Page" src="/UIMS/Reserved.ReportViewerWebControl.axd?OpType=Resource&amp;Version=11.0.2802.16&amp;Name=Microsoft.Reporting.WebForms.Icons.NextPage.gif" alt="Next Page" /><input type="image" name="ctl00$ContentPlaceHolder1$ReportViewer1$ctl05$ctl00$Next$ctl00$ctl01" id="ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl00_Next_ctl00_ctl01" title="Next Page" src="/UIMS/Reserved.ReportViewerWebControl.axd?OpType=Resource&amp;Version=11.0.2802.16&amp;Name=Microsoft.Reporting.WebForms.Icons.PrevPage.gif" alt="Next Page" style="display:none;" /></td>
+											</tr>
+										</table>
+									</div><div id="ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl00_Next_ctl01" class="aspNetDisabled" disabled="disabled" style="border:1px transparent Solid;">
+										<table title="Next Page">
+											<tr>
+												<td><input type="image" name="ctl00$ContentPlaceHolder1$ReportViewer1$ctl05$ctl00$Next$ctl01$ctl00" disabled="disabled" id="ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl00_Next_ctl01_ctl00" title="Next Page" src="/UIMS/Reserved.ReportViewerWebControl.axd?OpType=Resource&amp;Version=11.0.2802.16&amp;Name=Microsoft.Reporting.WebForms.Icons.NextPageDisabled.gif" alt="Next Page" style="cursor:default;" /><input type="image" name="ctl00$ContentPlaceHolder1$ReportViewer1$ctl05$ctl00$Next$ctl01$ctl01" disabled="disabled" id="ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl00_Next_ctl01_ctl01" title="Next Page" src="/UIMS/Reserved.ReportViewerWebControl.axd?OpType=Resource&amp;Version=11.0.2802.16&amp;Name=Microsoft.Reporting.WebForms.Icons.PrevPageDisabled.gif" alt="Next Page" style="display:none;cursor:default;" /></td>
+											</tr>
+										</table>
+									</div>
+								</div></td><td width="4px"></td><td height="28px"><div id="ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl00_Last">
+									<div id="ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl00_Last_ctl00" style="display:none;border:1px transparent Solid;">
+										<table title="Last Page">
+											<tr>
+												<td><input type="image" name="ctl00$ContentPlaceHolder1$ReportViewer1$ctl05$ctl00$Last$ctl00$ctl00" id="ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl00_Last_ctl00_ctl00" title="Last Page" src="/UIMS/Reserved.ReportViewerWebControl.axd?OpType=Resource&amp;Version=11.0.2802.16&amp;Name=Microsoft.Reporting.WebForms.Icons.LastPage.gif" alt="Last Page" /><input type="image" name="ctl00$ContentPlaceHolder1$ReportViewer1$ctl05$ctl00$Last$ctl00$ctl01" id="ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl00_Last_ctl00_ctl01" title="Last Page" src="/UIMS/Reserved.ReportViewerWebControl.axd?OpType=Resource&amp;Version=11.0.2802.16&amp;Name=Microsoft.Reporting.WebForms.Icons.FirstPage.gif" alt="Last Page" style="display:none;" /></td>
+											</tr>
+										</table>
+									</div><div id="ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl00_Last_ctl01" class="aspNetDisabled" disabled="disabled" style="border:1px transparent Solid;">
+										<table title="Last Page">
+											<tr>
+												<td><input type="image" name="ctl00$ContentPlaceHolder1$ReportViewer1$ctl05$ctl00$Last$ctl01$ctl00" disabled="disabled" id="ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl00_Last_ctl01_ctl00" title="Last Page" src="/UIMS/Reserved.ReportViewerWebControl.axd?OpType=Resource&amp;Version=11.0.2802.16&amp;Name=Microsoft.Reporting.WebForms.Icons.LastPageDisabled.gif" alt="Last Page" style="cursor:default;" /><input type="image" name="ctl00$ContentPlaceHolder1$ReportViewer1$ctl05$ctl00$Last$ctl01$ctl01" disabled="disabled" id="ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl00_Last_ctl01_ctl01" title="Last Page" src="/UIMS/Reserved.ReportViewerWebControl.axd?OpType=Resource&amp;Version=11.0.2802.16&amp;Name=Microsoft.Reporting.WebForms.Icons.FirstPageDisabled.gif" alt="Last Page" style="display:none;cursor:default;" /></td>
+											</tr>
+										</table>
+									</div>
+								</div></td>
+							</tr>
+						</table>
+					</font></div><table cellpadding="0" cellspacing="0" ToolbarSpacer="true" width="20" style="display:inline-block;">
+						<tr>
+							<td></td>
+						</tr>
+					</table><div class=" " valign="top" style="display:inline-block;"><font face="Verdana" size="1">
+						<table cellpadding="0" cellspacing="0" style="display:inline;">
+							<tr>
+								<td height="28px"><div id="ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl01_ctl00">
+									<div id="ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl01_ctl00_ctl00" style="display:none;border:1px transparent Solid;">
+										<table title="Go back to the parent report">
+											<tr>
+												<td><input type="image" name="ctl00$ContentPlaceHolder1$ReportViewer1$ctl05$ctl01$ctl00$ctl00$ctl00" id="ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl01_ctl00_ctl00_ctl00" title="Go back to the parent report" src="/UIMS/Reserved.ReportViewerWebControl.axd?OpType=Resource&amp;Version=11.0.2802.16&amp;Name=Microsoft.Reporting.WebForms.Icons.BackEnabled.gif" alt="Go back to the parent report" /><input type="image" name="ctl00$ContentPlaceHolder1$ReportViewer1$ctl05$ctl01$ctl00$ctl00$ctl01" id="ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl01_ctl00_ctl00_ctl01" title="Go back to the parent report" src="/UIMS/Reserved.ReportViewerWebControl.axd?OpType=Resource&amp;Version=11.0.2802.16&amp;Name=Microsoft.Reporting.WebForms.Icons.BackRTLEnabled.gif" alt="Go back to the parent report" style="display:none;" /></td>
+											</tr>
+										</table>
+									</div><div id="ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl01_ctl00_ctl01" class="aspNetDisabled" disabled="disabled" style="border:1px transparent Solid;">
+										<table title="Go back to the parent report">
+											<tr>
+												<td><input type="image" name="ctl00$ContentPlaceHolder1$ReportViewer1$ctl05$ctl01$ctl00$ctl01$ctl00" disabled="disabled" id="ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl01_ctl00_ctl01_ctl00" title="Go back to the parent report" src="/UIMS/Reserved.ReportViewerWebControl.axd?OpType=Resource&amp;Version=11.0.2802.16&amp;Name=Microsoft.Reporting.WebForms.Icons.BackDisabled.gif" alt="Go back to the parent report" style="cursor:default;" /><input type="image" name="ctl00$ContentPlaceHolder1$ReportViewer1$ctl05$ctl01$ctl00$ctl01$ctl01" disabled="disabled" id="ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl01_ctl00_ctl01_ctl01" title="Go back to the parent report" src="/UIMS/Reserved.ReportViewerWebControl.axd?OpType=Resource&amp;Version=11.0.2802.16&amp;Name=Microsoft.Reporting.WebForms.Icons.BackRTLDisabled.gif" alt="Go back to the parent report" style="display:none;cursor:default;" /></td>
+											</tr>
+										</table>
+									</div>
+								</div></td>
+							</tr>
+						</table>
+					</font></div><table cellpadding="0" cellspacing="0" ToolbarSpacer="true" width="20" style="display:inline-block;">
+						<tr>
+							<td></td>
+						</tr>
+					</table><div class=" " valign="top" style="display:inline-block;"><font face="Verdana" size="1">
+						<table cellpadding="0" cellspacing="0" style="display:inline;">
+							<tr>
+								<td height="28px"><input name="ctl00$ContentPlaceHolder1$ReportViewer1$ctl05$ctl03$ctl00" type="text" maxlength="255" size="10" id="ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl03_ctl00" disabled="disabled" title="Find Text in Report" class="aspNetDisabled asptestbox" /></td><td width="4px"></td><td height="28px"><a id="ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl03_ctl01" title="Find" href="#" style="white-space:nowrap;"><font face="Verdana" color="Gray" size="1">Find</font></a></td><td width="4px"></td><td height="28px"><span><font face="Verdana" size="1">|</font></span></td><td width="4px"></td><td height="28px"><a id="ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl03_ctl03" title="Find Next" href="#" style="white-space:nowrap;"><font face="Verdana" color="Gray" size="1">Next</font></a></td>
+							</tr>
+						</table>
+					</font></div><table cellpadding="0" cellspacing="0" ToolbarSpacer="true" width="20" style="display:inline-block;">
+						<tr>
+							<td></td>
+						</tr>
+					</table><div class=" " valign="top" style="display:inline-block;"><font face="Verdana" size="1">
+						<table cellpadding="0" cellspacing="0" style="display:inline;">
+							<tr>
+								<td height="28px"><div id="ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl04_ctl00" style="border:1px transparent Solid;"><font face="Verdana" size="1">
+									<table id="ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl04_ctl00_Button" title="Export drop down menu">
+										<tr>
+											<td><a id="ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl04_ctl00_ButtonLink" title="Export drop down menu" alt="Export drop down menu" href="javascript:void(0)" style="text-decoration:none;"><img id="ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl04_ctl00_ButtonImg" src="/UIMS/Reserved.ReportViewerWebControl.axd?OpType=Resource&amp;Version=11.0.2802.16&amp;Name=Microsoft.Reporting.WebForms.Icons.ExportDisabled.gif" alt="Export drop down menu" height="16" width="16" /><span style="width:5px;text-decoration:none;"> </span><img id="ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl04_ctl00_ButtonImgDown" src="/UIMS/Reserved.ReportViewerWebControl.axd?OpType=Resource&amp;Version=11.0.2802.16&amp;Name=Microsoft.Reporting.WebForms.Icons.ArrowDownDisabled.gif" alt="Export drop down menu" height="6" width="7" style="margin-bottom:5px;" /></a></td>
+										</tr>
+									</table>
+								</font></div><div id="ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl04_ctl00_Menu" style="border:1px #336699 Solid;display:none;position:absolute;padding:1px;z-index:1;">
+									<div style="border:1px transparent Solid;">
+										<a title="Word" alt="Word" onclick="$find(&#39;ctl00_ContentPlaceHolder1_ReportViewer1&#39;).exportReport(&#39;WORDOPENXML&#39;);" href="javascript:void(0)" style="padding:3px 8px 3px 8px;display:block;white-space:nowrap;text-decoration:none;"><font face="Verdana" color="#3366CC" size="1">Word</font></a>
+									</div><div style="border:1px transparent Solid;">
+										<a title="Excel" alt="Excel" onclick="$find(&#39;ctl00_ContentPlaceHolder1_ReportViewer1&#39;).exportReport(&#39;EXCELOPENXML&#39;);" href="javascript:void(0)" style="padding:3px 8px 3px 8px;display:block;white-space:nowrap;text-decoration:none;"><font face="Verdana" color="#3366CC" size="1">Excel</font></a>
+									</div><div style="border:1px transparent Solid;">
+										<a title="PowerPoint" alt="PowerPoint" onclick="$find(&#39;ctl00_ContentPlaceHolder1_ReportViewer1&#39;).exportReport(&#39;PPTX&#39;);" href="javascript:void(0)" style="padding:3px 8px 3px 8px;display:block;white-space:nowrap;text-decoration:none;"><font face="Verdana" color="#3366CC" size="1">PowerPoint</font></a>
+									</div><div style="border:1px transparent Solid;">
+										<a title="PDF" alt="PDF" onclick="$find(&#39;ctl00_ContentPlaceHolder1_ReportViewer1&#39;).exportReport(&#39;PDF&#39;);" href="javascript:void(0)" style="padding:3px 8px 3px 8px;display:block;white-space:nowrap;text-decoration:none;"><font face="Verdana" color="#3366CC" size="1">PDF</font></a>
+									</div><div style="border:1px transparent Solid;">
+										<a title="TIFF file" alt="TIFF file" onclick="$find(&#39;ctl00_ContentPlaceHolder1_ReportViewer1&#39;).exportReport(&#39;IMAGE&#39;);" href="javascript:void(0)" style="padding:3px 8px 3px 8px;display:block;white-space:nowrap;text-decoration:none;"><font face="Verdana" color="#3366CC" size="1">TIFF file</font></a>
+									</div><div style="border:1px transparent Solid;">
+										<a title="MHTML (web archive)" alt="MHTML (web archive)" onclick="$find(&#39;ctl00_ContentPlaceHolder1_ReportViewer1&#39;).exportReport(&#39;MHTML&#39;);" href="javascript:void(0)" style="padding:3px 8px 3px 8px;display:block;white-space:nowrap;text-decoration:none;"><font face="Verdana" color="#3366CC" size="1">MHTML (web archive)</font></a>
+									</div><div style="border:1px transparent Solid;">
+										<a title="CSV (comma delimited)" alt="CSV (comma delimited)" onclick="$find(&#39;ctl00_ContentPlaceHolder1_ReportViewer1&#39;).exportReport(&#39;CSV&#39;);" href="javascript:void(0)" style="padding:3px 8px 3px 8px;display:block;white-space:nowrap;text-decoration:none;"><font face="Verdana" color="#3366CC" size="1">CSV (comma delimited)</font></a>
+									</div><div style="border:1px transparent Solid;">
+										<a title="XML file with report data" alt="XML file with report data" onclick="$find(&#39;ctl00_ContentPlaceHolder1_ReportViewer1&#39;).exportReport(&#39;XML&#39;);" href="javascript:void(0)" style="padding:3px 8px 3px 8px;display:block;white-space:nowrap;text-decoration:none;"><font face="Verdana" color="#3366CC" size="1">XML file with report data</font></a>
+									</div><div style="border:1px transparent Solid;">
+										<a title="Data Feed" alt="Data Feed" onclick="$find(&#39;ctl00_ContentPlaceHolder1_ReportViewer1&#39;).exportReport(&#39;ATOM&#39;);" href="javascript:void(0)" style="padding:3px 8px 3px 8px;display:block;white-space:nowrap;text-decoration:none;"><font face="Verdana" color="#3366CC" size="1">Data Feed</font></a>
+									</div>
+								</div></td>
+							</tr>
+						</table>
+					</font></div><table cellpadding="0" cellspacing="0" ToolbarSpacer="true" width="6" style="display:inline-block;">
+						<tr>
+							<td></td>
+						</tr>
+					</table><div class=" " valign="top" style="display:inline-block;"><font face="Verdana" size="1">
+						<table cellpadding="0" cellspacing="0" style="display:inline;">
+							<tr>
+								<td height="28px"><div id="ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl05_ctl00">
+									<div id="ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl05_ctl00_ctl00" style="display:none;border:1px transparent Solid;">
+										<table title="Refresh">
+											<tr>
+												<td><input type="image" name="ctl00$ContentPlaceHolder1$ReportViewer1$ctl05$ctl05$ctl00$ctl00$ctl00" title="Refresh" src="/UIMS/Reserved.ReportViewerWebControl.axd?OpType=Resource&amp;Version=11.0.2802.16&amp;Name=Microsoft.Reporting.WebForms.Icons.Refresh.gif" alt="Refresh" /></td>
+											</tr>
+										</table>
+									</div><div id="ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl05_ctl00_ctl01" class="aspNetDisabled" disabled="disabled" style="border:1px transparent Solid;">
+										<table title="Refresh">
+											<tr>
+												<td><input type="image" name="ctl00$ContentPlaceHolder1$ReportViewer1$ctl05$ctl05$ctl00$ctl01$ctl00" disabled="disabled" title="Refresh" src="/UIMS/Reserved.ReportViewerWebControl.axd?OpType=Resource&amp;Version=11.0.2802.16&amp;Name=Microsoft.Reporting.WebForms.Icons.RefreshDisabled.gif" alt="Refresh" style="cursor:default;" /></td>
+											</tr>
+										</table>
+									</div>
+								</div></td>
+							</tr>
+						</table>
+					</font></div>
+				</div>
+			</font></div></td>
+		</tr><tr>
+			<td valign="top" width="25%" height="100%" style="display:none;"><div>
+				<span id="ctl00_ContentPlaceHolder1_ReportViewer1_DocMap"><div id="ctl00_ContentPlaceHolder1_ReportViewer1_ctl08" style="display:none;">
+					<input type="hidden" name="ctl00$ContentPlaceHolder1$ReportViewer1$ctl08$ClientClickedId" id="ctl00_ContentPlaceHolder1_ReportViewer1_ctl08_ClientClickedId" />
+				</div></span>
+			</div></td><td width="4" height="100%" valign="middle" bgcolor="#ECE9D8" style="display:none;"><div id="ctl00_ContentPlaceHolder1_ReportViewer1_ctl07">
+				<input type="image" name="ctl00$ContentPlaceHolder1$ReportViewer1$ctl07$img" id="ctl00_ContentPlaceHolder1_ReportViewer1_ctl07_img" title="Show / Hide Document Map" src="/UIMS/Reserved.ReportViewerWebControl.axd?OpType=Resource&amp;Version=11.0.2802.16&amp;Name=Microsoft.Reporting.WebForms.Icons.SplitterVertCollapse.png" alt="Show / Hide Document Map" align="top" onclick="void(0);" style="cursor:pointer;" /><input type="hidden" name="ctl00$ContentPlaceHolder1$ReportViewer1$ctl07$store" id="ctl00_ContentPlaceHolder1_ReportViewer1_ctl07_store" /><input type="hidden" name="ctl00$ContentPlaceHolder1$ReportViewer1$ctl07$collapse" id="ctl00_ContentPlaceHolder1_ReportViewer1_ctl07_collapse" value="false" />
+			</div></td><td height="100%" valign="top"><div id="ctl00_ContentPlaceHolder1_ReportViewer1_ctl09" style="overflow:auto;position:relative;">
+				<div id="VisibleReportContentctl00_ContentPlaceHolder1_ReportViewer1_ctl09" style="display:none;">
+
+				</div><div id="ctl00_ContentPlaceHolder1_ReportViewer1_ctl09_ReportArea">
+					<div NewContentType="Microsoft.Reporting.WebFormsClient.ReportAreaContent.ReportPage" ForNonReportContentArea="false" id="ctl00_ContentPlaceHolder1_ReportViewer1_ctl09_VisibilityState" style="visibility:none;">
+						<input type="hidden" name="ctl00$ContentPlaceHolder1$ReportViewer1$ctl09$VisibilityState$ctl00" value="ReportPage" />
+					</div><input type="hidden" name="ctl00$ContentPlaceHolder1$ReportViewer1$ctl09$ScrollPosition" id="ctl00_ContentPlaceHolder1_ReportViewer1_ctl09_ScrollPosition" /><span id="ctl00_ContentPlaceHolder1_ReportViewer1_ctl09_Reserved_AsyncLoadTarget"></span><div id="ctl00_ContentPlaceHolder1_ReportViewer1_ctl09_ReportControl" style="display:none;">
+						<span></span><input type="hidden" name="ctl00$ContentPlaceHolder1$ReportViewer1$ctl09$ReportControl$ctl02" id="ctl00_ContentPlaceHolder1_ReportViewer1_ctl09_ReportControl_ctl02" /><input type="hidden" name="ctl00$ContentPlaceHolder1$ReportViewer1$ctl09$ReportControl$ctl03" id="ctl00_ContentPlaceHolder1_ReportViewer1_ctl09_ReportControl_ctl03" /><input type="hidden" name="ctl00$ContentPlaceHolder1$ReportViewer1$ctl09$ReportControl$ctl04" id="ctl00_ContentPlaceHolder1_ReportViewer1_ctl09_ReportControl_ctl04" value="100" /><div style="display:none;">
+							<DIV dir="LTR" style="HEIGHT:100%;WIDTH:100%;direction:ltr" ID="P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv"><TABLE CELLSPACING="0" CELLPADDING="0"><TR><TD ID="P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportCell"><TABLE CELLSPACING="0" CELLPADDING="0"><TR><TD class="A24720a55e181441d9c911551862c9ad1382xBc"><DIV ID="P6ccaec1cd36e48de8929823f17e9d8b0_1_12xB_gr" class="A24720a55e181441d9c911551862c9ad1382xB"><TABLE CELLSPACING="0" CELLPADDING="0" BORDER="0" COLS="28" LANG="en-US" class="P6ccaec1cd36e48de8929823f17e9d8b0_1_r10""><TR><TD style="HEIGHT:1.94mm;WIDTH:0.00mm"></TD><TD style="WIDTH:2.08mm;min-width: 2.08mm;"></TD><TD style="WIDTH:0.02mm;min-width: 0.02mm;"></TD><TD style="WIDTH:0.66mm;min-width: 0.66mm;"></TD><TD style="WIDTH:10.70mm;min-width: 10.70mm;"></TD><TD style="WIDTH:4.50mm;min-width: 4.50mm;"></TD><TD style="WIDTH:13.23mm;min-width: 13.23mm;"></TD><TD style="WIDTH:2.15mm;min-width: 2.15mm;"></TD><TD style="WIDTH:0.78mm;min-width: 0.78mm;"></TD><TD style="WIDTH:6.07mm;min-width: 6.07mm;"></TD><TD style="WIDTH:0.78mm;min-width: 0.78mm;"></TD><TD style="WIDTH:0.55mm;min-width: 0.55mm;"></TD><TD style="WIDTH:18.38mm;min-width: 18.38mm;"></TD><TD style="WIDTH:0.02mm;min-width: 0.02mm;"></TD><TD style="WIDTH:24.23mm;min-width: 24.23mm;"></TD><TD style="WIDTH:7.48mm;min-width: 7.48mm;"></TD><TD style="WIDTH:25.84mm;min-width: 25.84mm;"></TD><TD style="WIDTH:1.85mm;min-width: 1.85mm;"></TD><TD style="WIDTH:1.75mm;min-width: 1.75mm;"></TD><TD style="WIDTH:0.18mm;min-width: 0.18mm;"></TD><TD style="WIDTH:1.97mm;min-width: 1.97mm;"></TD><TD style="WIDTH:38.59mm;min-width: 38.59mm;"></TD><TD style="WIDTH:25.32mm;min-width: 25.32mm;"></TD><TD style="WIDTH:1.44mm;min-width: 1.44mm;"></TD><TD style="WIDTH:0.26mm;min-width: 0.26mm;"></TD><TD style="WIDTH:0.27mm;min-width: 0.27mm;"></TD><TD style="WIDTH:0.53mm;min-width: 0.53mm;"></TD><TD style="WIDTH:0.61mm;min-width: 0.61mm;"></TD></TR><TR VALIGN="top"><TD style="HEIGHT:5.56mm;WIDTH:0.00mm"></TD><TD ROWSPAN="10" COLSPAN="3"></TD><TD ROWSPAN="4" COLSPAN="6"><DIV style=""><DIV class="A24720a55e181441d9c911551862c9ad111"><IMG onerror="this.errored=true;" onload="this.fitproportional=true;this.pv=0;this.ph=0;" SRC="/UIMS/Reserved.ReportViewerWebControl.axd?ReportSession=2pyge0452nonno554snllce5&Culture=1033&CultureOverrides=True&UICulture=1033&UICultureOverrides=True&ReportStack=1&ControlID=6ccaec1cd36e48de8929823f17e9d8b0&OpType=ReportImage&IterationId=f05ac9d3f5a6474d8bae263a1ae0adfd&StreamID=df559639-1f37-47d9-a122-f2d7fe3b9b3d"/></DIV></DIV></TD><TD ROWSPAN="7" COLSPAN="3"></TD><TD COLSPAN="8"><TABLE CELLSPACING="0" CELLPADDING="0" LANG="en-US" style=""><TR><TD style="WIDTH:63.31mm;min-width: 63.31mm;HEIGHT:5.56mm;" class="A24720a55e181441d9c911551862c9ad114">Student Profile</TD></TR></TABLE></TD><TD></TD><TD ROWSPAN="8"><DIV style=""><DIV class="A24720a55e181441d9c911551862c9ad171"><IMG onerror="this.errored=true;" onload="this.fitproportional=true;this.pv=0;this.ph=0;" SRC="/UIMS/Reserved.ReportViewerWebControl.axd?ReportSession=2pyge0452nonno554snllce5&Culture=1033&CultureOverrides=True&UICulture=1033&UICultureOverrides=True&ReportStack=1&ControlID=6ccaec1cd36e48de8929823f17e9d8b0&OpType=ReportImage&IterationId=f05ac9d3f5a6474d8bae263a1ae0adfd&StreamID=dbbd3597175848f6b8ee66d88cef88df"/></DIV></DIV></TD><TD ROWSPAN="10" COLSPAN="5"></TD></TR><TR><TD style="HEIGHT:3.25mm;WIDTH:0.00mm"></TD><TD COLSPAN="9"></TD></TR><TR VALIGN="top"><TD style="HEIGHT:5.12mm;WIDTH:0.00mm"></TD><TD COLSPAN="8"><TABLE CELLSPACING="0" CELLPADDING="0" LANG="en-US" style=""><TR><TD style="WIDTH:63.31mm;min-width: 63.31mm;HEIGHT:5.12mm;" class="A24720a55e181441d9c911551862c9ad175"><DIV style="overflow-x:hidden;WIDTH:61.90mm;"><DIV class="A24720a55e181441d9c911551862c9ad174"><span class="A24720a55e181441d9c911551862c9ad172">UID : </span><span class="A24720a55e181441d9c911551862c9ad173">18BCS2430</span></DIV></DIV></TD></TR></TABLE></TD><TD></TD></TR><TR><TD style="HEIGHT:0.72mm;WIDTH:0.00mm"></TD><TD ROWSPAN="2" COLSPAN="9"></TD></TR><TR><TD style="HEIGHT:0.88mm;WIDTH:0.00mm"></TD><TD ROWSPAN="3" COLSPAN="6"></TD></TR><TR VALIGN="top"><TD style="HEIGHT:4.76mm;WIDTH:0.00mm"></TD><TD COLSPAN="8"><TABLE CELLSPACING="0" CELLPADDING="0" LANG="en-US" style=""><TR><TD style="WIDTH:63.31mm;min-width: 63.31mm;HEIGHT:4.76mm;" class="A24720a55e181441d9c911551862c9ad179"><DIV style="overflow-x:hidden;WIDTH:61.90mm;"><DIV class="A24720a55e181441d9c911551862c9ad178"><span class="A24720a55e181441d9c911551862c9ad176">Current Section : </span><span class="A24720a55e181441d9c911551862c9ad177">18_K2_G3</span></DIV></DIV></TD></TR></TABLE></TD><TD></TD></TR><TR><TD style="HEIGHT:7.29mm;WIDTH:0.00mm"></TD><TD COLSPAN="9"></TD></TR><TR VALIGN="top"><TD style="HEIGHT:0.65mm;WIDTH:0.00mm"></TD><TD ROWSPAN="2" COLSPAN="10"><TABLE CELLSPACING="0" CELLPADDING="0" LANG="en-US" style=""><TR><TD style="WIDTH:57.15mm;min-width: 57.15mm;HEIGHT:5.56mm;" class="A24720a55e181441d9c911551862c9ad117">Student Personal Information</TD></TR></TABLE></TD><TD ROWSPAN="3" COLSPAN="8"></TD></TR><TR><TD style="HEIGHT:4.90mm;WIDTH:0.00mm"></TD><TD></TD></TR><TR><TD style="HEIGHT:0.62mm;WIDTH:0.00mm"></TD><TD COLSPAN="10"></TD><TD></TD></TR><TR><TD style="HEIGHT:2.33mm;WIDTH:0.00mm"></TD><TD ROWSPAN="2" COLSPAN="2"></TD><TD COLSPAN="21" style="border-width:0px;border-top:0.3pt solid Black"></TD><TD ROWSPAN="25" COLSPAN="4"></TD></TR><TR VALIGN="top"><TD style="HEIGHT:0.09mm;WIDTH:0.00mm"></TD><TD COLSPAN="13"></TD><TD ROWSPAN="2"><TABLE CELLSPACING="0" CELLPADDING="0" LANG="en-US" style=""><TR><TD style="WIDTH:25.84mm;min-width: 25.84mm;HEIGHT:4.76mm;" class="A24720a55e181441d9c911551862c9ad121">Caste</TD></TR></TABLE></TD><TD ROWSPAN="4" COLSPAN="3"></TD><TD ROWSPAN="2" COLSPAN="4"><TABLE CELLSPACING="0" CELLPADDING="0" LANG="en-US" style=""><TR><TD style="WIDTH:67.49mm;min-width: 67.49mm;HEIGHT:4.76mm;" class="A24720a55e181441d9c911551862c9ad182">GEN</TD></TR></TABLE></TD></TR><TR VALIGN="top"><TD style="HEIGHT:4.67mm;WIDTH:0.00mm"></TD><TD></TD><TD COLSPAN="3"><TABLE CELLSPACING="0" CELLPADDING="0" LANG="en-US" style=""><TR><TD style="WIDTH:11.38mm;min-width: 11.38mm;HEIGHT:4.76mm;" class="A24720a55e181441d9c911551862c9ad124">Name</TD></TR></TABLE></TD><TD ROWSPAN="2" COLSPAN="3"></TD><TD COLSPAN="7"><TABLE CELLSPACING="0" CELLPADDING="0" LANG="en-US" style=""><TR><TD style="WIDTH:50.80mm;min-width: 50.80mm;HEIGHT:4.76mm;" class="A24720a55e181441d9c911551862c9ad185l">SWARNIM DOEGAR</TD></TR></TABLE></TD><TD></TD></TR><TR><TD style="HEIGHT:0.44mm;WIDTH:0.00mm"></TD><TD COLSPAN="4"></TD><TD COLSPAN="9"></TD><TD ROWSPAN="2" COLSPAN="4"></TD></TR><TR VALIGN="top"><TD style="HEIGHT:1.02mm;WIDTH:0.00mm"></TD><TD></TD><TD ROWSPAN="2" COLSPAN="5"><TABLE CELLSPACING="0" CELLPADDING="0" LANG="en-US" style=""><TR><TD style="WIDTH:29.10mm;min-width: 29.10mm;HEIGHT:4.76mm;" class="A24720a55e181441d9c911551862c9ad127">Father&#39;s Name</TD></TR></TABLE></TD><TD></TD><TD ROWSPAN="2" COLSPAN="7"><TABLE CELLSPACING="0" CELLPADDING="0" LANG="en-US" style=""><TR><TD style="WIDTH:50.80mm;min-width: 50.80mm;HEIGHT:4.76mm;" class="A24720a55e181441d9c911551862c9ad188l">NARESH KUMAR SOOD</TD></TR></TABLE></TD><TD COLSPAN="2"></TD></TR><TR VALIGN="top"><TD style="HEIGHT:3.74mm;WIDTH:0.00mm"></TD><TD></TD><TD></TD><TD></TD><TD ROWSPAN="3" COLSPAN="2"><TABLE CELLSPACING="0" CELLPADDING="0" LANG="en-US" style=""><TR><TD style="WIDTH:27.69mm;min-width: 27.69mm;HEIGHT:4.76mm;" class="A24720a55e181441d9c911551862c9ad130">Addmission Year</TD></TR></TABLE></TD><TD ROWSPAN="10" COLSPAN="2"></TD><TD ROWSPAN="3" COLSPAN="4"><TABLE CELLSPACING="0" CELLPADDING="0" LANG="en-US" style=""><TR><TD style="WIDTH:67.49mm;min-width: 67.49mm;HEIGHT:4.76mm;" class="A24720a55e181441d9c911551862c9ad191">2018</TD></TR></TABLE></TD></TR><TR><TD style="HEIGHT:0.71mm;WIDTH:0.00mm"></TD><TD COLSPAN="15"></TD></TR><TR VALIGN="top"><TD style="HEIGHT:0.32mm;WIDTH:0.00mm"></TD><TD></TD><TD ROWSPAN="3" COLSPAN="5"><TABLE CELLSPACING="0" CELLPADDING="0" LANG="en-US" style=""><TR><TD style="WIDTH:29.10mm;min-width: 29.10mm;HEIGHT:4.76mm;" class="A24720a55e181441d9c911551862c9ad133">Mother&#39;s Name</TD></TR></TABLE></TD><TD></TD><TD ROWSPAN="3" COLSPAN="7"><TABLE CELLSPACING="0" CELLPADDING="0" LANG="en-US" style=""><TR><TD style="WIDTH:50.80mm;min-width: 50.80mm;HEIGHT:4.76mm;" class="A24720a55e181441d9c911551862c9ad194l">VIJAY SOOD</TD></TR></TABLE></TD><TD></TD></TR><TR><TD style="HEIGHT:0.35mm;WIDTH:0.00mm"></TD><TD></TD><TD></TD><TD COLSPAN="3"></TD><TD COLSPAN="4"></TD></TR><TR VALIGN="top"><TD style="HEIGHT:4.09mm;WIDTH:0.00mm"></TD><TD></TD><TD></TD><TD></TD><TD ROWSPAN="2"><TABLE CELLSPACING="0" CELLPADDING="0" LANG="en-US" style=""><TR><TD style="WIDTH:25.84mm;min-width: 25.84mm;HEIGHT:4.76mm;" class="A24720a55e181441d9c911551862c9ad136">University</TD></TR></TABLE></TD><TD></TD><TD ROWSPAN="2" COLSPAN="4"><TABLE CELLSPACING="0" CELLPADDING="0" LANG="en-US" style=""><TR><TD style="WIDTH:67.49mm;min-width: 67.49mm;HEIGHT:4.76mm;" class="A24720a55e181441d9c911551862c9ad197">CU</TD></TR></TABLE></TD></TR><TR><TD style="HEIGHT:0.67mm;WIDTH:0.00mm"></TD><TD COLSPAN="15"></TD><TD></TD></TR><TR VALIGN="top"><TD style="HEIGHT:0.67mm;WIDTH:0.00mm"></TD><TD></TD><TD ROWSPAN="2" COLSPAN="5"><TABLE CELLSPACING="0" CELLPADDING="0" LANG="en-US" style=""><TR><TD style="WIDTH:29.10mm;min-width: 29.10mm;HEIGHT:4.76mm;" class="A24720a55e181441d9c911551862c9ad139">Gender</TD></TR></TABLE></TD><TD></TD><TD ROWSPAN="2" COLSPAN="7"><TABLE CELLSPACING="0" CELLPADDING="0" LANG="en-US" style=""><TR><TD style="WIDTH:50.80mm;min-width: 50.80mm;HEIGHT:4.76mm;" class="A24720a55e181441d9c911551862c9ad1100l">M</TD></TR></TABLE></TD><TD COLSPAN="3"></TD><TD COLSPAN="4"></TD></TR><TR VALIGN="top"><TD style="HEIGHT:4.09mm;WIDTH:0.00mm"></TD><TD></TD><TD></TD><TD></TD><TD ROWSPAN="2"><TABLE CELLSPACING="0" CELLPADDING="0" LANG="en-US" style=""><TR><TD style="WIDTH:25.84mm;min-width: 25.84mm;HEIGHT:4.76mm;" class="A24720a55e181441d9c911551862c9ad142">Program Code</TD></TR></TABLE></TD><TD></TD><TD ROWSPAN="2" COLSPAN="4"><TABLE CELLSPACING="0" CELLPADDING="0" LANG="en-US" style=""><TR><TD style="WIDTH:67.49mm;min-width: 67.49mm;HEIGHT:4.76mm;" class="A24720a55e181441d9c911551862c9ad1103">CS201::BE-CSE</TD></TR></TABLE></TD></TR><TR><TD style="HEIGHT:0.67mm;WIDTH:0.00mm"></TD><TD COLSPAN="15"></TD><TD></TD></TR><TR VALIGN="top"><TD style="HEIGHT:1.73mm;WIDTH:0.00mm"></TD><TD></TD><TD ROWSPAN="2" COLSPAN="5"><TABLE CELLSPACING="0" CELLPADDING="0" LANG="en-US" style=""><TR><TD style="WIDTH:29.10mm;min-width: 29.10mm;HEIGHT:4.76mm;" class="A24720a55e181441d9c911551862c9ad145">Date Of Birth</TD></TR></TABLE></TD><TD></TD><TD ROWSPAN="2" COLSPAN="7"><TABLE CELLSPACING="0" CELLPADDING="0" LANG="en-US" style=""><TR><TD style="WIDTH:50.80mm;min-width: 50.80mm;HEIGHT:4.76mm;" class="A24720a55e181441d9c911551862c9ad1106l">10 Nov 2000</TD></TR></TABLE></TD><TD COLSPAN="3"></TD><TD COLSPAN="4"></TD></TR><TR VALIGN="top"><TD style="HEIGHT:3.03mm;WIDTH:0.00mm"></TD><TD></TD><TD></TD><TD></TD><TD ROWSPAN="3"><TABLE CELLSPACING="0" CELLPADDING="0" LANG="en-US" style=""><TR><TD style="WIDTH:25.84mm;min-width: 25.84mm;HEIGHT:4.76mm;" class="A24720a55e181441d9c911551862c9ad148">Student Status</TD></TR></TABLE></TD><TD ROWSPAN="10" COLSPAN="2"></TD><TD ROWSPAN="3" COLSPAN="5"><TABLE CELLSPACING="0" CELLPADDING="0" LANG="en-US" style=""><TR><TD style="WIDTH:67.49mm;min-width: 67.49mm;HEIGHT:4.76mm;" class="A24720a55e181441d9c911551862c9ad1109l">PD</TD></TR></TABLE></TD></TR><TR><TD style="HEIGHT:0.71mm;WIDTH:0.00mm"></TD><TD COLSPAN="15"></TD></TR><TR VALIGN="top"><TD style="HEIGHT:1.02mm;WIDTH:0.00mm"></TD><TD></TD><TD ROWSPAN="4" COLSPAN="5"><TABLE CELLSPACING="0" CELLPADDING="0" LANG="en-US" style=""><TR><TD style="WIDTH:29.10mm;min-width: 29.10mm;HEIGHT:4.76mm;" class="A24720a55e181441d9c911551862c9ad151">Blood Group</TD></TR></TABLE></TD><TD></TD><TD ROWSPAN="4" COLSPAN="7"><TABLE CELLSPACING="0" CELLPADDING="0" LANG="en-US" style=""><TR><TD style="WIDTH:50.80mm;min-width: 50.80mm;HEIGHT:4.76mm;" class="A24720a55e181441d9c911551862c9ad1112l">A+</TD></TR></TABLE></TD><TD></TD></TR><TR><TD style="HEIGHT:0.25mm;WIDTH:0.00mm"></TD><TD></TD><TD></TD><TD COLSPAN="2"></TD><TD ROWSPAN="2" COLSPAN="5"></TD></TR><TR VALIGN="top"><TD style="HEIGHT:0.53mm;WIDTH:0.00mm"></TD><TD></TD><TD></TD><TD></TD><TD ROWSPAN="4"><TABLE CELLSPACING="0" CELLPADDING="0" LANG="en-US" style=""><TR><TD style="WIDTH:25.84mm;min-width: 25.84mm;HEIGHT:4.76mm;" class="A24720a55e181441d9c911551862c9ad154">Address</TD></TR></TABLE></TD></TR><TR VALIGN="top"><TD style="HEIGHT:2.96mm;WIDTH:0.00mm"></TD><TD></TD><TD></TD><TD></TD><TD></TD><TD ROWSPAN="3" COLSPAN="4"><TABLE CELLSPACING="0" CELLPADDING="0" LANG="en-US" style=""><TR><TD style="WIDTH:67.49mm;min-width: 67.49mm;HEIGHT:4.23mm;" class="A24720a55e181441d9c911551862c9ad1115">S/O NARESH KUMAR SOOD<br/>WARD NO 4, P.O. ARKI<br/></TD></TR></TABLE></TD></TR><TR><TD style="HEIGHT:0.71mm;WIDTH:0.00mm"></TD><TD COLSPAN="15"></TD><TD></TD></TR><TR VALIGN="top"><TD style="HEIGHT:0.56mm;WIDTH:0.00mm"></TD><TD></TD><TD ROWSPAN="2" COLSPAN="4"><TABLE CELLSPACING="0" CELLPADDING="0" LANG="en-US" style=""><TR><TD style="WIDTH:15.88mm;min-width: 15.88mm;HEIGHT:4.76mm;" class="A24720a55e181441d9c911551862c9ad157">Religion</TD></TR></TABLE></TD><TD ROWSPAN="3" COLSPAN="2"></TD><TD ROWSPAN="2" COLSPAN="7"><TABLE CELLSPACING="0" CELLPADDING="0" LANG="en-US" style=""><TR><TD style="WIDTH:50.80mm;min-width: 50.80mm;HEIGHT:4.76mm;" class="A24720a55e181441d9c911551862c9ad1118l">Hinduism</TD></TR></TABLE></TD><TD></TD><TD></TD></TR><TR><TD style="HEIGHT:4.20mm;WIDTH:0.00mm"></TD><TD></TD><TD ROWSPAN="2" COLSPAN="2"></TD><TD ROWSPAN="2" COLSPAN="5"></TD></TR><TR><TD style="HEIGHT:1.61mm;WIDTH:0.00mm"></TD><TD COLSPAN="5"></TD><TD COLSPAN="7"></TD></TR><TR><TD style="HEIGHT:3.37mm;WIDTH:0.00mm"></TD><TD COLSPAN="2"></TD><TD COLSPAN="24" style="border-width:0px;border-top:0.3pt solid Black"></TD><TD></TD></TR><TR VALIGN="top"><TD style="HEIGHT:5.56mm;WIDTH:0.00mm"></TD><TD></TD><TD COLSPAN="10"><TABLE CELLSPACING="0" CELLPADDING="0" LANG="en-US" style=""><TR><TD style="WIDTH:39.42mm;min-width: 39.42mm;HEIGHT:5.56mm;" class="A24720a55e181441d9c911551862c9ad161">Qualification Details</TD></TR></TABLE></TD><TD ROWSPAN="2" COLSPAN="16"></TD></TR><TR><TD style="HEIGHT:0.49mm;WIDTH:0.00mm"></TD><TD COLSPAN="11"></TD></TR><TR VALIGN="top"><TD style="HEIGHT:5.69mm;WIDTH:0.00mm"></TD><TD></TD><TD COLSPAN="24"><TABLE CELLSPACING="0" CELLPADDING="0" COLS="7" BORDER="0" style="border-collapse:collapse;" class="A24720a55e181441d9c911551862c9ad1193"><TR HEIGHT="0"><TD style="WIDTH:21.54mm;min-width: 21.54mm"></TD><TD style="WIDTH:23.17mm;min-width: 23.17mm"></TD><TD style="WIDTH:57.13mm;min-width: 57.13mm"></TD><TD style="WIDTH:32.24mm;min-width: 32.24mm"></TD><TD style="WIDTH:16.59mm;min-width: 16.59mm"></TD><TD style="WIDTH:10.74mm;min-width: 10.74mm"></TD><TD style="WIDTH:25.77mm;min-width: 25.77mm"></TD></TR><TR VALIGN="top"><TD style="HEIGHT:5.69mm;" class="A24720a55e181441d9c911551862c9ad1130c"><DIV class="A24720a55e181441d9c911551862c9ad1130">Qualification</DIV></TD><TD class="A24720a55e181441d9c911551862c9ad1134c"><DIV class="A24720a55e181441d9c911551862c9ad1134">Stream</DIV></TD><TD class="A24720a55e181441d9c911551862c9ad1138c"><DIV class="A24720a55e181441d9c911551862c9ad1138">Col/Sch/Instt</DIV></TD><TD class="A24720a55e181441d9c911551862c9ad1142c"><DIV class="A24720a55e181441d9c911551862c9ad1142">Univ/Board</DIV></TD><TD class="A24720a55e181441d9c911551862c9ad1146c"><DIV class="A24720a55e181441d9c911551862c9ad1146">Pass Year</DIV></TD><TD class="A24720a55e181441d9c911551862c9ad1150c"><DIV class="A24720a55e181441d9c911551862c9ad1150">% age</DIV></TD><TD class="A24720a55e181441d9c911551862c9ad1154c"><DIV class="A24720a55e181441d9c911551862c9ad1154">Remarks</DIV></TD></TR></TABLE></TD><TD ROWSPAN="13" COLSPAN="2"></TD></TR><TR><TD style="HEIGHT:2.15mm;WIDTH:0.00mm"></TD><TD COLSPAN="25"></TD></TR><TR VALIGN="top"><TD style="HEIGHT:5.56mm;WIDTH:0.00mm"></TD><TD ROWSPAN="2" COLSPAN="2"></TD><TD COLSPAN="6"><TABLE CELLSPACING="0" CELLPADDING="0" LANG="en-US" style=""><TR><TD style="WIDTH:32.01mm;min-width: 32.01mm;HEIGHT:5.56mm;" class="A24720a55e181441d9c911551862c9ad164">Contact Details</TD></TR></TABLE></TD><TD ROWSPAN="2" COLSPAN="17"></TD></TR><TR><TD style="HEIGHT:0.74mm;WIDTH:0.00mm"></TD><TD COLSPAN="6"></TD></TR><TR VALIGN="top"><TD style="HEIGHT:22.23mm;WIDTH:0.00mm"></TD><TD></TD><TD COLSPAN="22"><TABLE CELLSPACING="0" CELLPADDING="0" COLS="5" BORDER="0" style="border-collapse:collapse;" class="A24720a55e181441d9c911551862c9ad1248"><TR HEIGHT="0"><TD style="WIDTH:27.51mm;min-width: 27.51mm"></TD><TD style="WIDTH:30.30mm;min-width: 30.30mm"></TD><TD style="WIDTH:31.65mm;min-width: 31.65mm"></TD><TD style="WIDTH:29.71mm;min-width: 29.71mm"></TD><TD style="WIDTH:67.47mm;min-width: 67.47mm"></TD></TR><TR VALIGN="top"><TD style="HEIGHT:5.56mm;" class="A24720a55e181441d9c911551862c9ad1203c"><DIV class="A24720a55e181441d9c911551862c9ad1203">Contact Type</DIV></TD><TD class="A24720a55e181441d9c911551862c9ad1207c"><DIV class="A24720a55e181441d9c911551862c9ad1207">Residence</DIV></TD><TD class="A24720a55e181441d9c911551862c9ad1211c"><DIV class="A24720a55e181441d9c911551862c9ad1211">Office</DIV></TD><TD class="A24720a55e181441d9c911551862c9ad1215c"><DIV class="A24720a55e181441d9c911551862c9ad1215">Mobile</DIV></TD><TD class="A24720a55e181441d9c911551862c9ad1219c"><DIV class="A24720a55e181441d9c911551862c9ad1219">emailid</DIV></TD></TR><TR VALIGN="top"><TD style="HEIGHT:5.56mm;" class="A24720a55e181441d9c911551862c9ad1224cl"><DIV class="A24720a55e181441d9c911551862c9ad1224">Father</DIV></TD><TD class="A24720a55e181441d9c911551862c9ad1228cl P6ccaec1cd36e48de8929823f17e9d8b0_1_r14">&nbsp;</TD><TD class="A24720a55e181441d9c911551862c9ad1232cl P6ccaec1cd36e48de8929823f17e9d8b0_1_r14">&nbsp;</TD><TD class="A24720a55e181441d9c911551862c9ad1236cl"><DIV class="A24720a55e181441d9c911551862c9ad1236">9604649327</DIV></TD><TD class="A24720a55e181441d9c911551862c9ad1240cl"><DIV class="A24720a55e181441d9c911551862c9ad1240">nareshkumarsood@ymail.com</DIV></TD></TR><TR VALIGN="top"><TD style="HEIGHT:5.56mm;" class="A24720a55e181441d9c911551862c9ad1224cl"><DIV class="A24720a55e181441d9c911551862c9ad1224">Mother</DIV></TD><TD class="A24720a55e181441d9c911551862c9ad1228cl P6ccaec1cd36e48de8929823f17e9d8b0_1_r14">&nbsp;</TD><TD class="A24720a55e181441d9c911551862c9ad1232cl P6ccaec1cd36e48de8929823f17e9d8b0_1_r14">&nbsp;</TD><TD class="A24720a55e181441d9c911551862c9ad1236cl"><DIV class="A24720a55e181441d9c911551862c9ad1236">8144250364</DIV></TD><TD class="A24720a55e181441d9c911551862c9ad1240cl"><DIV class="A24720a55e181441d9c911551862c9ad1240">nareshkumarsood@ymail.com</DIV></TD></TR><TR VALIGN="top"><TD style="HEIGHT:5.56mm;" class="A24720a55e181441d9c911551862c9ad1224cl"><DIV class="A24720a55e181441d9c911551862c9ad1224">Student</DIV></TD><TD class="A24720a55e181441d9c911551862c9ad1228cl P6ccaec1cd36e48de8929823f17e9d8b0_1_r14">&nbsp;</TD><TD class="A24720a55e181441d9c911551862c9ad1232cl P6ccaec1cd36e48de8929823f17e9d8b0_1_r14">&nbsp;</TD><TD class="A24720a55e181441d9c911551862c9ad1236cl"><DIV class="A24720a55e181441d9c911551862c9ad1236">7624832143</DIV></TD><TD class="A24720a55e181441d9c911551862c9ad1240cl"><DIV class="A24720a55e181441d9c911551862c9ad1240">swarnimdoegar@gmail.com</DIV></TD></TR></TABLE></TD><TD ROWSPAN="7" COLSPAN="2"></TD></TR><TR><TD style="HEIGHT:2.08mm;WIDTH:0.00mm"></TD><TD COLSPAN="23"></TD></TR><TR VALIGN="top"><TD style="HEIGHT:5.95mm;WIDTH:0.00mm"></TD><TD></TD><TD COLSPAN="9"><TABLE CELLSPACING="0" CELLPADDING="0" LANG="en-US" style=""><TR><TD style="WIDTH:38.88mm;min-width: 38.88mm;HEIGHT:5.95mm;" class="A24720a55e181441d9c911551862c9ad167">Suspension Details</TD></TR></TABLE></TD><TD ROWSPAN="2" COLSPAN="13"></TD></TR><TR><TD style="HEIGHT:0.35mm;WIDTH:0.00mm"></TD><TD COLSPAN="10"></TD></TR><TR VALIGN="top"><TD style="HEIGHT:8.73mm;WIDTH:0.00mm"></TD><TD></TD><TD COLSPAN="22"><TABLE CELLSPACING="0" CELLPADDING="0" COLS="8" BORDER="0" style="border-collapse:collapse;" class="A24720a55e181441d9c911551862c9ad1335"><TR HEIGHT="0"><TD style="WIDTH:20.28mm;min-width: 20.28mm"></TD><TD style="WIDTH:16.51mm;min-width: 16.51mm"></TD><TD style="WIDTH:16.37mm;min-width: 16.37mm"></TD><TD style="WIDTH:29.48mm;min-width: 29.48mm"></TD><TD style="WIDTH:34.14mm;min-width: 34.14mm"></TD><TD style="WIDTH:20.12mm;min-width: 20.12mm"></TD><TD style="WIDTH:17.13mm;min-width: 17.13mm"></TD><TD style="WIDTH:32.59mm;min-width: 32.59mm"></TD></TR><TR VALIGN="top"><TD style="HEIGHT:8.73mm;" class="A24720a55e181441d9c911551862c9ad1261c"><DIV class="A24720a55e181441d9c911551862c9ad1261">Suspended From</DIV></TD><TD class="A24720a55e181441d9c911551862c9ad1265c"><DIV class="A24720a55e181441d9c911551862c9ad1265">From  Date</DIV></TD><TD class="A24720a55e181441d9c911551862c9ad1271c"><DIV class="A24720a55e181441d9c911551862c9ad1271"><DIV style="overflow-x:hidden;WIDTH:14.75mm;"><DIV class="A24720a55e181441d9c911551862c9ad1268"><span class="A24720a55e181441d9c911551862c9ad1267">Till </span></DIV><DIV class="A24720a55e181441d9c911551862c9ad1270"><span class="A24720a55e181441d9c911551862c9ad1269">Date</span></DIV></DIV></DIV></TD><TD class="A24720a55e181441d9c911551862c9ad1275c"><DIV class="A24720a55e181441d9c911551862c9ad1275">Reason</DIV></TD><TD class="A24720a55e181441d9c911551862c9ad1279c"><DIV class="A24720a55e181441d9c911551862c9ad1279">Suspension Remarks</DIV></TD><TD class="A24720a55e181441d9c911551862c9ad1283c"><DIV class="A24720a55e181441d9c911551862c9ad1283">Suspended On</DIV></TD><TD class="A24720a55e181441d9c911551862c9ad1287c"><DIV class="A24720a55e181441d9c911551862c9ad1287">Revoked On</DIV></TD><TD class="A24720a55e181441d9c911551862c9ad1291c"><DIV class="A24720a55e181441d9c911551862c9ad1291">Revoke Remarks</DIV></TD></TR></TABLE></TD></TR><TR><TD style="HEIGHT:2.10mm;WIDTH:0.00mm"></TD><TD COLSPAN="23"></TD></TR><TR VALIGN="top"><TD style="HEIGHT:5.95mm;WIDTH:0.00mm"></TD><TD></TD><TD COLSPAN="9"><TABLE CELLSPACING="0" CELLPADDING="0" LANG="en-US" style=""><TR><TD style="WIDTH:38.88mm;min-width: 38.88mm;HEIGHT:5.95mm;" class="A24720a55e181441d9c911551862c9ad170">Student Mentor Details</TD></TR></TABLE></TD><TD COLSPAN="13"></TD></TR><TR VALIGN="top"><TD style="HEIGHT:12.70mm;WIDTH:0.00mm"></TD><TD></TD><TD COLSPAN="23"><TABLE CELLSPACING="0" CELLPADDING="0" COLS="4" BORDER="0" style="border-collapse:collapse;" class="A24720a55e181441d9c911551862c9ad1380"><TR HEIGHT="0"><TD style="WIDTH:55.69mm;min-width: 55.69mm"></TD><TD style="WIDTH:18.74mm;min-width: 18.74mm"></TD><TD style="WIDTH:52.63mm;min-width: 52.63mm"></TD><TD style="WIDTH:59.84mm;min-width: 59.84mm"></TD></TR><TR VALIGN="top"><TD style="HEIGHT:6.35mm;" class="A24720a55e181441d9c911551862c9ad1344c"><DIV class="A24720a55e181441d9c911551862c9ad1344">Mentor Name</DIV></TD><TD class="A24720a55e181441d9c911551862c9ad1348c"><DIV class="A24720a55e181441d9c911551862c9ad1348">Mentor UID</DIV></TD><TD class="A24720a55e181441d9c911551862c9ad1352c"><DIV class="A24720a55e181441d9c911551862c9ad1352">Mentor Department</DIV></TD><TD class="A24720a55e181441d9c911551862c9ad1356c"><DIV class="A24720a55e181441d9c911551862c9ad1356">Mentor Designation</DIV></TD></TR><TR VALIGN="top"><TD style="HEIGHT:6.35mm;" class="A24720a55e181441d9c911551862c9ad1361cl"><DIV class="A24720a55e181441d9c911551862c9ad1361">NA</DIV></TD><TD class="A24720a55e181441d9c911551862c9ad1365cl"><DIV class="A24720a55e181441d9c911551862c9ad1365">NA</DIV></TD><TD class="A24720a55e181441d9c911551862c9ad1369cl"><DIV class="A24720a55e181441d9c911551862c9ad1369">NA</DIV></TD><TD class="A24720a55e181441d9c911551862c9ad1373cl"><DIV class="A24720a55e181441d9c911551862c9ad1373">NA</DIV></TD></TR></TABLE></TD><TD></TD></TR><TR><TD style="HEIGHT:5.71mm;WIDTH:0.00mm"></TD><TD COLSPAN="25"></TD></TR></TABLE></DIV></TD></TR><TR><TD class="A24720a55e181441d9c911551862c9ad19c"><DIV class="A24720a55e181441d9c911551862c9ad19">&nbsp;</DIV></TD></TR></TABLE></TD></TR></TABLE></DIV><span ID="P6ccaec1cd36e48de8929823f17e9d8b0_1_growRectangleIdsTag" ids="P6ccaec1cd36e48de8929823f17e9d8b0_1_12xB_gr,"></span>
+						</div>
+					</div><div id="ctl00_ContentPlaceHolder1_ReportViewer1_ctl09_NonReportContent">
+
+					</div>
+				</div>
+			</div></td>
+		</tr>
+	</table>
+</div></span></td>
+        </tr>
+    </table>
+
+                </div>
+            </div>
+            <footer id="footer">
+                <div class="footer-content">
+                    <p>
+                        Chandigarh University, Gharuan, Mohali (Punjab)<br>
+                        General Helpline No:+91-160-3051003, +91-160-3014444<br>
+                        Wifi Hostels Helpline No. 7347017909,<br>
+                        (Mr. Jaspreet Singh)
+                    </p>
+                    <a href="bugreport.aspx" id="a_bugreport" title="Report a bug">Report a Bug  <i class="fa fa-bug" aria-hidden="true"></i></a>
+                </div>
+            </footer>
+        </div>
+
+        
+
+        <div id="div_help_popup" class="modal fade" role="dialog" style="z-index: 99999; background: rgba(255, 255, 255, 0.9);">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" onclick="OpenNewPopUp('0','div_help_popup')">&times;</button>
+                        <h4 class="modal-title text-center">UIMS HELP</h4>
+                    </div>
+                    <div id="help_content" style="height: 450px; overflow-y: scroll;" class="modal-body">
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        
+
+        
+
+        
+
+        
+        <!-- Modal -->
+
+        
+
+        
+
+        
+
+
+        
+
+        
+
+        
+
+
+
+
+        
+
+        <div id="div_libpopup" class="modal fade" role="dialog" style="z-index: 999999; background: rgba(255, 255, 255, 0.9);">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" onclick="OpenNewPopUp('0','div_libpopup')">&times;</button>
+                        <h4 class="modal-title text-center">LIBRARY MESSAGES</h4>
+                    </div>
+                    <div class="modal-body">
+                        <ul id="tabs" class="nav nav-tabs">
+                            <li class="active"><a data-toggle="tab" href="#t1">Pending</a></li>
+                            <li><a data-toggle="tab" href="#t2">History</a></li>
+                        </ul>
+                        <div id="div_lib_content">
+                        </div>
+                        <!-- Bootstrap Accordion -->
+                        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true"></div>
+                        <!-- /Bootstrap Accordion -->
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        
+
+
+
+
+        
+
+        <div id="div_celebrations" class="sidenav" style="transition: all 0.5s ease 0s; width: 0px; z-index: 15;">
+            <div style="display: block; margin: auto; width: 100%;">
+
+                <div style="background: #fff;">
+                    <div class="div_celebrations_Popup">
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+
+
+
+        
+
+        <div id="divForcePopUp" class="modal fade" role="dialog" style="z-index: 99999; background: rgba(255, 255, 255, 0.9);">
+            <div class="modal-dialog" style="width: 98%;">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" onclick="OpenNewPopUp('0','divForcePopUp')">&times;</button>
+                        <h4 class="modal-title text-center">IMPORTANT INFORMATION</h4>
+                    </div>
+                    <div class="modal-body" id="divForcePopUp_content">
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        
+
+
+
+
+        
+        <div id="UpdateProgress1" style="display:none;">
+	
+                <div id="loader-wrapper">
+                    <div id="loader">
+                        <img src="assets/uploads/loader.gif">
+                        <p>Loading...</p>
+                    </div>
+                </div>
+            
+</div>
+        
+        
+
+
+        <script src="assets/js/bootstrap.min.js"></script>
+
+        <script type="text/javascript" src="assets/js/materialize.js"></script>
+        <script type="text/javascript" src="Scripts/UIMSHome4.0.js"></script>
+        <script type="text/javascript" src="n-js/jquery.scrollbar.js"></script>
+        <script type="text/javascript" src="Scripts/toastr8.min.js"></script>
+        <script type="text/javascript" src="Scripts/jquery-ui.js"></script>
+
+        
+        <!--Live Video Section -->
+         
+        <!-- End Live Video Section -->
+    
+
+<script type="text/javascript">
+//<![CDATA[
+Sys.Application.add_init(function() {
+    
+if (typeof Microsoft == 'undefined' ||
+    typeof Microsoft.Reporting == 'undefined' ||
+    typeof Microsoft.Reporting.WebFormsClient == 'undefined' ||
+    typeof Microsoft.Reporting.WebFormsClient.ReportViewer == 'undefined')
+    Sys.UI.DomElement.setVisible($get('ctl00_ContentPlaceHolder1_ReportViewer1_HttpHandlerMissingErrorMessage'), true);
+    $create(Microsoft.Reporting.WebFormsClient.ReportViewer, {"_internalViewerId":"ctl00_ContentPlaceHolder1_ReportViewer1_ctl03","id":"ctl00_ContentPlaceHolder1_ReportViewer1"}, null, null);
+});
+Sys.Application.add_init(function() {
+    $create(Microsoft.Reporting.WebFormsClient._InternalReportViewer, {"ActionParamId":"ctl00_ContentPlaceHolder1_ReportViewer1_ctl03_ctl01","ActionTypeId":"ctl00_ContentPlaceHolder1_ReportViewer1_ctl03_ctl00","BaseHeight":"600px","BaseWidth":"100%","BrowserModeId":"ctl00_ContentPlaceHolder1_ReportViewer1_ctl11","DirectionCacheId":"ctl00_ContentPlaceHolder1_ReportViewer1_ctl10","DocMapAreaId":"ctl00_ContentPlaceHolder1_ReportViewer1_ctl08","DocMapHeaderOverflowDivId":"ctl00_ContentPlaceHolder1_ReportViewer1_ctl08DocMapHeaderOverflowDiv","DocMapSplitterId":"ctl00_ContentPlaceHolder1_ReportViewer1_ctl07","ExportUrlBase":"/UIMS/Reserved.ReportViewerWebControl.axd?ReportSession=2pyge0452nonno554snllce5\u0026Culture=1033\u0026CultureOverrides=True\u0026UICulture=1033\u0026UICultureOverrides=True\u0026ReportStack=1\u0026ControlID=6ccaec1cd36e48de8929823f17e9d8b0\u0026OpType=Export\u0026FileName=rptStudentDetail\u0026ContentDisposition=OnlyHtmlInline\u0026Format=","FixedTableId":"ctl00_ContentPlaceHolder1_ReportViewer1_fixedTable","HasSizingRow":true,"PostBackToClientScript":function(){__doPostBack('ctl00$ContentPlaceHolder1$ReportViewer1$ctl03','');},"PrintInfo":{"CabUrl":"/UIMS/Reserved.ReportViewerWebControl.axd?ReportSession=2pyge0452nonno554snllce5\u0026Culture=1033\u0026CultureOverrides=True\u0026UICulture=1033\u0026UICultureOverrides=True\u0026ReportStack=1\u0026ControlID=6ccaec1cd36e48de8929823f17e9d8b0\u0026OpType=PrintCab\u0026Arch=X86#Version=2015,130,4001,00","CabClsid":"5554DCB0-700B-498D-9B58-4E40E5814405","MarginLeft":12.7,"MarginRight":6.35,"MarginTop":0,"MarginBottom":0,"PageHeight":279.4,"PageWidth":215.9,"Culture":1033,"UICulture":1033,"UseSingleRequest":false,"PrintRequestPath":"/UIMS/Reserved.ReportViewerWebControl.axd","PrintRequestQuery":"ReportSession=2pyge0452nonno554snllce5\u0026Culture=1033\u0026CultureOverrides=True\u0026UICulture=1033\u0026UICultureOverrides=True\u0026ReportStack=1\u0026ControlID=6ccaec1cd36e48de8929823f17e9d8b0\u0026OpType=PrintRequest","ReportDisplayName":"rptStudentDetail"},"PromptAreaRowId":"ParametersRowctl00_ContentPlaceHolder1_ReportViewer1","PromptSplitterId":"ctl00_ContentPlaceHolder1_ReportViewer1_ToggleParam","ReportAreaId":"ctl00_ContentPlaceHolder1_ReportViewer1_ctl09","ReportViewerId":"ctl00_ContentPlaceHolder1_ReportViewer1","UnableToLoadPrintMessage":"Unable to load client print control."}, null, null, $get("ctl00_ContentPlaceHolder1_ReportViewer1_ctl03"));
+    $create(Microsoft.Reporting.WebFormsClient._SessionKeepAlive, {"KeepAliveBody":null,"KeepAliveIntervalSeconds":418,"KeepAliveUrl":"/UIMS/Reserved.ReportViewerWebControl.axd?OpType=SessionKeepAlive\u0026ControlID=6ccaec1cd36e48de8929823f17e9d8b0","id":"ctl00_ContentPlaceHolder1_ReportViewer1_SessionKeepAlive"}, null, null);
+});
+Sys.Application.add_init(function() {
+    $create(Microsoft.Reporting.WebFormsClient._AsyncWaitControl, {"ClientCanceledId":"ctl00_ContentPlaceHolder1_ReportViewer1_AsyncWait_HiddenCancelField","DisplayDelay":1000,"FixedTableId":"ctl00_ContentPlaceHolder1_ReportViewer1_fixedTable","ReportViewerId":"ctl00_ContentPlaceHolder1_ReportViewer1","SkipTimer":false,"TriggerIds":["ctl00_ContentPlaceHolder1_ReportViewer1"],"WaitControlId":"ctl00_ContentPlaceHolder1_ReportViewer1_AsyncWait_Wait"}, null, null, $get("ctl00_ContentPlaceHolder1_ReportViewer1_AsyncWait"));
+});
+Sys.Application.add_init(function() {
+    $create(Microsoft.Reporting.WebFormsClient._Splitter, {"HoverColor":"#DDEEF7","ImageCollapse":"/UIMS/Reserved.ReportViewerWebControl.axd?OpType=Resource\u0026Version=11.0.2802.16\u0026Name=Microsoft.Reporting.WebForms.Icons.SplitterHorizCollapse.png","ImageCollapseHover":"/UIMS/Reserved.ReportViewerWebControl.axd?OpType=Resource\u0026Version=11.0.2802.16\u0026Name=Microsoft.Reporting.WebForms.Icons.SplitterHorizCollapseHover.png","ImageExpand":"/UIMS/Reserved.ReportViewerWebControl.axd?OpType=Resource\u0026Version=11.0.2802.16\u0026Name=Microsoft.Reporting.WebForms.Icons.SplitterHorizExpand.png","ImageExpandHover":"/UIMS/Reserved.ReportViewerWebControl.axd?OpType=Resource\u0026Version=11.0.2802.16\u0026Name=Microsoft.Reporting.WebForms.Icons.SplitterHorizExpandHover.png","ImageId":"ctl00_ContentPlaceHolder1_ReportViewer1_ToggleParam_img","IsCollapsable":true,"NormalColor":"#ECE9D8","Resizable":false,"StoreCollapseField":"ctl00_ContentPlaceHolder1_ReportViewer1_ToggleParam_collapse","StorePositionField":"ctl00_ContentPlaceHolder1_ReportViewer1_ToggleParam_store","Vertical":false}, null, null, $get("ctl00_ContentPlaceHolder1_ReportViewer1_ToggleParam"));
+});
+Sys.Application.add_init(function() {
+    $create(Microsoft.Reporting.WebFormsClient._Toolbar, {"AtomDataFeedButton":$get("ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl07_ctl00"),"CanFindNext":false,"CurrentPage":1,"CurrentPageTextBox":$get("ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl00_CurrentPage"),"DrillBackButton":$get("ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl01_ctl00"),"ExportButton":$get("ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl04_ctl00"),"FindButton":$get("ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl03_ctl01"),"FindNextButton":$get("ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl03_ctl03"),"FindTextBox":$get("ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl03_ctl00"),"FirstPageNavButton":$get("ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl00_First"),"InvalidPageNumberMessage":"Enter a valid page number","IsDrillthroughReport":false,"IsEstimatePageCount":false,"LastPageNavButton":$get("ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl00_Last"),"NextPageNavButton":$get("ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl00_Next"),"OnCurrentPageClick":function(){__doPostBack('ctl00$ContentPlaceHolder1$ReportViewer1$ctl05$ctl00$CurrentPage','');},"PrevPageNavButton":$get("ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl00_Previous"),"PrintButton":$get("ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl06_ctl00"),"RefreshButton":$get("ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl05_ctl00"),"TotalPages":1,"TotalPagesLabel":$get("ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl00_TotalPages"),"ZoomDropDown":$get("ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl02_ctl00")}, null, {"ReportViewer":"ctl00_ContentPlaceHolder1_ReportViewer1"}, $get("ctl00_ContentPlaceHolder1_ReportViewer1_ctl05"));
+});
+Sys.Application.add_init(function() {
+    $create(Microsoft.Reporting.WebFormsClient._ScriptSwitchImage, {"Image1":$get("ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl00_First_ctl00"),"Image2":$get("ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl00_First_ctl01")}, null, null, $get("ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl00_First"));
+});
+Sys.Application.add_init(function() {
+    $create(Microsoft.Reporting.WebFormsClient._HoverImage, {"HoverStyles":{"CssClass":null,"Color":"#DDEEF7","Border":"1px #336699 Solid"},"IsRtlVisible":false,"LTRImageID":"ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl00_First_ctl00_ctl00","NormalStyles":{"CssClass":null,"Color":"transparent","Border":"1px transparent Solid"},"OnClickScript":function(){__doPostBack('ctl00$ContentPlaceHolder1$ReportViewer1$ctl05$ctl00$First$ctl00','');},"RTLImageID":"ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl00_First_ctl00_ctl01"}, null, {"ReportViewer":"ctl00_ContentPlaceHolder1_ReportViewer1"}, $get("ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl00_First_ctl00"));
+});
+Sys.Application.add_init(function() {
+    $create(Microsoft.Reporting.WebFormsClient._HoverImage, {"HoverStyles":{"CssClass":null,"Color":"#DDEEF7","Border":"1px #336699 Solid"},"IsRtlVisible":false,"LTRImageID":"ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl00_First_ctl01_ctl00","NormalStyles":{"CssClass":null,"Color":"transparent","Border":"1px transparent Solid"},"OnClickScript":function(){__doPostBack('ctl00$ContentPlaceHolder1$ReportViewer1$ctl05$ctl00$First$ctl01','');},"RTLImageID":"ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl00_First_ctl01_ctl01"}, null, {"ReportViewer":"ctl00_ContentPlaceHolder1_ReportViewer1"}, $get("ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl00_First_ctl01"));
+});
+Sys.Application.add_init(function() {
+    $create(Microsoft.Reporting.WebFormsClient._ScriptSwitchImage, {"Image1":$get("ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl00_Previous_ctl00"),"Image2":$get("ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl00_Previous_ctl01")}, null, null, $get("ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl00_Previous"));
+});
+Sys.Application.add_init(function() {
+    $create(Microsoft.Reporting.WebFormsClient._HoverImage, {"HoverStyles":{"CssClass":null,"Color":"#DDEEF7","Border":"1px #336699 Solid"},"IsRtlVisible":false,"LTRImageID":"ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl00_Previous_ctl00_ctl00","NormalStyles":{"CssClass":null,"Color":"transparent","Border":"1px transparent Solid"},"OnClickScript":function(){__doPostBack('ctl00$ContentPlaceHolder1$ReportViewer1$ctl05$ctl00$Previous$ctl00','');},"RTLImageID":"ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl00_Previous_ctl00_ctl01"}, null, {"ReportViewer":"ctl00_ContentPlaceHolder1_ReportViewer1"}, $get("ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl00_Previous_ctl00"));
+});
+Sys.Application.add_init(function() {
+    $create(Microsoft.Reporting.WebFormsClient._HoverImage, {"HoverStyles":{"CssClass":null,"Color":"#DDEEF7","Border":"1px #336699 Solid"},"IsRtlVisible":false,"LTRImageID":"ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl00_Previous_ctl01_ctl00","NormalStyles":{"CssClass":null,"Color":"transparent","Border":"1px transparent Solid"},"OnClickScript":function(){__doPostBack('ctl00$ContentPlaceHolder1$ReportViewer1$ctl05$ctl00$Previous$ctl01','');},"RTLImageID":"ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl00_Previous_ctl01_ctl01"}, null, {"ReportViewer":"ctl00_ContentPlaceHolder1_ReportViewer1"}, $get("ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl00_Previous_ctl01"));
+});
+Sys.Application.add_init(function() {
+    $create(Microsoft.Reporting.WebFormsClient._ScriptSwitchImage, {"Image1":$get("ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl00_Next_ctl00"),"Image2":$get("ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl00_Next_ctl01")}, null, null, $get("ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl00_Next"));
+});
+Sys.Application.add_init(function() {
+    $create(Microsoft.Reporting.WebFormsClient._HoverImage, {"HoverStyles":{"CssClass":null,"Color":"#DDEEF7","Border":"1px #336699 Solid"},"IsRtlVisible":false,"LTRImageID":"ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl00_Next_ctl00_ctl00","NormalStyles":{"CssClass":null,"Color":"transparent","Border":"1px transparent Solid"},"OnClickScript":function(){__doPostBack('ctl00$ContentPlaceHolder1$ReportViewer1$ctl05$ctl00$Next$ctl00','');},"RTLImageID":"ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl00_Next_ctl00_ctl01"}, null, {"ReportViewer":"ctl00_ContentPlaceHolder1_ReportViewer1"}, $get("ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl00_Next_ctl00"));
+});
+Sys.Application.add_init(function() {
+    $create(Microsoft.Reporting.WebFormsClient._HoverImage, {"HoverStyles":{"CssClass":null,"Color":"#DDEEF7","Border":"1px #336699 Solid"},"IsRtlVisible":false,"LTRImageID":"ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl00_Next_ctl01_ctl00","NormalStyles":{"CssClass":null,"Color":"transparent","Border":"1px transparent Solid"},"OnClickScript":function(){__doPostBack('ctl00$ContentPlaceHolder1$ReportViewer1$ctl05$ctl00$Next$ctl01','');},"RTLImageID":"ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl00_Next_ctl01_ctl01"}, null, {"ReportViewer":"ctl00_ContentPlaceHolder1_ReportViewer1"}, $get("ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl00_Next_ctl01"));
+});
+Sys.Application.add_init(function() {
+    $create(Microsoft.Reporting.WebFormsClient._ScriptSwitchImage, {"Image1":$get("ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl00_Last_ctl00"),"Image2":$get("ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl00_Last_ctl01")}, null, null, $get("ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl00_Last"));
+});
+Sys.Application.add_init(function() {
+    $create(Microsoft.Reporting.WebFormsClient._HoverImage, {"HoverStyles":{"CssClass":null,"Color":"#DDEEF7","Border":"1px #336699 Solid"},"IsRtlVisible":false,"LTRImageID":"ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl00_Last_ctl00_ctl00","NormalStyles":{"CssClass":null,"Color":"transparent","Border":"1px transparent Solid"},"OnClickScript":function(){__doPostBack('ctl00$ContentPlaceHolder1$ReportViewer1$ctl05$ctl00$Last$ctl00','');},"RTLImageID":"ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl00_Last_ctl00_ctl01"}, null, {"ReportViewer":"ctl00_ContentPlaceHolder1_ReportViewer1"}, $get("ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl00_Last_ctl00"));
+});
+Sys.Application.add_init(function() {
+    $create(Microsoft.Reporting.WebFormsClient._HoverImage, {"HoverStyles":{"CssClass":null,"Color":"#DDEEF7","Border":"1px #336699 Solid"},"IsRtlVisible":false,"LTRImageID":"ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl00_Last_ctl01_ctl00","NormalStyles":{"CssClass":null,"Color":"transparent","Border":"1px transparent Solid"},"OnClickScript":function(){__doPostBack('ctl00$ContentPlaceHolder1$ReportViewer1$ctl05$ctl00$Last$ctl01','');},"RTLImageID":"ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl00_Last_ctl01_ctl01"}, null, {"ReportViewer":"ctl00_ContentPlaceHolder1_ReportViewer1"}, $get("ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl00_Last_ctl01"));
+});
+Sys.Application.add_init(function() {
+    $create(Microsoft.Reporting.WebFormsClient._ScriptSwitchImage, {"Image1":$get("ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl01_ctl00_ctl00"),"Image2":$get("ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl01_ctl00_ctl01")}, null, null, $get("ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl01_ctl00"));
+});
+Sys.Application.add_init(function() {
+    $create(Microsoft.Reporting.WebFormsClient._HoverImage, {"HoverStyles":{"CssClass":null,"Color":"#DDEEF7","Border":"1px #336699 Solid"},"IsRtlVisible":false,"LTRImageID":"ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl01_ctl00_ctl00_ctl00","NormalStyles":{"CssClass":null,"Color":"transparent","Border":"1px transparent Solid"},"OnClickScript":function(){__doPostBack('ctl00$ContentPlaceHolder1$ReportViewer1$ctl05$ctl01$ctl00$ctl00','');},"RTLImageID":"ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl01_ctl00_ctl00_ctl01"}, null, {"ReportViewer":"ctl00_ContentPlaceHolder1_ReportViewer1"}, $get("ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl01_ctl00_ctl00"));
+});
+Sys.Application.add_init(function() {
+    $create(Microsoft.Reporting.WebFormsClient._HoverImage, {"HoverStyles":{"CssClass":null,"Color":"#DDEEF7","Border":"1px #336699 Solid"},"IsRtlVisible":false,"LTRImageID":"ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl01_ctl00_ctl01_ctl00","NormalStyles":{"CssClass":null,"Color":"transparent","Border":"1px transparent Solid"},"OnClickScript":function(){__doPostBack('ctl00$ContentPlaceHolder1$ReportViewer1$ctl05$ctl01$ctl00$ctl01','');},"RTLImageID":"ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl01_ctl00_ctl01_ctl01"}, null, {"ReportViewer":"ctl00_ContentPlaceHolder1_ReportViewer1"}, $get("ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl01_ctl00_ctl01"));
+});
+Sys.Application.add_init(function() {
+    $create(Microsoft.Reporting.WebFormsClient._TextButton, {"ActiveHoverLinkColor":"#FF3300","ActiveLinkColor":"#3366CC","DisabledLinkColor":"Gray","IsActive":false,"OnClickScript":function(){__doPostBack('ctl00$ContentPlaceHolder1$ReportViewer1$ctl05$ctl03$ctl01','');}}, null, null, $get("ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl03_ctl01"));
+});
+Sys.Application.add_init(function() {
+    $create(Microsoft.Reporting.WebFormsClient._TextButton, {"ActiveHoverLinkColor":"#FF3300","ActiveLinkColor":"#3366CC","DisabledLinkColor":"Gray","IsActive":false,"OnClickScript":function(){__doPostBack('ctl00$ContentPlaceHolder1$ReportViewer1$ctl05$ctl03$ctl03','');}}, null, null, $get("ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl03_ctl03"));
+});
+Sys.Application.add_init(function() {
+    $create(Microsoft.Reporting.WebFormsClient._DropDownMenu, {"ArrowImages":"{\"DisabledUrl\":\"/UIMS/Reserved.ReportViewerWebControl.axd?OpType=Resource\\u0026Version=11.0.2802.16\\u0026Name=Microsoft.Reporting.WebForms.Icons.ArrowDownDisabled.gif\",\"EnabledUrl\":\"/UIMS/Reserved.ReportViewerWebControl.axd?OpType=Resource\\u0026Version=11.0.2802.16\\u0026Name=Microsoft.Reporting.WebForms.Icons.ArrowDown.gif\"}","ButtonId":"ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl04_ctl00_Button","ButtonImages":"{\"DisabledUrl\":\"/UIMS/Reserved.ReportViewerWebControl.axd?OpType=Resource\\u0026Version=11.0.2802.16\\u0026Name=Microsoft.Reporting.WebForms.Icons.ExportDisabled.gif\",\"EnabledUrl\":\"/UIMS/Reserved.ReportViewerWebControl.axd?OpType=Resource\\u0026Version=11.0.2802.16\\u0026Name=Microsoft.Reporting.WebForms.Icons.Export.gif\"}","Enabled":false,"HoverStyles":{"CssClass":null,"Color":"#DDEEF7","Border":"1px #336699 Solid"},"MenuId":"ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl04_ctl00_Menu","NormalStyles":{"CssClass":null,"Color":"transparent","Border":"1px transparent Solid"}}, null, null, $get("ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl04_ctl00"));
+});
+Sys.Application.add_init(function() {
+    $create(Microsoft.Reporting.WebFormsClient._ScriptSwitchImage, {"Image1":$get("ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl05_ctl00_ctl00"),"Image2":$get("ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl05_ctl00_ctl01")}, null, null, $get("ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl05_ctl00"));
+});
+Sys.Application.add_init(function() {
+    $create(Microsoft.Reporting.WebFormsClient._HoverImage, {"HoverStyles":{"CssClass":null,"Color":"#DDEEF7","Border":"1px #336699 Solid"},"NormalStyles":{"CssClass":null,"Color":"transparent","Border":"1px transparent Solid"},"OnClickScript":function(){__doPostBack('ctl00$ContentPlaceHolder1$ReportViewer1$ctl05$ctl05$ctl00$ctl00','');}}, null, null, $get("ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl05_ctl00_ctl00"));
+});
+Sys.Application.add_init(function() {
+    $create(Microsoft.Reporting.WebFormsClient._HoverImage, {"HoverStyles":{"CssClass":null,"Color":"#DDEEF7","Border":"1px #336699 Solid"},"NormalStyles":{"CssClass":null,"Color":"transparent","Border":"1px transparent Solid"},"OnClickScript":function(){__doPostBack('ctl00$ContentPlaceHolder1$ReportViewer1$ctl05$ctl05$ctl00$ctl01','');}}, null, null, $get("ctl00_ContentPlaceHolder1_ReportViewer1_ctl05_ctl05_ctl00_ctl01"));
+});
+Sys.Application.add_init(function() {
+    $create(Microsoft.Reporting.WebFormsClient._Splitter, {"HoverColor":"#DDEEF7","ImageCollapse":"/UIMS/Reserved.ReportViewerWebControl.axd?OpType=Resource\u0026Version=11.0.2802.16\u0026Name=Microsoft.Reporting.WebForms.Icons.SplitterVertCollapse.png","ImageCollapseHover":"/UIMS/Reserved.ReportViewerWebControl.axd?OpType=Resource\u0026Version=11.0.2802.16\u0026Name=Microsoft.Reporting.WebForms.Icons.SplitterVertCollapseHover.png","ImageExpand":"/UIMS/Reserved.ReportViewerWebControl.axd?OpType=Resource\u0026Version=11.0.2802.16\u0026Name=Microsoft.Reporting.WebForms.Icons.SplitterVertExpand.png","ImageExpandHover":"/UIMS/Reserved.ReportViewerWebControl.axd?OpType=Resource\u0026Version=11.0.2802.16\u0026Name=Microsoft.Reporting.WebForms.Icons.SplitterVertExpandHover.png","ImageId":"ctl00_ContentPlaceHolder1_ReportViewer1_ctl07_img","IsCollapsable":true,"NormalColor":"#ECE9D8","Resizable":true,"StoreCollapseField":"ctl00_ContentPlaceHolder1_ReportViewer1_ctl07_collapse","StorePositionField":"ctl00_ContentPlaceHolder1_ReportViewer1_ctl07_store","Vertical":true}, null, null, $get("ctl00_ContentPlaceHolder1_ReportViewer1_ctl07"));
+});
+Sys.Application.add_init(function() {
+    $create(Microsoft.Reporting.WebFormsClient._ReportArea, {"NonReportContentId":"ctl00_ContentPlaceHolder1_ReportViewer1_ctl09_NonReportContent","ReportAreaVisibilityStateId":"ctl00_ContentPlaceHolder1_ReportViewer1_ctl09_VisibilityState","ReportControlId":"ctl00_ContentPlaceHolder1_ReportViewer1_ctl09_ReportControl","ScrollPositionId":"ctl00_ContentPlaceHolder1_ReportViewer1_ctl09_ScrollPosition","VisibleReportContentContainerId":"VisibleReportContentctl00_ContentPlaceHolder1_ReportViewer1_ctl09"}, null, null, $get("ctl00_ContentPlaceHolder1_ReportViewer1_ctl09"));
+});
+Sys.Application.add_init(function() {
+    $create(Microsoft.Reporting.WebFormsClient._ReportPage, {"ActionParamId":"ctl00_ContentPlaceHolder1_ReportViewer1_ctl09_ReportControl_ctl03","ActionTypeId":"ctl00_ContentPlaceHolder1_ReportViewer1_ctl09_ReportControl_ctl02","HiddenZoomLevelId":"ctl00_ContentPlaceHolder1_ReportViewer1_ctl09_ReportControl_ctl04","InteractivityMode":"AlwaysAsynchronous","PrefixId":"P6ccaec1cd36e48de8929823f17e9d8b0_1_","ReportCellId":"P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportCell","ReportDivId":"P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv","ReportPageStyles":"background-color:Transparent;border:1pt none Black;","ReportStyles":"#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad1382xBc{border:1pt none Black;background-color:Transparent;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad1382xB{border:1pt none Black;background-color:Transparent;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad111{min-width: 37.43mm;HEIGHT:14.64mm;WIDTH:37.43mm;overflow:hidden;padding-left:0pt;padding-top:0pt;padding-right:0pt;padding-bottom:0pt;border:1pt none Black;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad114{word-wrap:break-word;white-space:pre-wrap;padding-left:2pt;padding-top:2pt;padding-right:2pt;padding-bottom:2pt;border:1pt none Black;background-color:Transparent;font-style:normal;font-family:Arial;font-size:14pt;font-weight:400;text-decoration:none;unicode-bidi:normal;color:Black;direction:ltr;layout-flow:horizontal;writing-mode:lr-tb;vertical-align:top;text-align:center;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad171{min-width: 25.32mm;HEIGHT:28.23mm;WIDTH:25.32mm;overflow:hidden;padding-left:0pt;padding-top:0pt;padding-right:0pt;padding-bottom:0pt;border-bottom:0.3pt solid Black;border-left:0.3pt solid Black;border-right:0.3pt solid Black;border-top:0.3pt solid Black;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad175{word-wrap:break-word;white-space:pre-wrap;padding-left:2pt;padding-top:2pt;padding-right:2pt;padding-bottom:2pt;border:1pt none Black;background-color:Transparent;font-size:0pt;unicode-bidi:normal;direction:ltr;layout-flow:horizontal;writing-mode:lr-tb;vertical-align:top;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad174{text-align:center;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad172{font-family:Arial;font-size:11pt;font-weight:700;font-style:normal;text-decoration:none;color:Black;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad173{font-family:Arial;font-size:11pt;font-weight:700;font-style:normal;text-decoration:none;color:Black;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad179{word-wrap:break-word;white-space:pre-wrap;padding-left:2pt;padding-top:2pt;padding-right:2pt;padding-bottom:2pt;border:1pt none Black;background-color:Transparent;font-size:0pt;unicode-bidi:normal;direction:ltr;layout-flow:horizontal;writing-mode:lr-tb;vertical-align:top;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad178{text-align:center;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad176{font-family:Arial;font-size:9pt;font-weight:700;font-style:normal;text-decoration:none;color:Black;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad177{font-family:Arial;font-size:9pt;font-weight:700;font-style:normal;text-decoration:none;color:Black;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad117{word-wrap:break-word;white-space:pre-wrap;padding-left:2pt;padding-top:2pt;padding-right:2pt;padding-bottom:2pt;border:1pt none Black;background-color:Transparent;font-style:normal;font-family:Arial;font-size:8pt;font-weight:700;text-decoration:underline;unicode-bidi:normal;color:Black;direction:ltr;layout-flow:horizontal;writing-mode:lr-tb;vertical-align:top;text-align:left;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad121{word-wrap:break-word;white-space:pre-wrap;padding-left:2pt;padding-top:2pt;padding-right:2pt;padding-bottom:2pt;border:1pt none Black;background-color:Transparent;font-style:normal;font-family:Arial;font-size:8pt;font-weight:700;text-decoration:none;unicode-bidi:normal;color:Black;direction:ltr;layout-flow:horizontal;writing-mode:lr-tb;vertical-align:top;text-align:left;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad182{word-wrap:break-word;white-space:pre-wrap;padding-left:2pt;padding-top:2pt;padding-right:2pt;padding-bottom:2pt;border:1pt none Black;background-color:Transparent;font-style:normal;font-family:Arial;font-size:8pt;font-weight:400;text-decoration:none;unicode-bidi:normal;color:Black;direction:ltr;layout-flow:horizontal;writing-mode:lr-tb;vertical-align:top;text-align:left;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad124{word-wrap:break-word;white-space:pre-wrap;padding-left:2pt;padding-top:2pt;padding-right:2pt;padding-bottom:2pt;border:1pt none Black;background-color:Transparent;font-style:normal;font-family:Arial;font-size:8pt;font-weight:700;text-decoration:none;unicode-bidi:normal;color:Black;direction:ltr;layout-flow:horizontal;writing-mode:lr-tb;vertical-align:top;text-align:left;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad185l{word-wrap:break-word;white-space:pre-wrap;padding-left:2pt;padding-top:2pt;padding-right:2pt;padding-bottom:2pt;border:1pt none Black;background-color:Transparent;font-style:normal;font-family:Arial;font-size:8pt;font-weight:400;text-decoration:none;unicode-bidi:normal;color:Black;direction:ltr;layout-flow:horizontal;writing-mode:lr-tb;vertical-align:top;text-align:left;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad127{word-wrap:break-word;white-space:pre-wrap;padding-left:2pt;padding-top:2pt;padding-right:2pt;padding-bottom:2pt;border:1pt none Black;background-color:Transparent;font-style:normal;font-family:Arial;font-size:8pt;font-weight:700;text-decoration:none;unicode-bidi:normal;color:Black;direction:ltr;layout-flow:horizontal;writing-mode:lr-tb;vertical-align:top;text-align:left;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad188l{word-wrap:break-word;white-space:pre-wrap;padding-left:2pt;padding-top:2pt;padding-right:2pt;padding-bottom:2pt;border:1pt none Black;background-color:Transparent;font-style:normal;font-family:Arial;font-size:8pt;font-weight:400;text-decoration:none;unicode-bidi:normal;color:Black;direction:ltr;layout-flow:horizontal;writing-mode:lr-tb;vertical-align:top;text-align:left;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad130{word-wrap:break-word;white-space:pre-wrap;padding-left:2pt;padding-top:2pt;padding-right:2pt;padding-bottom:2pt;border:1pt none Black;background-color:Transparent;font-style:normal;font-family:Arial;font-size:8pt;font-weight:700;text-decoration:none;unicode-bidi:normal;color:Black;direction:ltr;layout-flow:horizontal;writing-mode:lr-tb;vertical-align:top;text-align:left;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad191{word-wrap:break-word;white-space:pre-wrap;padding-left:2pt;padding-top:2pt;padding-right:2pt;padding-bottom:2pt;border:1pt none Black;background-color:Transparent;font-style:normal;font-family:Arial;font-size:8pt;font-weight:400;text-decoration:none;unicode-bidi:normal;color:Black;direction:ltr;layout-flow:horizontal;writing-mode:lr-tb;vertical-align:top;text-align:left;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad133{word-wrap:break-word;white-space:pre-wrap;padding-left:2pt;padding-top:2pt;padding-right:2pt;padding-bottom:2pt;border:1pt none Black;background-color:Transparent;font-style:normal;font-family:Arial;font-size:8pt;font-weight:700;text-decoration:none;unicode-bidi:normal;color:Black;direction:ltr;layout-flow:horizontal;writing-mode:lr-tb;vertical-align:top;text-align:left;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad194l{word-wrap:break-word;white-space:pre-wrap;padding-left:2pt;padding-top:2pt;padding-right:2pt;padding-bottom:2pt;border:1pt none Black;background-color:Transparent;font-style:normal;font-family:Arial;font-size:8pt;font-weight:400;text-decoration:none;unicode-bidi:normal;color:Black;direction:ltr;layout-flow:horizontal;writing-mode:lr-tb;vertical-align:top;text-align:left;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad136{word-wrap:break-word;white-space:pre-wrap;padding-left:2pt;padding-top:2pt;padding-right:2pt;padding-bottom:2pt;border:1pt none Black;background-color:Transparent;font-style:normal;font-family:Arial;font-size:8pt;font-weight:700;text-decoration:none;unicode-bidi:normal;color:Black;direction:ltr;layout-flow:horizontal;writing-mode:lr-tb;vertical-align:top;text-align:left;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad197{word-wrap:break-word;white-space:pre-wrap;padding-left:2pt;padding-top:2pt;padding-right:2pt;padding-bottom:2pt;border:1pt none Black;background-color:Transparent;font-style:normal;font-family:Arial;font-size:8pt;font-weight:400;text-decoration:none;unicode-bidi:normal;color:Black;direction:ltr;layout-flow:horizontal;writing-mode:lr-tb;vertical-align:top;text-align:left;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad139{word-wrap:break-word;white-space:pre-wrap;padding-left:2pt;padding-top:2pt;padding-right:2pt;padding-bottom:2pt;border:1pt none Black;background-color:Transparent;font-style:normal;font-family:Arial;font-size:8pt;font-weight:700;text-decoration:none;unicode-bidi:normal;color:Black;direction:ltr;layout-flow:horizontal;writing-mode:lr-tb;vertical-align:top;text-align:left;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad1100l{word-wrap:break-word;white-space:pre-wrap;padding-left:2pt;padding-top:2pt;padding-right:2pt;padding-bottom:2pt;border:1pt none Black;background-color:Transparent;font-style:normal;font-family:Arial;font-size:8pt;font-weight:400;text-decoration:none;unicode-bidi:normal;color:Black;direction:ltr;layout-flow:horizontal;writing-mode:lr-tb;vertical-align:top;text-align:left;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad142{word-wrap:break-word;white-space:pre-wrap;padding-left:2pt;padding-top:2pt;padding-right:2pt;padding-bottom:2pt;border:1pt none Black;background-color:Transparent;font-style:normal;font-family:Arial;font-size:8pt;font-weight:700;text-decoration:none;unicode-bidi:normal;color:Black;direction:ltr;layout-flow:horizontal;writing-mode:lr-tb;vertical-align:top;text-align:left;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad1103{word-wrap:break-word;white-space:pre-wrap;padding-left:2pt;padding-top:2pt;padding-right:2pt;padding-bottom:2pt;border:1pt none Black;background-color:Transparent;font-style:normal;font-family:Arial;font-size:8pt;font-weight:400;text-decoration:none;unicode-bidi:normal;color:Black;direction:ltr;layout-flow:horizontal;writing-mode:lr-tb;vertical-align:top;text-align:left;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad145{word-wrap:break-word;white-space:pre-wrap;padding-left:2pt;padding-top:2pt;padding-right:2pt;padding-bottom:2pt;border:1pt none Black;background-color:Transparent;font-style:normal;font-family:Arial;font-size:8pt;font-weight:700;text-decoration:none;unicode-bidi:normal;color:Black;direction:ltr;layout-flow:horizontal;writing-mode:lr-tb;vertical-align:top;text-align:left;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad1106l{word-wrap:break-word;white-space:pre-wrap;padding-left:2pt;padding-top:2pt;padding-right:2pt;padding-bottom:2pt;border:1pt none Black;background-color:Transparent;font-style:normal;font-family:Arial;font-size:8pt;font-weight:400;text-decoration:none;unicode-bidi:normal;color:Black;direction:ltr;layout-flow:horizontal;writing-mode:lr-tb;vertical-align:top;text-align:left;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad148{word-wrap:break-word;white-space:pre-wrap;padding-left:2pt;padding-top:2pt;padding-right:2pt;padding-bottom:2pt;border:1pt none Black;background-color:Transparent;font-style:normal;font-family:Arial;font-size:8pt;font-weight:700;text-decoration:none;unicode-bidi:normal;color:Black;direction:ltr;layout-flow:horizontal;writing-mode:lr-tb;vertical-align:top;text-align:left;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad1109l{word-wrap:break-word;white-space:pre-wrap;padding-left:2pt;padding-top:2pt;padding-right:2pt;padding-bottom:2pt;border:1pt none Black;background-color:Transparent;font-style:normal;font-family:Arial;font-size:8pt;font-weight:400;text-decoration:none;unicode-bidi:normal;color:Black;direction:ltr;layout-flow:horizontal;writing-mode:lr-tb;vertical-align:top;text-align:left;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad151{word-wrap:break-word;white-space:pre-wrap;padding-left:2pt;padding-top:2pt;padding-right:2pt;padding-bottom:2pt;border:1pt none Black;background-color:Transparent;font-style:normal;font-family:Arial;font-size:8pt;font-weight:700;text-decoration:none;unicode-bidi:normal;color:Black;direction:ltr;layout-flow:horizontal;writing-mode:lr-tb;vertical-align:top;text-align:left;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad1112l{word-wrap:break-word;white-space:pre-wrap;padding-left:2pt;padding-top:2pt;padding-right:2pt;padding-bottom:2pt;border:1pt none Black;background-color:Transparent;font-style:normal;font-family:Arial;font-size:8pt;font-weight:400;text-decoration:none;unicode-bidi:normal;color:Black;direction:ltr;layout-flow:horizontal;writing-mode:lr-tb;vertical-align:top;text-align:left;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad154{word-wrap:break-word;white-space:pre-wrap;padding-left:2pt;padding-top:2pt;padding-right:2pt;padding-bottom:2pt;border:1pt none Black;background-color:Transparent;font-style:normal;font-family:Arial;font-size:8pt;font-weight:700;text-decoration:none;unicode-bidi:normal;color:Black;direction:ltr;layout-flow:horizontal;writing-mode:lr-tb;vertical-align:top;text-align:left;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad1115{word-wrap:break-word;white-space:pre-wrap;padding-left:2pt;padding-top:2pt;padding-right:2pt;padding-bottom:2pt;border:1pt none Black;background-color:Transparent;font-style:normal;font-family:Arial;font-size:8pt;font-weight:400;text-decoration:none;unicode-bidi:normal;color:Black;direction:ltr;layout-flow:horizontal;writing-mode:lr-tb;vertical-align:top;text-align:left;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad157{word-wrap:break-word;white-space:pre-wrap;padding-left:2pt;padding-top:2pt;padding-right:2pt;padding-bottom:2pt;border:1pt none Black;background-color:Transparent;font-style:normal;font-family:Arial;font-size:8pt;font-weight:700;text-decoration:none;unicode-bidi:normal;color:Black;direction:ltr;layout-flow:horizontal;writing-mode:lr-tb;vertical-align:top;text-align:left;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad1118l{word-wrap:break-word;white-space:pre-wrap;padding-left:2pt;padding-top:2pt;padding-right:2pt;padding-bottom:2pt;border:1pt none Black;background-color:Transparent;font-style:normal;font-family:Arial;font-size:8pt;font-weight:400;text-decoration:none;unicode-bidi:normal;color:Black;direction:ltr;layout-flow:horizontal;writing-mode:lr-tb;vertical-align:top;text-align:left;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad161{word-wrap:break-word;white-space:pre-wrap;padding-left:2pt;padding-top:2pt;padding-right:2pt;padding-bottom:2pt;border:1pt none Black;background-color:Transparent;font-style:normal;font-family:Arial;font-size:8pt;font-weight:700;text-decoration:underline;unicode-bidi:normal;color:Black;direction:ltr;layout-flow:horizontal;writing-mode:lr-tb;vertical-align:top;text-align:left;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad1193{border:1pt none Black;background-color:Transparent;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad1130c{padding-left:2pt;padding-top:2pt;padding-right:2pt;padding-bottom:2pt;border:0.3pt solid Black;background-color:Silver;vertical-align:top;text-align:left;direction:ltr;layout-flow:horizontal;writing-mode:lr-tb;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad1130{word-wrap:break-word;white-space:pre-wrap;font-style:normal;font-family:Arial;font-size:8pt;font-weight:700;text-decoration:none;unicode-bidi:normal;color:Black;direction:ltr;layout-flow:horizontal;writing-mode:lr-tb;vertical-align:top;text-align:left;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad1134c{padding-left:2pt;padding-top:2pt;padding-right:2pt;padding-bottom:2pt;border:0.3pt solid Black;background-color:Silver;vertical-align:top;text-align:left;direction:ltr;layout-flow:horizontal;writing-mode:lr-tb;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad1134{word-wrap:break-word;white-space:pre-wrap;font-style:normal;font-family:Arial;font-size:8pt;font-weight:700;text-decoration:none;unicode-bidi:normal;color:Black;direction:ltr;layout-flow:horizontal;writing-mode:lr-tb;vertical-align:top;text-align:left;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad1138c{padding-left:2pt;padding-top:2pt;padding-right:2pt;padding-bottom:2pt;border:0.3pt solid Black;background-color:Silver;vertical-align:top;text-align:left;direction:ltr;layout-flow:horizontal;writing-mode:lr-tb;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad1138{word-wrap:break-word;white-space:pre-wrap;font-style:normal;font-family:Arial;font-size:8pt;font-weight:700;text-decoration:none;unicode-bidi:normal;color:Black;direction:ltr;layout-flow:horizontal;writing-mode:lr-tb;vertical-align:top;text-align:left;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad1142c{padding-left:2pt;padding-top:2pt;padding-right:2pt;padding-bottom:2pt;border:0.3pt solid Black;background-color:Silver;vertical-align:top;text-align:left;direction:ltr;layout-flow:horizontal;writing-mode:lr-tb;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad1142{word-wrap:break-word;white-space:pre-wrap;font-style:normal;font-family:Arial;font-size:8pt;font-weight:700;text-decoration:none;unicode-bidi:normal;color:Black;direction:ltr;layout-flow:horizontal;writing-mode:lr-tb;vertical-align:top;text-align:left;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad1146c{padding-left:2pt;padding-top:2pt;padding-right:2pt;padding-bottom:2pt;border:0.3pt solid Black;background-color:Silver;vertical-align:top;text-align:left;direction:ltr;layout-flow:horizontal;writing-mode:lr-tb;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad1146{word-wrap:break-word;white-space:pre-wrap;font-style:normal;font-family:Arial;font-size:8pt;font-weight:700;text-decoration:none;unicode-bidi:normal;color:Black;direction:ltr;layout-flow:horizontal;writing-mode:lr-tb;vertical-align:top;text-align:left;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad1150c{padding-left:2pt;padding-top:2pt;padding-right:2pt;padding-bottom:2pt;border:0.3pt solid Black;background-color:Silver;vertical-align:top;text-align:left;direction:ltr;layout-flow:horizontal;writing-mode:lr-tb;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad1150{word-wrap:break-word;white-space:pre-wrap;font-style:normal;font-family:Arial;font-size:8pt;font-weight:700;text-decoration:none;unicode-bidi:normal;color:Black;direction:ltr;layout-flow:horizontal;writing-mode:lr-tb;vertical-align:top;text-align:left;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad1154c{padding-left:2pt;padding-top:2pt;padding-right:2pt;padding-bottom:2pt;border:0.3pt solid Black;background-color:Silver;vertical-align:top;text-align:left;direction:ltr;layout-flow:horizontal;writing-mode:lr-tb;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad1154{word-wrap:break-word;white-space:pre-wrap;font-style:normal;font-family:Arial;font-size:8pt;font-weight:700;text-decoration:none;unicode-bidi:normal;color:Black;direction:ltr;layout-flow:horizontal;writing-mode:lr-tb;vertical-align:top;text-align:left;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad164{word-wrap:break-word;white-space:pre-wrap;padding-left:2pt;padding-top:2pt;padding-right:2pt;padding-bottom:2pt;border:1pt none Black;background-color:Transparent;font-style:normal;font-family:Arial;font-size:8pt;font-weight:700;text-decoration:underline;unicode-bidi:normal;color:Black;direction:ltr;layout-flow:horizontal;writing-mode:lr-tb;vertical-align:top;text-align:left;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad1248{border:1pt none Black;background-color:Transparent;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad1203c{padding-left:2pt;padding-top:2pt;padding-right:2pt;padding-bottom:2pt;border:0.3pt solid Black;background-color:Silver;vertical-align:top;text-align:left;direction:ltr;layout-flow:horizontal;writing-mode:lr-tb;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad1203{word-wrap:break-word;white-space:pre-wrap;font-style:normal;font-family:Arial;font-size:8pt;font-weight:700;text-decoration:none;unicode-bidi:normal;color:Black;direction:ltr;layout-flow:horizontal;writing-mode:lr-tb;vertical-align:top;text-align:left;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad1207c{padding-left:2pt;padding-top:2pt;padding-right:2pt;padding-bottom:2pt;border:0.3pt solid Black;background-color:Silver;vertical-align:top;text-align:left;direction:ltr;layout-flow:horizontal;writing-mode:lr-tb;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad1207{word-wrap:break-word;white-space:pre-wrap;font-style:normal;font-family:Arial;font-size:8pt;font-weight:700;text-decoration:none;unicode-bidi:normal;color:Black;direction:ltr;layout-flow:horizontal;writing-mode:lr-tb;vertical-align:top;text-align:left;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad1211c{padding-left:2pt;padding-top:2pt;padding-right:2pt;padding-bottom:2pt;border:0.3pt solid Black;background-color:Silver;vertical-align:top;text-align:left;direction:ltr;layout-flow:horizontal;writing-mode:lr-tb;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad1211{word-wrap:break-word;white-space:pre-wrap;font-style:normal;font-family:Arial;font-size:8pt;font-weight:700;text-decoration:none;unicode-bidi:normal;color:Black;direction:ltr;layout-flow:horizontal;writing-mode:lr-tb;vertical-align:top;text-align:left;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad1215c{padding-left:2pt;padding-top:2pt;padding-right:2pt;padding-bottom:2pt;border:0.3pt solid Black;background-color:Silver;vertical-align:top;text-align:left;direction:ltr;layout-flow:horizontal;writing-mode:lr-tb;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad1215{word-wrap:break-word;white-space:pre-wrap;font-style:normal;font-family:Arial;font-size:8pt;font-weight:700;text-decoration:none;unicode-bidi:normal;color:Black;direction:ltr;layout-flow:horizontal;writing-mode:lr-tb;vertical-align:top;text-align:left;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad1219c{padding-left:2pt;padding-top:2pt;padding-right:2pt;padding-bottom:2pt;border:0.3pt solid Black;background-color:Silver;vertical-align:top;text-align:left;direction:ltr;layout-flow:horizontal;writing-mode:lr-tb;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad1219{word-wrap:break-word;white-space:pre-wrap;font-style:normal;font-family:Arial;font-size:8pt;font-weight:700;text-decoration:none;unicode-bidi:normal;color:Black;direction:ltr;layout-flow:horizontal;writing-mode:lr-tb;vertical-align:top;text-align:left;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad1224cl{padding-left:2pt;padding-top:2pt;padding-right:2pt;padding-bottom:2pt;border:0.3pt solid Black;background-color:Transparent;vertical-align:top;text-align:left;direction:ltr;layout-flow:horizontal;writing-mode:lr-tb;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad1224{word-wrap:break-word;white-space:pre-wrap;font-style:normal;font-family:Arial;font-size:8pt;font-weight:400;text-decoration:none;unicode-bidi:normal;color:Black;direction:ltr;layout-flow:horizontal;writing-mode:lr-tb;vertical-align:top;text-align:left;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad1228cl{padding-left:2pt;padding-top:2pt;padding-right:2pt;padding-bottom:2pt;border:0.3pt solid Black;background-color:Transparent;vertical-align:top;text-align:left;direction:ltr;layout-flow:horizontal;writing-mode:lr-tb;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad1232cl{padding-left:2pt;padding-top:2pt;padding-right:2pt;padding-bottom:2pt;border:0.3pt solid Black;background-color:Transparent;vertical-align:top;text-align:left;direction:ltr;layout-flow:horizontal;writing-mode:lr-tb;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad1236cl{padding-left:2pt;padding-top:2pt;padding-right:2pt;padding-bottom:2pt;border:0.3pt solid Black;background-color:Transparent;vertical-align:top;text-align:left;direction:ltr;layout-flow:horizontal;writing-mode:lr-tb;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad1236{word-wrap:break-word;white-space:pre-wrap;font-style:normal;font-family:Arial;font-size:8pt;font-weight:400;text-decoration:none;unicode-bidi:normal;color:Black;direction:ltr;layout-flow:horizontal;writing-mode:lr-tb;vertical-align:top;text-align:left;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad1240cl{padding-left:2pt;padding-top:2pt;padding-right:2pt;padding-bottom:2pt;border:0.3pt solid Black;background-color:Transparent;vertical-align:top;text-align:left;direction:ltr;layout-flow:horizontal;writing-mode:lr-tb;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad1240{word-wrap:break-word;white-space:pre-wrap;font-style:normal;font-family:Arial;font-size:8pt;font-weight:400;text-decoration:none;unicode-bidi:normal;color:Black;direction:ltr;layout-flow:horizontal;writing-mode:lr-tb;vertical-align:top;text-align:left;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad167{word-wrap:break-word;white-space:pre-wrap;padding-left:2pt;padding-top:2pt;padding-right:2pt;padding-bottom:2pt;border:1pt none Black;background-color:Transparent;font-style:normal;font-family:Arial;font-size:8pt;font-weight:700;text-decoration:underline;unicode-bidi:normal;color:Black;direction:ltr;layout-flow:horizontal;writing-mode:lr-tb;vertical-align:top;text-align:left;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad1335{border:1pt none Black;background-color:Transparent;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad1261c{padding-left:2pt;padding-top:2pt;padding-right:2pt;padding-bottom:2pt;border:0.3pt solid Black;background-color:Silver;vertical-align:top;text-align:left;direction:ltr;layout-flow:horizontal;writing-mode:lr-tb;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad1261{word-wrap:break-word;white-space:pre-wrap;font-style:normal;font-family:Arial;font-size:8pt;font-weight:700;text-decoration:none;unicode-bidi:normal;color:Black;direction:ltr;layout-flow:horizontal;writing-mode:lr-tb;vertical-align:top;text-align:left;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad1265c{padding-left:2pt;padding-top:2pt;padding-right:2pt;padding-bottom:2pt;border:0.3pt solid Black;background-color:Silver;vertical-align:top;text-align:left;direction:ltr;layout-flow:horizontal;writing-mode:lr-tb;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad1265{word-wrap:break-word;white-space:pre-wrap;font-style:normal;font-family:Arial;font-size:8pt;font-weight:700;text-decoration:none;unicode-bidi:normal;color:Black;direction:ltr;layout-flow:horizontal;writing-mode:lr-tb;vertical-align:top;text-align:left;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad1271c{padding-left:2pt;padding-top:2pt;padding-right:2pt;padding-bottom:2pt;border:0.3pt solid Black;background-color:Silver;vertical-align:top;direction:ltr;layout-flow:horizontal;writing-mode:lr-tb;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad1271{word-wrap:break-word;white-space:pre-wrap;font-size:0pt;unicode-bidi:normal;direction:ltr;layout-flow:horizontal;writing-mode:lr-tb;vertical-align:top;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad1268{text-align:left;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad1267{font-family:Arial;font-size:8pt;font-weight:700;font-style:normal;text-decoration:none;color:Black;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad1270{text-align:left;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad1269{font-family:Arial;font-size:8pt;font-weight:700;font-style:normal;text-decoration:none;color:Black;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad1275c{padding-left:2pt;padding-top:2pt;padding-right:2pt;padding-bottom:2pt;border:0.3pt solid Black;background-color:Silver;vertical-align:top;text-align:left;direction:ltr;layout-flow:horizontal;writing-mode:lr-tb;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad1275{word-wrap:break-word;white-space:pre-wrap;font-style:normal;font-family:Arial;font-size:8pt;font-weight:700;text-decoration:none;unicode-bidi:normal;color:Black;direction:ltr;layout-flow:horizontal;writing-mode:lr-tb;vertical-align:top;text-align:left;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad1279c{padding-left:2pt;padding-top:2pt;padding-right:2pt;padding-bottom:2pt;border:0.3pt solid Black;background-color:Silver;vertical-align:top;text-align:left;direction:ltr;layout-flow:horizontal;writing-mode:lr-tb;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad1279{word-wrap:break-word;white-space:pre-wrap;font-style:normal;font-family:Arial;font-size:8pt;font-weight:700;text-decoration:none;unicode-bidi:normal;color:Black;direction:ltr;layout-flow:horizontal;writing-mode:lr-tb;vertical-align:top;text-align:left;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad1283c{padding-left:2pt;padding-top:2pt;padding-right:2pt;padding-bottom:2pt;border:0.3pt solid Black;background-color:Silver;vertical-align:top;text-align:left;direction:ltr;layout-flow:horizontal;writing-mode:lr-tb;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad1283{word-wrap:break-word;white-space:pre-wrap;font-style:normal;font-family:Arial;font-size:8pt;font-weight:700;text-decoration:none;unicode-bidi:normal;color:Black;direction:ltr;layout-flow:horizontal;writing-mode:lr-tb;vertical-align:top;text-align:left;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad1287c{padding-left:2pt;padding-top:2pt;padding-right:2pt;padding-bottom:2pt;border:0.3pt solid Black;background-color:Silver;vertical-align:top;text-align:left;direction:ltr;layout-flow:horizontal;writing-mode:lr-tb;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad1287{word-wrap:break-word;white-space:pre-wrap;font-style:normal;font-family:Arial;font-size:8pt;font-weight:700;text-decoration:none;unicode-bidi:normal;color:Black;direction:ltr;layout-flow:horizontal;writing-mode:lr-tb;vertical-align:top;text-align:left;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad1291c{padding-left:2pt;padding-top:2pt;padding-right:2pt;padding-bottom:2pt;border:0.3pt solid Black;background-color:Silver;vertical-align:top;text-align:left;direction:ltr;layout-flow:horizontal;writing-mode:lr-tb;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad1291{word-wrap:break-word;white-space:pre-wrap;font-style:normal;font-family:Arial;font-size:8pt;font-weight:700;text-decoration:none;unicode-bidi:normal;color:Black;direction:ltr;layout-flow:horizontal;writing-mode:lr-tb;vertical-align:top;text-align:left;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad170{word-wrap:break-word;white-space:pre-wrap;padding-left:2pt;padding-top:2pt;padding-right:2pt;padding-bottom:2pt;border:1pt none Black;background-color:Transparent;font-style:normal;font-family:Arial;font-size:8pt;font-weight:700;text-decoration:underline;unicode-bidi:normal;color:Black;direction:ltr;layout-flow:horizontal;writing-mode:lr-tb;vertical-align:top;text-align:left;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad1380{border:1pt none Black;background-color:Transparent;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad1344c{padding-left:2pt;padding-top:2pt;padding-right:2pt;padding-bottom:2pt;border:0.3pt solid Black;background-color:Silver;vertical-align:top;text-align:left;direction:ltr;layout-flow:horizontal;writing-mode:lr-tb;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad1344{word-wrap:break-word;white-space:pre-wrap;font-style:normal;font-family:Arial;font-size:8pt;font-weight:700;text-decoration:none;unicode-bidi:normal;color:Black;direction:ltr;layout-flow:horizontal;writing-mode:lr-tb;vertical-align:top;text-align:left;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad1348c{padding-left:2pt;padding-top:2pt;padding-right:2pt;padding-bottom:2pt;border:0.3pt solid Black;background-color:Silver;vertical-align:top;text-align:left;direction:ltr;layout-flow:horizontal;writing-mode:lr-tb;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad1348{word-wrap:break-word;white-space:pre-wrap;font-style:normal;font-family:Arial;font-size:8pt;font-weight:700;text-decoration:none;unicode-bidi:normal;color:Black;direction:ltr;layout-flow:horizontal;writing-mode:lr-tb;vertical-align:top;text-align:left;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad1352c{padding-left:2pt;padding-top:2pt;padding-right:2pt;padding-bottom:2pt;border:0.3pt solid Black;background-color:Silver;vertical-align:top;text-align:left;direction:ltr;layout-flow:horizontal;writing-mode:lr-tb;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad1352{word-wrap:break-word;white-space:pre-wrap;font-style:normal;font-family:Arial;font-size:8pt;font-weight:700;text-decoration:none;unicode-bidi:normal;color:Black;direction:ltr;layout-flow:horizontal;writing-mode:lr-tb;vertical-align:top;text-align:left;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad1356c{padding-left:2pt;padding-top:2pt;padding-right:2pt;padding-bottom:2pt;border:0.3pt solid Black;background-color:Silver;vertical-align:top;text-align:left;direction:ltr;layout-flow:horizontal;writing-mode:lr-tb;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad1356{word-wrap:break-word;white-space:pre-wrap;font-style:normal;font-family:Arial;font-size:8pt;font-weight:700;text-decoration:none;unicode-bidi:normal;color:Black;direction:ltr;layout-flow:horizontal;writing-mode:lr-tb;vertical-align:top;text-align:left;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad1361cl{padding-left:2pt;padding-top:2pt;padding-right:2pt;padding-bottom:2pt;border:0.3pt solid Black;background-color:Transparent;vertical-align:top;text-align:left;direction:ltr;layout-flow:horizontal;writing-mode:lr-tb;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad1361{word-wrap:break-word;white-space:pre-wrap;font-style:normal;font-family:Arial;font-size:8pt;font-weight:400;text-decoration:none;unicode-bidi:normal;color:Black;direction:ltr;layout-flow:horizontal;writing-mode:lr-tb;vertical-align:top;text-align:left;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad1365cl{padding-left:2pt;padding-top:2pt;padding-right:2pt;padding-bottom:2pt;border:0.3pt solid Black;background-color:Transparent;vertical-align:top;text-align:left;direction:ltr;layout-flow:horizontal;writing-mode:lr-tb;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad1365{word-wrap:break-word;white-space:pre-wrap;font-style:normal;font-family:Arial;font-size:8pt;font-weight:400;text-decoration:none;unicode-bidi:normal;color:Black;direction:ltr;layout-flow:horizontal;writing-mode:lr-tb;vertical-align:top;text-align:left;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad1369cl{padding-left:2pt;padding-top:2pt;padding-right:2pt;padding-bottom:2pt;border:0.3pt solid Black;background-color:Transparent;vertical-align:top;text-align:left;direction:ltr;layout-flow:horizontal;writing-mode:lr-tb;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad1369{word-wrap:break-word;white-space:pre-wrap;font-style:normal;font-family:Arial;font-size:8pt;font-weight:400;text-decoration:none;unicode-bidi:normal;color:Black;direction:ltr;layout-flow:horizontal;writing-mode:lr-tb;vertical-align:top;text-align:left;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad1373cl{padding-left:2pt;padding-top:2pt;padding-right:2pt;padding-bottom:2pt;border:0.3pt solid Black;background-color:Transparent;vertical-align:top;text-align:left;direction:ltr;layout-flow:horizontal;writing-mode:lr-tb;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad1373{word-wrap:break-word;white-space:pre-wrap;font-style:normal;font-family:Arial;font-size:8pt;font-weight:400;text-decoration:none;unicode-bidi:normal;color:Black;direction:ltr;layout-flow:horizontal;writing-mode:lr-tb;vertical-align:top;text-align:left;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad19c{border:1pt none Black;background-color:Transparent;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .A24720a55e181441d9c911551862c9ad19{min-width: 190.39mm;HEIGHT:11.43mm;WIDTH:190.39mm;overflow:hidden;border:1pt none Black;background-color:Transparent;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .P6ccaec1cd36e48de8929823f17e9d8b0_1_r1{HEIGHT:100%;WIDTH:100%}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .P6ccaec1cd36e48de8929823f17e9d8b0_1_r2{HEIGHT:100%;WIDTH:100%;overflow:hidden}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .P6ccaec1cd36e48de8929823f17e9d8b0_1_r3{HEIGHT:100%}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .P6ccaec1cd36e48de8929823f17e9d8b0_1_r4{border-style:none}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .P6ccaec1cd36e48de8929823f17e9d8b0_1_r5{border-left-style:none}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .P6ccaec1cd36e48de8929823f17e9d8b0_1_r6{border-right-style:none}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .P6ccaec1cd36e48de8929823f17e9d8b0_1_r7{border-top-style:none}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .P6ccaec1cd36e48de8929823f17e9d8b0_1_r8{border-bottom-style:none}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .P6ccaec1cd36e48de8929823f17e9d8b0_1_r10{border-collapse:collapse}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .P6ccaec1cd36e48de8929823f17e9d8b0_1_r9{border-collapse:collapse;table-layout:fixed}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .P6ccaec1cd36e48de8929823f17e9d8b0_1_r11{WIDTH:100%;overflow-x:hidden}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .P6ccaec1cd36e48de8929823f17e9d8b0_1_r12{position:absolute;display:none;background-color:white;border:1px solid black;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .P6ccaec1cd36e48de8929823f17e9d8b0_1_r13{text-decoration:none;color:black;cursor:pointer;}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .P6ccaec1cd36e48de8929823f17e9d8b0_1_r14{font-size:0pt}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .P6ccaec1cd36e48de8929823f17e9d8b0_1_r15{direction:RTL;unicode-bidi:embed}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .P6ccaec1cd36e48de8929823f17e9d8b0_1_r16{margin-top:0pt;margin-bottom:0pt}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .P6ccaec1cd36e48de8929823f17e9d8b0_1_r17{HEIGHT:100%;WIDTH:100%;display:inline-table}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv .P6ccaec1cd36e48de8929823f17e9d8b0_1_r18{HEIGHT:100%;display:inline-table}#P6ccaec1cd36e48de8929823f17e9d8b0_1_oReportDiv  * { box-sizing: border-box }","ScrollableContainerId":"ctl00_ContentPlaceHolder1_ReportViewer1_ctl09","SearchHitPrefix":"P6ccaec1cd36e48de8929823f17e9d8b0_1_oHit","StyleElementId":"ctl00_ContentPlaceHolder1_ReportViewer1_ctl09_ReportControl_styles","ToolBarUpdate":{'CurrentPage':1,'TotalPages':1,'IsEstimatePageCount':false,'TotalPagesString':'1','SearchText':'','CanFindNext':false},"TriggerAsyncInteractivity":function(){__doPostBack('ctl00$ContentPlaceHolder1$ReportViewer1$ctl09$ReportControl','');},"TriggerSyncInteractivity":function(){__doPostBack('ctl00$ContentPlaceHolder1$ReportViewer1$ctl09$ReportControl$ctl00','');}}, null, null, $get("ctl00_ContentPlaceHolder1_ReportViewer1_ctl09_ReportControl"));
+});
+Sys.Application.add_init(function() {
+    $create(AjaxControlToolkit.AlwaysVisibleControlBehavior, {"HorizontalSide":1,"VerticalSide":1,"id":"AlwaysVisibleControlExtender5"}, null, null, $get("UpdateProgress1"));
+});
+//]]>
+</script>
+</form>
+
+
+
+
+
+</body>
+</html>

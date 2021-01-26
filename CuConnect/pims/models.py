@@ -6,7 +6,7 @@ def upload_post_image(self, filename, **kwargs):
     return f'images/posts/{str(self.title)}-{filename}'
 
 def upload_profile_image(self, filename, **kwargs):
-    return f'images/profiles/{str(self.title)}-{filename}'
+    return f'images/profiles/{str(self.user_id)}-{filename}'
 
 
 
@@ -33,8 +33,7 @@ class Comment(models.Model):
         
 class UserProfile(models.Model):
     user_id = models.CharField(max_length=10, blank=False, null=False)
-    display_name = models.CharField(max_length=32, blank=False, null=False)
-    
+    display_name = models.CharField(max_length=32, blank=False, null=False)   
     picture = models.ImageField(upload_to=upload_profile_image, blank=True, null=True)
 
     def __str__(self):

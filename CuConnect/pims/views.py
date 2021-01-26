@@ -15,6 +15,7 @@ class CommentViewSet(viewsets.ModelViewSet):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
 
+
 class UserProfileViewSet(viewsets.ModelViewSet):
     queryset = UserProfile.objects.all()
     serializer_class = UserProfileSerializer
@@ -26,16 +27,17 @@ def validate(req):
     if status == -1:
         return Response({"error": obj})
     else:
-        return Response({"success": True})
-
+        return Response({"full_name": obj.full_name})
 
 @api_view(http_method_names=["POST"])
-def get_full_name(req):
+def register_user(req):
     status, obj = create_uims_session(req)
     if status == -1:
-        return Response({"error": obj})
+        return Response({'error': obj})
     else:
-        return Response({"full_name": obj.full_name})
+        display_name = req.POST.get('display_name')
+        full_name = obj.full_name
+        
 
 def test_view(req):
     if req.method == "GET":

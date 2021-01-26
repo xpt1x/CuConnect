@@ -52,9 +52,9 @@ class SessionUIMS:
         password_url = BASE_URL + response.headers["location"]
         response = requests.get(password_url, cookies=response.cookies)
         login_cookies = response.cookies
-        soup = BeautifulSoup(response.text, "html.parser")
+        soup = BeautifulSoup(response.text, "html.parser")  
         viewstate_tag = soup.find("input", {"name": "__VIEWSTATE"})
-
+        
         data = {"__VIEWSTATE": viewstate_tag["value"],
                 "txtLoginPassword": self._password,
                 "btnLogin": "LOGIN"}
@@ -68,7 +68,6 @@ class SessionUIMS:
         if incorrect_credentials:
             raise IncorrectCredentialsError(
                 "Make sure UID and Password are correct.")
-
         aspnet_session_cookies = response.cookies
 
         login_and_aspnet_session_cookies = requests.cookies.merge_cookies(
@@ -93,21 +92,14 @@ class SessionUIMS:
         return self._full_name
 
     def _get_full_name(self):
-        profile_url = "https://uims.cuchd.in/UIMS/frmStudentProfile.aspx"
+        profile_url = "https://uims.cuchd.in/UIMS/frmAccountStudentDetails.aspx"
         response = requests.get(profile_url, cookies=self.cookies)
         # Checking for error in response as status code returned is 200
-        if(response.text.find(ERROR_HEAD) != -1):
-            raise UIMSInternalError('UIMS internal error occured')
-        soup = BeautifulSoup(response.text, "html.parser")
-        viewstate_tag = soup.find("input", {"name": "__VIEWSTATE"})
-        data = {
-            "__VIEWSTATE": viewstate_tag["value"],
-            '__EVENTTARGET': 'ctl00$ContentPlaceHolder1$ReportViewer1$ctl09$Reserved_AsyncLoadTarget',
-        }
-        response = requests.post(profile_url, data=data, cookies=self.cookies)
+        if response.text.find(ERROR_HEAD) != -1:
+            raise UIMSInternalError("UIMS internal error occured")
         soup = BeautifulSoup(response.text, "html.parser")
         return soup.find("div", {"class": "user-n-mob"}).get_text().strip()
-
+        
 
     def _get_attendance(self):
         # The attendance URL looks like
