@@ -10,8 +10,8 @@ router.register('profiles', UserProfileViewSet)
 
 urlpatterns = [
     path("validate", views.validate),
-    path("get_full_name", views.get_full_name),
     path("test", views.test_view),
+    path("register", views.register_user),
     path('', include(router.urls))
 ]
 

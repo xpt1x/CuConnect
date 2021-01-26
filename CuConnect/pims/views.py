@@ -35,8 +35,17 @@ def register_user(req):
     if status == -1:
         return Response({'error': obj})
     else:
-        display_name = req.POST.get('display_name')
+        display_name = (req.POST.get('display_name')).lower().split(' ')
         full_name = obj.full_name
+        f_name = full_name.lower().split(' ')
+        for word in display_name:
+            if not word in f_name:
+                return Response({'error': f'Words in display name not in {full_name.upper()}'})
+        if UserProfile.objects.filter(user_id=req.POST.get('uid')).exists():
+            return Response({'error': "UID already registered"})
+        user = UserProfile(user_id=req.POST.get('uid'), display_name=(req.POST.get('display_name').lower().capitalize()))
+        user.save() 
+        return Response({'success': 'User created successfully!'})
         
 
 def test_view(req):
