@@ -1,0 +1,2 @@
+NEW_POST_REP = 5
+NEW_LIKE_REP = 0.1

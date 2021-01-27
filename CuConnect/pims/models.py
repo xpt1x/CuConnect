@@ -1,6 +1,7 @@
 from django.db import models
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
+from . import config
 
 
 def upload_post_image(self, filename, **kwargs):
@@ -40,7 +41,7 @@ class UserProfile(models.Model):
     user_id = models.CharField(max_length=10, blank=False, null=False)
     display_name = models.CharField(max_length=32, blank=False, null=False)
     picture = models.ImageField(upload_to=upload_profile_image, blank=True, null=True)
-    rep = models.IntegerField(default=0, blank=False, null=False)
+    rep = models.FloatField(default=0.0, blank=False, null=False)
 
     def __str__(self):
         return self.display_name
@@ -51,9 +52,17 @@ def increase_user_rep_on_post_create(
     sender, update_fields, instance, created, **kwargs
 ):
     if created:
-        instance.author.rep += 5
+        instance.author.rep += config.NEW_POST_REP
         instance.author.save()
-    else:
-        print("else")
 
-    print(update_fields)
+@receiver(pre_save, sender=Post)
+def change_user_rep_on_like(sender, instance: Post, **kwargs):
+    if instance.id is None: # new object will be created
+        pass 
+    else:
+        previous = Post.objects.get(id=instance.id)
+        if previous.likes != instance.likes: # field will be updated
+            # sign can be 1 or -1
+            sign = instance.likes - previous.likes
+            instance.author.rep += sign * config.NEW_LIKE_REPs 
+            instance.author.save()
