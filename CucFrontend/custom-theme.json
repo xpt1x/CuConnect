@@ -73,5 +73,11 @@
   "color-danger-transparent-300": "rgba(249, 101, 64, 0.24)",
   "color-danger-transparent-400": "rgba(249, 101, 64, 0.32)",
   "color-danger-transparent-500": "rgba(249, 101, 64, 0.4)",
-  "color-danger-transparent-600": "rgba(249, 101, 64, 0.48)"
+  "color-danger-transparent-600": "rgba(249, 101, 64, 0.48)",
+  "color-basic-transparent-100": "rgba(128, 128, 128, 0.08)",
+  "color-basic-transparent-200": "rgba(128, 128, 128, 0.16)",
+  "color-basic-transparent-300": "rgba(128, 128, 128, 0.24)",
+  "color-basic-transparent-400": "rgba(128, 128, 128, 0.32)",
+  "color-basic-transparent-500": "rgba(128, 128, 128, 0.4)",
+  "color-basic-transparent-600": "rgba(128, 128, 128, 0.48)"
 }

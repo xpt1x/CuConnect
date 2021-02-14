@@ -1,28 +1,36 @@
 import React from "react";
-import { StyleSheet } from "react-native";
-import * as theme from'./custom-theme.json';
+import { StyleSheet, View } from "react-native";
+import * as theme from "./custom-theme.json";
 import {
-  Layout,
-  ApplicationProvider,
-} from "@ui-kitten/components";
-import * as eva from "@eva-design/eva";
+  Provider as PaperProvider,
+  DefaultTheme,
+  DarkTheme,
+} from "react-native-paper";
+import { StatusBar } from "expo-status-bar";
+import Main from "./components/Main";
+import Constants from "expo-constants";
 
 function App() {
   return (
-    <Layout style={styles.container}>
-      
-    </Layout>
+    <View style={styles.container}>
+      <Main />
+      <StatusBar style="light" />
+    </View>
   );
 }
 
 export default () => (
-  <ApplicationProvider {...eva} theme={{...eva.dark, ...theme}}>
-    <App />
-  </ApplicationProvider>
+  <>
+    <PaperProvider theme={DarkTheme}>
+      <App />
+    </PaperProvider>
+  </>
 );
 
 const styles = StyleSheet.create({
   container: {
+    paddingTop: Constants.statusBarHeight,
+    backgroundColor: "#000000",
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
