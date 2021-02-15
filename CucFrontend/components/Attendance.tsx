@@ -1,7 +1,8 @@
 import React from "react";
 import { StyleSheet, View, ScrollView } from "react-native";
-import { Text } from "react-native-paper";
+import { Text, Button } from "react-native-paper";
 import AttendanceCard from "./AttendanceCard";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const Header = (props: any) => (
   <View {...props}>
@@ -11,15 +12,17 @@ const Header = (props: any) => (
 );
 export default function Attendance() {
   return (
-    <View style={styles.container}>
-      <ScrollView>
+    <SafeAreaView>
+      <ScrollView style={styles.container}>
+        <AttendanceCard />
+        <AttendanceCard />
         <AttendanceCard />
         <AttendanceCard />
         <AttendanceCard />
         <AttendanceCard />
         <AttendanceCard />
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 }
 
