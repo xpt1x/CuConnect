@@ -8,24 +8,24 @@ import Attendance from "../components/Attendance";
 import Timetable from "../components/Timetable";
 
 
-const MusicRoute = () => <Attendance/>;
+const AttendanceRoute = () => <Attendance/>;
 
-const AlbumsRoute = () => <Timetable/>;
+const TimetableRoute = () => <Timetable/>;
 
-const RecentsRoute = () => <Text>Recents</Text>;
+const InfoRoute = () => <Text>Recents</Text>;
 
 export default function BottomNav({ navigation }: any){
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState([
-    { key: 'music', title: 'Music', icon: 'queue-music' },
-    { key: 'albums', title: 'Albums', icon: 'album' },
-    { key: 'recents', title: 'Recents', icon: 'history' },
+    { key: 'attendance', title: 'Attendance', icon: 'account-group' },
+    { key: 'timetable', title: 'Timetable', icon: 'calendar' },
+    { key: 'info', title: 'Info', icon: 'information' },
   ]);
 
   const renderScene = BottomNavigation.SceneMap({
-    music: MusicRoute,
-    albums: AlbumsRoute,
-    recents: RecentsRoute,
+    attendance: AttendanceRoute,
+    timetable: TimetableRoute,
+    info: InfoRoute,
   });
 
   return (
