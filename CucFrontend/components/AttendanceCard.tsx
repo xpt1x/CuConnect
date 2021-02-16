@@ -4,11 +4,20 @@ import { Button, Card, ProgressBar, Colors, Text } from "react-native-paper";
 
 const cardPress = () => {};
 // Show detailed attendance here
+interface AttendanceProps {
+  readonly attendance: object;
+}
 
-export default function AttendanceCard(params: any) {
+export default function AttendanceCard({ attendance }: AttendanceProps) {
   const buttonPress = () => {
     console.log("Hello!");
   };
+
+  function setColor(percentage: number) {
+    if (percentage >= 90) return Colors.green500;
+    if (percentage >= 75) return Colors.lightGreen600;
+    else return Colors.red500;
+  }
   return (
     // <Card
     //   header={Header}
@@ -20,18 +29,20 @@ export default function AttendanceCard(params: any) {
     //   <Text category="s1">Total Delivered: 2</Text>
     // </Card>
     <Card style={styles.card} onPress={cardPress}>
-      <Card.Title title="JavaScript" subtitle="[TDY-352]" />
+      <Card.Title title={attendance.Title} subtitle={`[${attendance.Code}]`} />
       <Card.Content>
-        <Text>Atended : 20</Text>
-        <Text>Delivered : 20</Text>
+        <Text>Atended : {attendance.Total_Attd}</Text>
+        <Text>Delivered : {attendance.Total_Delv}</Text>
       </Card.Content>
       <Card.Content>
-        <Text style={styles.cardPercent}>90%</Text>
+        <Text style={styles.cardPercent}>
+          {attendance.Total_Delv == 0 ? "N/A" : attendance.Total_Perc}%
+        </Text>
       </Card.Content>
       <ProgressBar
         style={styles.progressBar}
-        progress={0.7}
-        color={Colors.green600}
+        progress={attendance.Total_Perc / 100}
+        color={setColor(attendance.Total_Perc)}
         indeterminate={false}
       />
     </Card>
@@ -59,10 +70,10 @@ const styles = StyleSheet.create({
   // },
   cardPercent: {
     marginLeft: "auto",
-    color: "#77E666",
-    marginTop: -80,
-    marginBottom: 10,
-    fontWeight: "bold",
-    fontSize: 50,
+    // color: "#77E666",
+    marginTop: "-18%",
+    // marginBottom: 10,
+    // fontWeight: "bold",
+    fontSize: 25,
   },
 });

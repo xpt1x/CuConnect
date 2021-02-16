@@ -1,6 +1,11 @@
 import React from "react";
-import { StyleSheet } from "react-native";
-import { BottomNavigation, Text } from "react-native-paper";
+import { StyleSheet, View } from "react-native";
+import {
+  BottomNavigation,
+  Text,
+  ProgressBar,
+  Colors,
+} from "react-native-paper";
 import { SCREENS as screens } from "../constants/Screens";
 import Attendance from "../components/Attendance";
 import Timetable from "../components/Timetable";
@@ -32,10 +37,22 @@ export default function BottomNav({ navigation }: any) {
   });
 
   return (
-    <BottomNavigation
-      navigationState={{ index, routes }}
-      onIndexChange={setIndex}
-      renderScene={renderScene}
-    />
+    <>
+      <BottomNavigation
+        navigationState={{ index, routes }}
+        onIndexChange={setIndex}
+        renderScene={renderScene}
+        barStyle={styles.barStyle}
+      />
+      <ProgressBar indeterminate color={Colors.blue400} />
+    </>
   );
 }
+
+const styles = StyleSheet.create({
+  barStyle: {
+    backgroundColor: "#000000",
+    borderTopColor: "#232323",
+    borderTopWidth: 0,
+  },
+});

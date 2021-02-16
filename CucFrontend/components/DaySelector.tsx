@@ -25,8 +25,8 @@ export default function DaySelector(params: object) {
   const onFABPress = (idx: number) => {
     setDay(idx);
     copyActions = Array.from(actions);
-    let fabIdx = idx ? idx - 1 : idx;
-    copyActions[idx].style = styles.activeFAB;
+    let fabIdx = idx ? idx - 1 : 6;
+    copyActions[fabIdx].style = styles.activeFAB;
   };
 
   interface Actions {

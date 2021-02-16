@@ -3,7 +3,7 @@ import { StyleSheet, ScrollView, View } from "react-native";
 import DaySelector from "./DaySelector";
 import LectureCard from "./LectureCard";
 import { SafeAreaView } from "react-native-safe-area-context";
-
+import { TIMETABLE } from "../placeholder/timetable";
 interface Props {
   style: object;
 }

@@ -1,20 +1,16 @@
 import React from "react";
 import { StyleSheet, View, ScrollView } from "react-native";
-import { Text, Button } from "react-native-paper";
 import AttendanceCard from "./AttendanceCard";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { ATTENDANCE } from "../placeholder/attendance";
 
 export default function Attendance() {
   return (
     <SafeAreaView>
       <ScrollView style={styles.container}>
-        <AttendanceCard />
-        <AttendanceCard />
-        <AttendanceCard />
-        <AttendanceCard />
-        <AttendanceCard />
-        <AttendanceCard />
-        <AttendanceCard />
+        {ATTENDANCE.map((subject) => (
+          <AttendanceCard attendance={subject} />
+        ))}
       </ScrollView>
     </SafeAreaView>
   );
