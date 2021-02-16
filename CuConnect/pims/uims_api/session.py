@@ -21,11 +21,6 @@ ERROR_HEAD = "Whoops, Something broke!"
 headers = {"Content-Type": "application/json"}
 
 
-def print_in_file(name, content):
-    with open(name, "w") as file:
-        file.write(content)
-
-
 class SessionUIMS:
     def __init__(self, uid, password):
         self._uid = uid
