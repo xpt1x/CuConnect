@@ -10,13 +10,14 @@ AUTHENTICATE_URL = BASE_URL + "/uims/"
 ENDPOINTS = {
     "Attendance": "frmStudentCourseWiseAttendanceSummary.aspx",
     "Timetable": "frmMyTimeTable.aspx",
-    "Announcements" : "StaffHome.aspx/DisplayAnnouncements",
-    "Profile": "frmStudentProfile.aspx"
+    "Announcements": "StaffHome.aspx/DisplayAnnouncements",
+    "Profile": "frmStudentProfile.aspx",
+    "Marks": "frmStudentMarksView.aspx",
 }
 # Workaround fix for new url
 ATTENDANCE_STATIC_EXTRA = "?type=etgkYfqBdH1fSfc255iYGw=="
-ERROR_HEAD = 'Whoops, Something broke!'
-headers = {'Content-Type': 'application/json'}
+ERROR_HEAD = "Whoops, Something broke!"
+headers = {"Content-Type": "application/json"}
 
 
 class SessionUIMS:
@@ -29,49 +30,52 @@ class SessionUIMS:
         self._attendance = None
         self._full_attendance = None
         self._timetable = None
+        self._marks = None
         self._reportId = None
         self._sessionId = None
-        self._full_name = None 
+        self._full_name = None
 
     def _login(self):
         response = requests.get(AUTHENTICATE_URL)
         soup = BeautifulSoup(response.text, "html.parser")
         viewstate_tag = soup.find("input", {"name": "__VIEWSTATE"})
 
-        data = {"__VIEWSTATE": viewstate_tag["value"],
-                "txtUserId": self._uid,
-                "btnNext": "NEXT"}
+        data = {
+            "__VIEWSTATE": viewstate_tag["value"],
+            "txtUserId": self._uid,
+            "btnNext": "NEXT",
+        }
 
-        response = requests.post(AUTHENTICATE_URL,
-                                 data=data,
-                                 cookies=response.cookies,
-                                 allow_redirects=False)
+        response = requests.post(
+            AUTHENTICATE_URL, data=data, cookies=response.cookies, allow_redirects=False
+        )
 
         soup = BeautifulSoup(response.text, "html.parser")
 
         password_url = BASE_URL + response.headers["location"]
         response = requests.get(password_url, cookies=response.cookies)
         login_cookies = response.cookies
-        soup = BeautifulSoup(response.text, "html.parser")  
+        soup = BeautifulSoup(response.text, "html.parser")
         viewstate_tag = soup.find("input", {"name": "__VIEWSTATE"})
-        
-        data = {"__VIEWSTATE": viewstate_tag["value"],
-                "txtLoginPassword": self._password,
-                "btnLogin": "LOGIN"}
 
-        response = requests.post(password_url,
-                                 data=data,
-                                 cookies=response.cookies,
-                                 allow_redirects=False)
+        data = {
+            "__VIEWSTATE": viewstate_tag["value"],
+            "txtLoginPassword": self._password,
+            "btnLogin": "LOGIN",
+        }
+
+        response = requests.post(
+            password_url, data=data, cookies=response.cookies, allow_redirects=False
+        )
 
         incorrect_credentials = response.status_code == 200
         if incorrect_credentials:
-            raise IncorrectCredentialsError(
-                "Make sure UID and Password are correct.")
+            raise IncorrectCredentialsError("Make sure UID and Password are correct.")
         aspnet_session_cookies = response.cookies
 
         login_and_aspnet_session_cookies = requests.cookies.merge_cookies(
-            login_cookies, aspnet_session_cookies)
+            login_cookies, aspnet_session_cookies
+        )
         return login_and_aspnet_session_cookies
 
     def refresh_session(self):
@@ -99,7 +103,31 @@ class SessionUIMS:
             raise UIMSInternalError("UIMS internal error occured")
         soup = BeautifulSoup(response.text, "html.parser")
         return soup.find("div", {"class": "user-n-mob"}).get_text().strip()
-        
+
+    @property
+    def marks(self):
+        if self._marks is None:
+            self._marks = self._get_marks()
+        return self._marks
+
+    def _get_marks(self):
+        marks_url = AUTHENTICATE_URL + ENDPOINTS["Marks"]
+
+        response = requests.get(marks_url, cookies=self.cookies)
+        # Checking for error in response as status code returned is 200
+        if response.text.find(ERROR_HEAD) != -1:
+            raise UIMSInternalError("UIMS internal error occured")
+        soup = BeautifulSoup(response.text, "html.parser")
+        viewstate_tag = soup.find("input", {"name": "__VIEWSTATE"})
+        event_validation_tag = soup.find("input", {"name": "__EVENTVALIDATION"})
+        data = {
+            "__VIEWSTATE": viewstate_tag["value"],
+            "__EVENTVALIDATION": event_validation_tag["value"],
+            # TODO Make Dynamic - by getting current session, current implementation is for testing purpose only
+            "ctl00$ContentPlaceHolder1$wucStudentMarksView$ddlCAndPSession": "20211",
+        }
+        response = requests.post(marks_url, data=data, cookies=self.cookies)
+        return response.text
 
     def _get_attendance(self):
         # The attendance URL looks like
@@ -110,15 +138,17 @@ class SessionUIMS:
         # contents of the attendance page
         # These cookies contain encoded information about the current logged in UID whose
         # attendance information is to be fetched
-        response = requests.get(attendance_url+ATTENDANCE_STATIC_EXTRA, cookies=self.cookies)
+        response = requests.get(
+            attendance_url + ATTENDANCE_STATIC_EXTRA, cookies=self.cookies
+        )
         # Checking for error in response as status code returned is 200
-        if(response.text.find(ERROR_HEAD) != -1):
-            raise UIMSInternalError('UIMS internal error occured')
+        if response.text.find(ERROR_HEAD) != -1:
+            raise UIMSInternalError("UIMS internal error occured")
         # Getting current session id from response
-        session_block = response.text.find('CurrentSession')
-        session_block_origin = session_block + response.text[session_block:].find('(')
-        session_block_end = session_block + response.text[session_block:].find(')')
-        current_session_id = response.text[session_block_origin + 1:session_block_end]
+        session_block = response.text.find("CurrentSession")
+        session_block_origin = session_block + response.text[session_block:].find("(")
+        session_block_end = session_block + response.text[session_block:].find(")")
+        current_session_id = response.text[session_block_origin + 1 : session_block_end]
 
         if not self._sessionId:
             self._sessionId = current_session_id
@@ -129,9 +159,15 @@ class SessionUIMS:
         # fetch the attendance in JSON format in the next step as you'll see, otherwise the
         # server will return an error response
         js_report_block = response.text.find("getReport")
-        initial_quotation_mark = js_report_block + response.text[js_report_block:].find("'")
-        ending_quotation_mark = initial_quotation_mark + response.text[initial_quotation_mark+1:].find("'")
-        report_id = response.text[initial_quotation_mark + 1: ending_quotation_mark+1]
+        initial_quotation_mark = js_report_block + response.text[js_report_block:].find(
+            "'"
+        )
+        ending_quotation_mark = initial_quotation_mark + response.text[
+            initial_quotation_mark + 1 :
+        ].find("'")
+        report_id = response.text[
+            initial_quotation_mark + 1 : ending_quotation_mark + 1
+        ]
 
         if not self._reportId:
             self._reportId = report_id
@@ -158,16 +194,23 @@ class SessionUIMS:
         # getting minimal attendance
         attendance = self.attendance
         # Full report URL
-        full_report_url = AUTHENTICATE_URL + ENDPOINTS['Attendance'] + '/GetFullReport'
+        full_report_url = AUTHENTICATE_URL + ENDPOINTS["Attendance"] + "/GetFullReport"
         # Querying for every subject in attendance
         for subect in attendance:
-            data = "{course:'" + subect['EncryptCode'] + "',UID:'" + self._reportId + \
-                "',fromDate: '',toDate:''" + ",type:'All'" + \
-                ",Session:'" + self._sessionId + \
-                "'}"
+            data = (
+                "{course:'"
+                + subect["EncryptCode"]
+                + "',UID:'"
+                + self._reportId
+                + "',fromDate: '',toDate:''"
+                + ",type:'All'"
+                + ",Session:'"
+                + self._sessionId
+                + "'}"
+            )
             response = requests.post(full_report_url, headers=headers, data=data)
             # removing all esc sequence chars
-            subect['FullAttendanceReport'] = json.loads(json.loads(response.text)['d'])
+            subect["FullAttendanceReport"] = json.loads(json.loads(response.text)["d"])
         return attendance
 
     @property
@@ -177,29 +220,29 @@ class SessionUIMS:
         return self._timetable
 
     def _get_timetable(self):
-        timetable_url = AUTHENTICATE_URL + ENDPOINTS['Timetable']
+        timetable_url = AUTHENTICATE_URL + ENDPOINTS["Timetable"]
         response = requests.get(timetable_url, cookies=self.cookies)
         # Checking for error in response as status code returned is 200
-        if(response.text.find(ERROR_HEAD) != -1):
-            raise UIMSInternalError('UIMS internal error occured')
+        if response.text.find(ERROR_HEAD) != -1:
+            raise UIMSInternalError("UIMS internal error occured")
         soup = BeautifulSoup(response.text, "html.parser")
         viewstate_tag = soup.find("input", {"name": "__VIEWSTATE"})
         data = {
             "__VIEWSTATE": viewstate_tag["value"],
-            '__EVENTTARGET': 'ctl00$ContentPlaceHolder1$ReportViewer1$ctl09$Reserved_AsyncLoadTarget',
+            "__EVENTTARGET": "ctl00$ContentPlaceHolder1$ReportViewer1$ctl09$Reserved_AsyncLoadTarget",
         }
         response = requests.post(timetable_url, data=data, cookies=self.cookies)
         return self._extract_timetable(response)
 
     def _extract_timetable(self, response):
-        report_div_block = response.text.find('ReportDivId')
-        start_colon = report_div_block + response.text[report_div_block:].find(':')
-        end_quotation = start_colon+2 + response.text[start_colon+2:].find('"')
-        report_div_id = response.text[start_colon+2:end_quotation]
+        report_div_block = response.text.find("ReportDivId")
+        start_colon = report_div_block + response.text[report_div_block:].find(":")
+        end_quotation = start_colon + 2 + response.text[start_colon + 2 :].find('"')
+        report_div_id = response.text[start_colon + 2 : end_quotation]
 
-        soup = BeautifulSoup(response.text, 'html.parser')
-        nearest_div_id = report_div_id[:report_div_id.find('oReportDiv')] + '5iS0xB_gr'
-        div_tag = soup.find('div', {'id': nearest_div_id})
+        soup = BeautifulSoup(response.text, "html.parser")
+        nearest_div_id = report_div_id[: report_div_id.find("oReportDiv")] + "5iS0xB_gr"
+        div_tag = soup.find("div", {"id": nearest_div_id})
 
         table = div_tag.contents[0].contents
         # table[3] represents mapping of course and course code
@@ -207,32 +250,32 @@ class SessionUIMS:
 
         # For mapping of course and course codes
         # Required in the next step
-        mapping_table = table[3].contents[0].find('table')
-        mp_table_rows = mapping_table.find_all('tr')
+        mapping_table = table[3].contents[0].find("table")
+        mp_table_rows = mapping_table.find_all("tr")
         course_codes = dict()
         for row in mp_table_rows:
-            tds = row.find_all('td')
-            course_code_div = tds[0].find('div')
-            course_name_div = tds[1].find('div')
+            tds = row.find_all("td")
+            course_code_div = tds[0].find("div")
+            course_name_div = tds[1].find("div")
 
-            if course_code_div != None and course_code_div.get_text() != 'Course Code':
+            if course_code_div != None and course_code_div.get_text() != "Course Code":
                 course_codes[course_code_div.get_text()] = course_name_div.get_text()
 
         # Now extracting day wise timings and subjects from table[1]
-        table_body = table[1].contents[0].find('table')
+        table_body = table[1].contents[0].find("table")
         # getting rows with actual data only (1st row will be neglected as it doesnt have valign arg)
-        table_body_rows = table_body.find_all('tr', {'valign': 'top'})
+        table_body_rows = table_body.find_all("tr", {"valign": "top"})
 
         timetable = {}
         ttlist = []
         is_top_row = True
         for row in table_body_rows:
             # using regex to match all tds with some class
-            tds = row.find_all('td', {'class': re.compile('.*?')})
+            tds = row.find_all("td", {"class": re.compile(".*?")})
             if is_top_row:
                 is_top_row = False
                 for td in tds:
-                    td_div = td.find('div')
+                    td_div = td.find("div")
                     ttlist.append(td_div.get_text() if td_div else None)
                 ttlist = ttlist[1:]
                 for elem in ttlist:
@@ -241,13 +284,15 @@ class SessionUIMS:
 
             data = []
             for td in tds:
-                td_div = td.find('div')
+                td_div = td.find("div")
                 data.append(td_div.get_text() if td_div else None)
 
             timing = data[0].replace(" ", "")
             data = data[1:]
             for i in range(len(data)):
-                timetable[ttlist[i]][timing] = self._parse_timetable_subject(data[i], course_codes)
+                timetable[ttlist[i]][timing] = self._parse_timetable_subject(
+                    data[i], course_codes
+                )
 
         return timetable
 
@@ -255,108 +300,118 @@ class SessionUIMS:
         # For Reference
         # "CST-302:L:: Gp-All: By Jagandeep Singh(E4678) at 1-3",
         # "CST-328:L:: Gp-All: By Amritpal Singh(E5159) at 5-11",
-        if(subject == None):
+        if subject == None:
             return None
         return_subject = {}
 
         # Finding Subject Name
         sub_code_end = subject.find(":")
         sub_code = subject[0:sub_code_end]
-        subject = subject[sub_code_end+1:]
-        return_subject['title'] = str(course_codes[sub_code]).upper()
+        subject = subject[sub_code_end + 1 :]
+        return_subject["title"] = str(course_codes[sub_code]).upper()
 
         # Finding Type of Lecture
         session_type = subject[0]
-        subject = subject[1: len(subject)]
-        if(session_type == "L"):
-            return_subject['type'] = "Lecture"
-        elif (session_type == "P"):
-            return_subject['type'] = "Practical"
+        subject = subject[1 : len(subject)]
+        if session_type == "L":
+            return_subject["type"] = "Lecture"
+        elif session_type == "P":
+            return_subject["type"] = "Practical"
         else:
-            return_subject['type'] = "Tutorial"
+            return_subject["type"] = "Tutorial"
 
         # Finding Group Type
         gp_start = subject.find("Gp-")
         subject = subject[gp_start:]
         ending_colon = subject.find(":")
         group_type = subject[gp_start:ending_colon]
-        return_subject['group'] = group_type
-        subject = subject[ending_colon+1:]
+        return_subject["group"] = group_type
+        subject = subject[ending_colon + 1 :]
 
         # Finding Teacher's Name
         exp_start = subject.find("By ")
         exp_end = subject.find("(")
-        teacher_name = subject[exp_start+3:exp_end]
+        teacher_name = subject[exp_start + 3 : exp_end]
         pattern = re.compile("^[a-zA-Z ]*$")
-        return_subject['teacher'] = teacher_name if pattern.match(teacher_name) else None
+        return_subject["teacher"] = (
+            teacher_name if pattern.match(teacher_name) else None
+        )
 
         return return_subject
 
     def annoucements(self, page=1):
-        annoucement_url = AUTHENTICATE_URL + ENDPOINTS['Announcements']
+        annoucement_url = AUTHENTICATE_URL + ENDPOINTS["Announcements"]
         data = "{Category:'ALL', PageNumber:'" + str(page) + "', FilterText:''}"
-        response = requests.post(annoucement_url, cookies=self.cookies, headers=headers, data=data)
+        response = requests.post(
+            annoucement_url, cookies=self.cookies, headers=headers, data=data
+        )
         parsable_html = self.parasable_form(response.text)
-        soup = BeautifulSoup(parsable_html, 'html.parser')
-        
-        annoucement_divs = soup.find_all('div', {'class': 'announcement-thumbnail'})
+        soup = BeautifulSoup(parsable_html, "html.parser")
+
+        annoucement_divs = soup.find_all("div", {"class": "announcement-thumbnail"})
         return self.extract_message(annoucement_divs, headers)
-    
+
     def parasable_form(self, html):
-        
-        html = html.replace('\\n', '\n').replace('\\t', '\t')
-        html = html.replace('u003c', '<')
-        html = html.replace('u003e', '>')
-        html = html.replace('u0026nbsp;', ' ')
-        html = html.replace('u0026amp;', '&')
-        html = html.replace('u0026middot;', '-')
-        html = html.replace('u0027', "'")
-        html = html.replace('u0026', '&')
-        html = html.replace('<br/>', '\n')
-        html = html.replace('\\', '')
+
+        html = html.replace("\\n", "\n").replace("\\t", "\t")
+        html = html.replace("u003c", "<")
+        html = html.replace("u003e", ">")
+        html = html.replace("u0026nbsp;", " ")
+        html = html.replace("u0026amp;", "&")
+        html = html.replace("u0026middot;", "-")
+        html = html.replace("u0027", "'")
+        html = html.replace("u0026", "&")
+        html = html.replace("<br/>", "\n")
+        html = html.replace("\\", "")
 
         return html
-    
+
     def extract_message(self, annoucement_divs, headers):
         # with open('anndivs.html', 'w') as file:
         #     for div in annoucement_divs:
         #         file.write(div.prettify())
         announcements = []
         for announce_div in annoucement_divs:
-            msg_title = announce_div.find('h2').get_text()
-            msg_date = announce_div.find('div', {'class': 'ann-date'}).contents[1].contents[1].get_text()
-            msg_body = announce_div.find('p').get_text()
-            msg_get_uploader = announce_div.find('small').get_text()
-            msg_uploader = msg_get_uploader[msg_get_uploader.find(':')+2:]
+            msg_title = announce_div.find("h2").get_text()
+            msg_date = (
+                announce_div.find("div", {"class": "ann-date"})
+                .contents[1]
+                .contents[1]
+                .get_text()
+            )
+            msg_body = announce_div.find("p").get_text()
+            msg_get_uploader = announce_div.find("small").get_text()
+            msg_uploader = msg_get_uploader[msg_get_uploader.find(":") + 2 :]
 
             ################################################
             # SHOULD BE ACTIVATED LATER and FRONTEND should DEAL WITH THIS
             try:
                 msg_image = []
-                images = announce_div.find('p').find_all('img')
+                images = announce_div.find("p").find_all("img")
                 for image in images:
-                    b64_data = image['src'].split(',')[1]
+                    b64_data = image["src"].split(",")[1]
                     msg_image.append(b64_data)
             except:
                 pass
             ################################################
             try:
                 msg_attachment = []
-                attachment_divs = announce_div.find_all('div', {'class':'attachment'})
+                attachment_divs = announce_div.find_all("div", {"class": "attachment"})
                 for attachment in attachment_divs:
-                    attachment_name = attachment.find('a').get_text()
-                    attachment_link = attachment.find('a')['href']
+                    attachment_name = attachment.find("a").get_text()
+                    attachment_link = attachment.find("a")["href"]
                     absolute_link = AUTHENTICATE_URL + attachment_link[3:]
                     msg_attachment.append((attachment_name, absolute_link))
             except:
                 pass
 
-            msg_dict = { 'title'      : msg_title,
-                        'date'       : msg_date,
-                        'body'       : msg_body,
-                        'uploader'   : msg_uploader,
-                        'attachment' : msg_attachment, 
-                        #'image'      : msg_i   `mage
+            msg_dict = {
+                "title": msg_title,
+                "date": msg_date,
+                "body": msg_body,
+                "uploader": msg_uploader,
+                "attachment": msg_attachment,
+                #'image'      : msg_i   `mage
             }
             announcements.append(msg_dict)
 

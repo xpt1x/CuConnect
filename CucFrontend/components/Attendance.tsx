@@ -4,12 +4,6 @@ import { Text, Button } from "react-native-paper";
 import AttendanceCard from "./AttendanceCard";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-const Header = (props: any) => (
-  <View {...props}>
-    <Text>JavaScript</Text>
-    <Text>By Wikipedia</Text>
-  </View>
-);
 export default function Attendance() {
   return (
     <SafeAreaView>
