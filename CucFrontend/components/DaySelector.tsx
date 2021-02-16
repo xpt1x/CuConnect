@@ -4,6 +4,18 @@ import { StyleSheet, View } from "react-native";
 
 export default function DaySelector(params: object) {
   const [state, setState] = React.useState({ open: false });
+  const date = new Date();
+  const [day, setDay] = React.useState({ day: date.getDay() });
+
+  var weekday = new Array(7);
+  weekday[0] = "alpha-s";
+  weekday[1] = "alpha-m";
+  weekday[2] = "alpha-t";
+  weekday[3] = "alpha-w";
+  weekday[4] = "alpha-t";
+  weekday[5] = "alpha-f";
+  weekday[6] = "alpha-s";
+
   interface Props {
     open: boolean;
   }
@@ -15,7 +27,7 @@ export default function DaySelector(params: object) {
       <Portal>
         <FAB.Group
           open={open}
-          icon={open ? "arrow-down" : "alpha-m"}
+          icon={open ? "arrow-down" : weekday[day]}
           fabStyle={styles.fabButton}
           style={styles.fabGroup}
           visible

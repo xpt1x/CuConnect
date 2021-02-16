@@ -5,36 +5,30 @@ import { SCREENS as screens } from "../constants/Screens";
 import Attendance from "../components/Attendance";
 import Timetable from "../components/Timetable";
 import { SafeAreaView } from "react-native-safe-area-context";
+import Marks from "./Marks";
 
 const AttendanceRoute = () => <Attendance />;
 
 const TimetableRoute = () => <Timetable />;
 
-const InfoRoute = () => (
-  <SafeAreaView>
-    <Text
-      style={{
-        display: "flex",
-        textAlign: "center",
-      }}
-    >
-      Designed by Awesome peeps
-    </Text>
-  </SafeAreaView>
-);
+const MarksRoute = () => <Marks />;
 
 export default function BottomNav({ navigation }: any) {
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState([
     { key: "attendance", title: "Attendance", icon: "account-group" },
     { key: "timetable", title: "Timetable", icon: "calendar" },
-    { key: "info", title: "Info", icon: "information" },
+    {
+      key: "marks",
+      title: "Marks",
+      icon: "table",
+    },
   ]);
 
   const renderScene = BottomNavigation.SceneMap({
     attendance: AttendanceRoute,
     timetable: TimetableRoute,
-    info: InfoRoute,
+    marks: MarksRoute,
   });
 
   return (
