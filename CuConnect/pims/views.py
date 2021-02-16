@@ -4,7 +4,7 @@ from .helper import create_uims_session
 from .models import Post, Comment, UserProfile
 from rest_framework import viewsets
 from .serializers import PostSerializer, CommentSerializer, UserProfileSerializer
-from uims_api.exceptions import UIMSInternalError
+from .uims_api.exceptions import UIMSInternalError
 
 
 class PostViewSet(viewsets.ModelViewSet):
@@ -104,7 +104,33 @@ def get_timetable(request):
         return Response(timetable)
 
 
-def test_view(req):
-    if req.method == "GET":
-        profile = UserProfile.objects.first()
-        print(profile.posts.all())
+@api_view(http_method_names=["POST"])
+def get_marks(request, session):
+    status, obj = create_uims_session(request)
+    if status == -1:
+        return Response({"error": obj})
+    try:
+        marks = obj.marks(session=session)
+    except Exception as e:
+        if e.__class__ == UIMSInternalError:
+            return Response({"error": "UIMS Internal Failure"})
+        else:
+            return Response({"error": "Looks like this Module is inactive on UIMS"})
+    else:
+        return Response(marks)
+
+
+@api_view(http_method_names=["POST"])
+def get_available_sessions(request):
+    status, obj = create_uims_session(request)
+    if status == -1:
+        return Response({"error": obj})
+    try:
+        available_sessions = obj.available_sessions
+    except Exception as e:
+        if e.__class__ == UIMSInternalError:
+            return Response({"error": "UIMS Internal Failure"})
+        else:
+            return Response({"error": "Looks like this Module is inactive on UIMS"})
+    else:
+        return Response(available_sessions)

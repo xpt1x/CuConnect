@@ -3,7 +3,6 @@ from bs4 import BeautifulSoup
 import json
 import re
 from .exceptions import IncorrectCredentialsError, UIMSInternalError
-import os
 
 BASE_URL = "https://uims.cuchd.in"
 AUTHENTICATE_URL = BASE_URL + "/uims/"
@@ -32,6 +31,7 @@ class SessionUIMS:
         self._full_attendance = None
         self._timetable = None
         self._marks = None
+        self._available_sessions = None
         self._reportId = None
         self._sessionId = None
         self._full_name = None
@@ -84,6 +84,7 @@ class SessionUIMS:
 
     @property
     def attendance(self):
+        "Attendance for current session"
         if self._attendance is None:
             self._attendance = self._get_attendance()
 
@@ -91,6 +92,7 @@ class SessionUIMS:
 
     @property
     def full_name(self):
+        "Full Name of user"
         if self._full_name is None:
             self._full_name = self._get_full_name()
 
@@ -106,12 +108,40 @@ class SessionUIMS:
         return soup.find("div", {"class": "user-n-mob"}).get_text().strip()
 
     @property
-    def marks(self):
+    def available_sessions(self):
+        "Dictionary of available sessions with current session as True"
+        if self._available_sessions is None:
+            self._available_sessions = self._get_available_sessions()
+        return self._available_sessions
+
+    def _get_available_sessions(self):
+        marks_url = AUTHENTICATE_URL + ENDPOINTS["Marks"]
+
+        response = requests.get(marks_url, cookies=self.cookies)
+        # Checking for error in response as status code returned is 200
+        if response.text.find(ERROR_HEAD) != -1:
+            raise UIMSInternalError("UIMS internal error occured")
+        soup = BeautifulSoup(response.text, "html.parser")
+        select_tag = soup.find(
+            "select",
+            {"name": "ctl00$ContentPlaceHolder1$wucStudentMarksView$ddlCAndPSession"},
+        )
+        select_options = select_tag.findAll("option")
+        sessions = {option["value"]: False for option in select_options}
+        selected = select_tag.find("option", {"selected": True})
+        sessions[selected["value"]] = True
+        return sessions
+
+    def marks(self, session):
+        """
+        Fetch marks for a session
+        @session - Session value, available under available_sessions
+        """
         if self._marks is None:
-            self._marks = self._get_marks()
+            self._marks = self._get_marks(session)
         return self._marks
 
-    def _get_marks(self):
+    def _get_marks(self, session):
         marks_url = AUTHENTICATE_URL + ENDPOINTS["Marks"]
 
         response = requests.get(marks_url, cookies=self.cookies)
@@ -124,8 +154,7 @@ class SessionUIMS:
         data = {
             "__VIEWSTATE": viewstate_tag["value"],
             "__EVENTVALIDATION": event_validation_tag["value"],
-            # TODO Make Dynamic - by getting current session, current implementation is for testing purpose only
-            "ctl00$ContentPlaceHolder1$wucStudentMarksView$ddlCAndPSession": "20211",
+            "ctl00$ContentPlaceHolder1$wucStudentMarksView$ddlCAndPSession": session,
         }
         response = requests.post(marks_url, data=data, cookies=self.cookies)
 
@@ -155,7 +184,7 @@ class SessionUIMS:
                     sub_marks.append(fields)
                 obj["marks"] = sub_marks
                 marks.append(obj)
-        return json.dumps(marks)
+        return marks
 
     def _get_attendance(self):
         # The attendance URL looks like
@@ -214,6 +243,10 @@ class SessionUIMS:
 
     @property
     def full_attendance(self):
+        """
+        Attendance with marked status from instructor
+        - Accessible under 'FullAttendanceReport' of every subject
+        """
         if not self._full_attendance:
             self._full_attendance = self._get_full_attendance()
         return self._full_attendance
@@ -243,6 +276,7 @@ class SessionUIMS:
 
     @property
     def timetable(self):
+        "Timetable for current session"
         if not self._timetable:
             self._timetable = self._get_timetable()
         return self._timetable
@@ -368,6 +402,10 @@ class SessionUIMS:
         return return_subject
 
     def annoucements(self, page=1):
+        """
+        [WIP] Fetch announcements per page
+        @page - announcement page (default=1)
+        """
         annoucement_url = AUTHENTICATE_URL + ENDPOINTS["Announcements"]
         data = "{Category:'ALL', PageNumber:'" + str(page) + "', FilterText:''}"
         response = requests.post(
@@ -394,10 +432,7 @@ class SessionUIMS:
 
         return html
 
-    def extract_message(self, annoucement_divs, headers):
-        # with open('anndivs.html', 'w') as file:
-        #     for div in annoucement_divs:
-        #         file.write(div.prettify())
+    def extract_message(self, annoucement_divs):
         announcements = []
         for announce_div in annoucement_divs:
             msg_title = announce_div.find("h2").get_text()

@@ -1,26 +1,79 @@
 import React from "react";
 import { FAB, Portal, Provider } from "react-native-paper";
 import { StyleSheet, View } from "react-native";
+import { IconSource } from "react-native-paper/lib/typescript/components/Icon";
 
 export default function DaySelector(params: object) {
   const [state, setState] = React.useState({ open: false });
   const date = new Date();
-  const [day, setDay] = React.useState({ day: date.getDay() });
+  const [day, setDay] = React.useState(date.getDay());
 
-  var weekday = new Array(7);
-  weekday[0] = "alpha-s";
-  weekday[1] = "alpha-m";
-  weekday[2] = "alpha-t";
-  weekday[3] = "alpha-w";
-  weekday[4] = "alpha-t";
-  weekday[5] = "alpha-f";
-  weekday[6] = "alpha-s";
+  var weekday = [
+    "alpha-s",
+    "alpha-m",
+    "alpha-t",
+    "alpha-w",
+    "alpha-t",
+    "alpha-f",
+    "alpha-s",
+  ];
 
   interface Props {
     open: boolean;
   }
   const onStateChange = ({ open }: Props) => setState({ open });
+  const onFABPress = (idx: number) => {
+    setDay(idx);
+    copyActions = Array.from(actions);
+    let fabIdx = idx ? idx - 1 : idx;
+    copyActions[idx].style = styles.activeFAB;
+  };
 
+  interface Actions {
+    icon: IconSource;
+    onPress: () => void;
+    style?: object;
+  }
+
+  const actions = [
+    {
+      icon: "alpha-s",
+      onPress: () => onFABPress(0),
+      // small: false,
+    },
+    {
+      icon: "alpha-m",
+      onPress: () => onFABPress(1),
+      // small: false,
+    },
+    {
+      icon: "alpha-t",
+      onPress: () => onFABPress(2),
+      // small: false,
+    },
+    {
+      icon: "alpha-w",
+      onPress: () => onFABPress(3),
+      // small: false,
+    },
+    {
+      icon: "alpha-t",
+      onPress: () => onFABPress(4),
+      // small: false,
+    },
+    {
+      icon: "alpha-f",
+      onPress: () => onFABPress(5),
+      // small: false,
+    },
+    {
+      icon: "alpha-s",
+      onPress: () => onFABPress(6),
+      // small: false,
+    },
+  ];
+  let copyActions: Actions[] = Array.from(actions);
+  copyActions[day].style = styles.activeFAB;
   const { open } = state;
   return (
     <Provider>
@@ -31,43 +84,7 @@ export default function DaySelector(params: object) {
           fabStyle={styles.fabButton}
           style={styles.fabGroup}
           visible
-          actions={[
-            {
-              icon: "alpha-m",
-              onPress: () => console.log("Pressed notifications"),
-              small: false,
-            },
-            {
-              icon: "alpha-t",
-              onPress: () => console.log("Pressed notifications"),
-              small: false,
-            },
-            {
-              icon: "alpha-w",
-              onPress: () => console.log("Pressed notifications"),
-              small: false,
-            },
-            {
-              icon: "alpha-t",
-              onPress: () => console.log("Pressed notifications"),
-              small: false,
-            },
-            {
-              icon: "alpha-f",
-              onPress: () => console.log("Pressed notifications"),
-              small: false,
-            },
-            {
-              icon: "alpha-s",
-              onPress: () => console.log("Pressed notifications"),
-              small: false,
-            },
-            {
-              icon: "alpha-s",
-              onPress: () => console.log("Pressed notifications"),
-              small: false,
-            },
-          ]}
+          actions={copyActions}
           onStateChange={onStateChange}
           onPress={() => {
             if (open) {
@@ -85,5 +102,8 @@ const styles = StyleSheet.create({
   },
   fabButton: {
     backgroundColor: "#0186FC",
+  },
+  activeFAB: {
+    backgroundColor: "rgba(1, 134, 252, 0.48)",
   },
 });

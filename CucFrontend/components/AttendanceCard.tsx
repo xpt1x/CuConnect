@@ -5,7 +5,7 @@ import { Button, Card, ProgressBar, Colors, Text } from "react-native-paper";
 const cardPress = () => {};
 // Show detailed attendance here
 
-export default function AttendanceCard(params: object) {
+export default function AttendanceCard(params: any) {
   const buttonPress = () => {
     console.log("Hello!");
   };
