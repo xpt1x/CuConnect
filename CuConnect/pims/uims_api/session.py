@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup
 import json
 import re
 from .exceptions import IncorrectCredentialsError, UIMSInternalError
+import os
 
 BASE_URL = "https://uims.cuchd.in"
 AUTHENTICATE_URL = BASE_URL + "/uims/"
@@ -18,6 +19,11 @@ ENDPOINTS = {
 ATTENDANCE_STATIC_EXTRA = "?type=etgkYfqBdH1fSfc255iYGw=="
 ERROR_HEAD = "Whoops, Something broke!"
 headers = {"Content-Type": "application/json"}
+
+
+def print_in_file(name, content):
+    with open(name, "w") as file:
+        file.write(content)
 
 
 class SessionUIMS:
@@ -127,7 +133,34 @@ class SessionUIMS:
             "ctl00$ContentPlaceHolder1$wucStudentMarksView$ddlCAndPSession": "20211",
         }
         response = requests.post(marks_url, data=data, cookies=self.cookies)
-        return response.text
+
+        return self._extract_marks(response)
+
+    def _extract_marks(self, response):
+        soup = BeautifulSoup(response.text, "html.parser")
+        accordion = soup.find("div", {"id": "accordion"})
+
+        subject_names = [i.get_text().strip() for i in accordion.findAll("h3")]
+        divs = accordion.findAll("div")
+
+        marks = []
+        if len(subject_names) == len(divs):
+            for i in range(0, len(divs)):
+                obj = {}
+                obj["name"] = subject_names[i]
+                tbody_trs = divs[i].find("tbody").findAll("tr")
+                sub_marks = []
+                for tr in tbody_trs:
+                    tds = tr.findAll("td")
+                    fields = {
+                        "element": tds[0].get_text().strip(),
+                        "total": tds[1].get_text().strip(),
+                        "obtained": tds[2].get_text().strip(),
+                    }
+                    sub_marks.append(fields)
+                obj["marks"] = sub_marks
+                marks.append(obj)
+        return json.dumps(marks)
 
     def _get_attendance(self):
         # The attendance URL looks like
