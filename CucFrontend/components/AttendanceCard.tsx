@@ -2,16 +2,42 @@ import React, { FunctionComponent } from "react";
 import { StyleSheet } from "react-native";
 import { Button, Card, ProgressBar, Colors, Text } from "react-native-paper";
 
-const cardPress = () => {};
-// Show detailed attendance here
 interface AttendanceProps {
-  readonly attendance: object;
+  UId: string;
+  Code: string;
+  Title: string;
+  DutyLeave: number;
+  DutyLeave_N_P: number;
+  DutyLeave_Others: number;
+  MedicalLeave: number;
+  EncryptCode: string;
+  Lec_Attd: number;
+  Lec_Delv: number;
+  Lec_Perc: number;
+  name: string;
+  Prac_Attd: number;
+  Prac_Delv: number;
+  Prac_Perc: number;
+  Trl_Attd: number;
+  Trl_Delv: number;
+  Trl_Perc: number;
+  Semester: number;
+  StudentId: number;
+  Total_Attd: string;
+  Total_Delv: number;
+  Total_Perc: number;
+  colorcode: string;
+  TotalPercentage: string;
+  EligibilityDelivered: string;
+  EligibilityPercentage: string;
+  EligibilityAttended: string;
 }
 
-export default function AttendanceCard({ attendance }: AttendanceProps) {
-  const buttonPress = () => {
-    console.log("Hello!");
-  };
+export default function AttendanceCard(attendance: AttendanceProps) {
+  const cardPress = () => {}; // Show detailed attendance here
+  // const buttonPress = () => {
+  //   console.log("Hello!");
+  // };
 
   function setColor(percentage: number) {
     if (percentage >= 90) return Colors.green500;
