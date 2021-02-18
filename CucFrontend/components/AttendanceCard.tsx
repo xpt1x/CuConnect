@@ -1,6 +1,7 @@
 import React, { FunctionComponent } from "react";
 import { StyleSheet } from "react-native";
 import { Button, Card, ProgressBar, Colors, Text } from "react-native-paper";
+import { NavigationStackProp } from "react-navigation-stack";
 
 interface Subject {
   UId: string;
@@ -32,15 +33,15 @@ interface Subject {
   EligibilityPercentage: string;
   EligibilityAttended: string;
 }
-interface AttendanceProps {
-  attendance: Subject;
-}
 
-export default function AttendanceCard({ attendance }: AttendanceProps) {
-  const cardPress = () => {}; // Show detailed attendance here
-  // const buttonPress = () => {
-  //   console.log("Hello!");
-  // };
+interface Props {
+  attendance: Subject;
+  navigation?: NavigationStackProp;
+}
+export default function AttendanceCard({ attendance, navigation }: Props) {
+  const cardPress = () => {
+    navigation.navigate("DetailedAttendance");
+  }; // Show detailed attendance here
 
   function setColor(percentage: number) {
     if (percentage >= 90) return Colors.green500;
@@ -100,8 +101,9 @@ const styles = StyleSheet.create({
   cardPercent: {
     marginLeft: "auto",
     // color: "#77E666",
-    marginTop: "-18%",
-    // marginBottom: 10,
+    marginTop: "-11%",
+    // marginRight: "1%",
+    // marginBottom: 1,
     // fontWeight: "bold",
     fontSize: 25,
   },
