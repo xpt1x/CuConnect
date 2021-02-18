@@ -2,7 +2,7 @@ import React, { FunctionComponent } from "react";
 import { StyleSheet } from "react-native";
 import { Button, Card, ProgressBar, Colors, Text } from "react-native-paper";
 
-interface AttendanceProps {
+interface Subject {
   UId: string;
   Code: string;
   Title: string;
@@ -32,8 +32,11 @@ interface AttendanceProps {
   EligibilityPercentage: string;
   EligibilityAttended: string;
 }
+interface AttendanceProps {
+  attendance: Subject;
+}
 
-export default function AttendanceCard(attendance: AttendanceProps) {
+export default function AttendanceCard({ attendance }: AttendanceProps) {
   const cardPress = () => {}; // Show detailed attendance here
   // const buttonPress = () => {
   //   console.log("Hello!");
