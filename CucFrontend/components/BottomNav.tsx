@@ -11,6 +11,7 @@ import Attendance from "../components/Attendance";
 import Timetable from "../components/Timetable";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Marks from "./Marks";
+import DetailedAttendance from "./DetailedAttendance";
 
 const AttendanceRoute = () => <Attendance />;
 
@@ -43,6 +44,7 @@ export default function BottomNav({ navigation }: any) {
         onIndexChange={setIndex}
         renderScene={renderScene}
         barStyle={styles.barStyle}
+        shifting={true}
       />
       <ProgressBar indeterminate color={Colors.blue400} />
     </>

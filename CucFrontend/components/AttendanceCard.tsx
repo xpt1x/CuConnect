@@ -1,16 +1,48 @@
 import React, { FunctionComponent } from "react";
 import { StyleSheet } from "react-native";
 import { Button, Card, ProgressBar, Colors, Text } from "react-native-paper";
+import { NavigationStackProp } from "react-navigation-stack";
 
-const cardPress = () => {};
-// Show detailed attendance here
-interface AttendanceProps {
-  readonly attendance: object;
+interface Subject {
+  UId: string;
+  Code: string;
+  Title: string;
+  DutyLeave: number;
+  DutyLeave_N_P: number;
+  DutyLeave_Others: number;
+  MedicalLeave: number;
+  EncryptCode: string;
+  Lec_Attd: number;
+  Lec_Delv: number;
+  Lec_Perc: number;
+  name: string;
+  Prac_Attd: number;
+  Prac_Delv: number;
+  Prac_Perc: number;
+  Trl_Attd: number;
+  Trl_Delv: number;
+  Trl_Perc: number;
+  Semester: number;
+  StudentId: number;
+  Total_Attd: string;
+  Total_Delv: number;
+  Total_Perc: number;
+  colorcode: string;
+  TotalPercentage: string;
+  EligibilityDelivered: string;
+  EligibilityPercentage: string;
+  EligibilityAttended: string;
 }
 
-export default function AttendanceCard({ attendance }: AttendanceProps) {
-  const buttonPress = () => {
-    console.log("Hello!");
+interface Props {
+  attendance: Subject;
+  navigation?: NavigationStackProp;
+}
+export default function AttendanceCard({ attendance, navigation }: Props) {
+  const cardPress = (headerName: string) => {
+    navigation.push("Detailed Attendance", {
+      headerName: headerName,
+    });
   };
 
   function setColor(percentage: number) {
@@ -28,7 +60,7 @@ export default function AttendanceCard({ attendance }: AttendanceProps) {
     //   <Text category="s1">Total Attended: 2</Text>
     //   <Text category="s1">Total Delivered: 2</Text>
     // </Card>
-    <Card style={styles.card} onPress={cardPress}>
+    <Card style={styles.card} onPress={() => cardPress(attendance.Title)}>
       <Card.Title title={attendance.Title} subtitle={`[${attendance.Code}]`} />
       <Card.Content>
         <Text>Atended : {attendance.Total_Attd}</Text>
@@ -71,8 +103,9 @@ const styles = StyleSheet.create({
   cardPercent: {
     marginLeft: "auto",
     // color: "#77E666",
-    marginTop: "-18%",
-    // marginBottom: 10,
+    marginTop: "-11%",
+    // marginRight: "1%",
+    // marginBottom: 1,
     // fontWeight: "bold",
     fontSize: 25,
   },

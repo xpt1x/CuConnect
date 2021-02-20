@@ -1,5 +1,5 @@
 import React from "react";
-import { Button } from "react-native-paper";
+import { Button, Colors } from "react-native-paper";
 import { ScrollView, View, StyleSheet } from "react-native";
 import { SCREENS as screens } from "../constants/Screens";
 
@@ -15,6 +15,7 @@ export default function Nav({ navigation }: any) {
           key={screen.name}
           onPress={() => pressHandler(screen.name)}
           style={styles.button}
+          color={Colors.blue500}
         >
           {screen.name}
         </Button>
@@ -28,7 +29,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   button: {
-    width: "50%",
+    width: "60%",
     alignSelf: "center",
     marginTop: 20,
   },

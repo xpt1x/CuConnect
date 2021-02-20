@@ -1,7 +1,7 @@
 import React from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
-import { StyleSheet } from "react-native";
+import { StyleSheet, View } from "react-native";
 import {
   Provider as PaperProvider,
   DarkTheme as PaperDarkTheme,
@@ -25,20 +25,20 @@ const CombinedDarkTheme = {
 };
 function App() {
   return (
-    <>
+    <View style={styles.container}>
       <Main />
       <StatusBar style="light" />
-    </>
+    </View>
   );
 }
 
 export default () => (
   <SafeAreaProvider>
-    <NavigationContainer theme={CombinedDarkTheme}>
-      <PaperProvider theme={CombinedDarkTheme}>
+    <PaperProvider theme={CombinedDarkTheme}>
+      <NavigationContainer theme={CombinedDarkTheme}>
         <App />
-      </PaperProvider>
-    </NavigationContainer>
+      </NavigationContainer>
+    </PaperProvider>
   </SafeAreaProvider>
 );
 
@@ -46,7 +46,5 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: "#000000",
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
   },
 });

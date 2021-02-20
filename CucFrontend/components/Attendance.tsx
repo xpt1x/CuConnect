@@ -1,15 +1,24 @@
 import React from "react";
-import { StyleSheet, View, ScrollView } from "react-native";
+import { StyleSheet, ScrollView } from "react-native";
 import AttendanceCard from "./AttendanceCard";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ATTENDANCE } from "../placeholder/attendance";
+import { NavigationStackProp } from "react-navigation-stack";
 
-export default function Attendance() {
+interface Props {
+  navigation?: NavigationStackProp;
+}
+
+export default function Attendance({ navigation }: Props) {
   return (
     <SafeAreaView>
       <ScrollView style={styles.container}>
-        {ATTENDANCE.map((subject) => (
-          <AttendanceCard attendance={subject} />
+        {ATTENDANCE.map((subject, idx) => (
+          <AttendanceCard
+            attendance={subject}
+            key={idx}
+            navigation={navigation}
+          />
         ))}
       </ScrollView>
     </SafeAreaView>
