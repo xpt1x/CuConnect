@@ -17,7 +17,7 @@ ENDPOINTS = {
 # Workaround fix for new url
 ATTENDANCE_STATIC_EXTRA = "?type=etgkYfqBdH1fSfc255iYGw=="
 ERROR_HEAD = "Whoops, Something broke!"
-headers = {"Content-Type": "application/json"}
+HEADERS = {"Content-Type": "application/json"}
 
 
 class SessionUIMS:
@@ -32,8 +32,8 @@ class SessionUIMS:
         self._timetable = None
         self._marks = None
         self._available_sessions = None
-        self._reportId = None
-        self._sessionId = None
+        self._report_id = None
+        self._session_id = None
         self._full_name = None
 
     def _login(self):
@@ -207,8 +207,8 @@ class SessionUIMS:
         session_block_end = session_block + response.text[session_block:].find(")")
         current_session_id = response.text[session_block_origin + 1 : session_block_end]
 
-        if not self._sessionId:
-            self._sessionId = current_session_id
+        if not self._session_id:
+            self._session_id = current_session_id
         # We now scrape for the uniquely generated report ID for the current UIMS session
         # in the above returned response
 
@@ -226,8 +226,8 @@ class SessionUIMS:
             initial_quotation_mark + 1 : ending_quotation_mark + 1
         ]
 
-        if not self._reportId:
-            self._reportId = report_id
+        if not self._report_id:
+            self._report_id = report_id
         # On intercepting the requests made by my browser, I found that this URL returns the
         # attendance information in JSON format
         report_url = attendance_url + "/GetReport"
@@ -236,7 +236,7 @@ class SessionUIMS:
         # to replicate the web-browser intercepted request using python requests by passing
         # the following fields
         data = "{UID:'" + report_id + "',Session:'" + current_session_id + "'}"
-        response = requests.post(report_url, headers=headers, data=data)
+        response = requests.post(report_url, headers=HEADERS, data=data)
         # We then return the extracted JSON content
         attendance = json.loads(response.text)["d"]
         return json.loads(attendance)
@@ -262,14 +262,14 @@ class SessionUIMS:
                 "{course:'"
                 + subect["EncryptCode"]
                 + "',UID:'"
-                + self._reportId
+                + self._report_id
                 + "',fromDate: '',toDate:''"
                 + ",type:'All'"
                 + ",Session:'"
-                + self._sessionId
+                + self._session_id
                 + "'}"
             )
-            response = requests.post(full_report_url, headers=headers, data=data)
+            response = requests.post(full_report_url, headers=HEADERS, data=data)
             # removing all esc sequence chars
             subect["FullAttendanceReport"] = json.loads(json.loads(response.text)["d"])
         return attendance
@@ -409,13 +409,13 @@ class SessionUIMS:
         annoucement_url = AUTHENTICATE_URL + ENDPOINTS["Announcements"]
         data = "{Category:'ALL', PageNumber:'" + str(page) + "', FilterText:''}"
         response = requests.post(
-            annoucement_url, cookies=self.cookies, headers=headers, data=data
+            annoucement_url, cookies=self.cookies, headers=HEADERS, data=data
         )
         parsable_html = self.parasable_form(response.text)
         soup = BeautifulSoup(parsable_html, "html.parser")
 
         annoucement_divs = soup.find_all("div", {"class": "announcement-thumbnail"})
-        return self.extract_message(annoucement_divs, headers)
+        return self.extract_message(annoucement_divs, HEADERS)
 
     def parasable_form(self, html):
 
