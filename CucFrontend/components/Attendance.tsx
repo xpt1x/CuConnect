@@ -3,11 +3,7 @@ import { StyleSheet, ScrollView } from "react-native";
 import AttendanceCard from "./AttendanceCard";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ATTENDANCE } from "../placeholder/attendance";
-import { createStackNavigator } from "@react-navigation/stack";
-import DetailedAttendance from "./DetailedAttendance";
 import { NavigationStackProp } from "react-navigation-stack";
-
-const Stack = createStackNavigator();
 
 interface Props {
   navigation?: NavigationStackProp;

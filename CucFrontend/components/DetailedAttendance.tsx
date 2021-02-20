@@ -17,12 +17,13 @@ export default function DetailedAttendance() {
   const _handleMore = () => console.log("Shown more");
   return (
     <View>
-      <Appbar.Header>
-        <Appbar.BackAction onPress={_goBack} />
-        <Appbar.Content title="JavaScript" subtitle="[TDY-414]" />
-      </Appbar.Header>
       <ProgressBar progress={0.8} color={Colors.green500} />
-      <Avatar.Text size={200} label="90%" />
+      <Avatar.Text
+        style={styles.percentCircle}
+        labelStyle={styles.percent}
+        size={150}
+        label="90%"
+      />
       <ScrollView style={styles.container}>
         <Surface style={styles.surface}>
           <DataTable>
@@ -57,5 +58,13 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     elevation: 4,
     marginHorizontal: "auto",
+  },
+  percentCircle: {
+    alignSelf: "center",
+    marginVertical: "15%",
+    // backgroundColor: "green500",
+  },
+  percent: {
+    fontSize: 50,
   },
 });

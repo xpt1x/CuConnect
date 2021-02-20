@@ -39,9 +39,11 @@ interface Props {
   navigation?: NavigationStackProp;
 }
 export default function AttendanceCard({ attendance, navigation }: Props) {
-  const cardPress = () => {
-    navigation.navigate("DetailedAttendance");
-  }; // Show detailed attendance here
+  const cardPress = (headerName: string) => {
+    navigation.push("Detailed Attendance", {
+      headerName: headerName,
+    });
+  };
 
   function setColor(percentage: number) {
     if (percentage >= 90) return Colors.green500;
@@ -58,7 +60,7 @@ export default function AttendanceCard({ attendance, navigation }: Props) {
     //   <Text category="s1">Total Attended: 2</Text>
     //   <Text category="s1">Total Delivered: 2</Text>
     // </Card>
-    <Card style={styles.card} onPress={cardPress}>
+    <Card style={styles.card} onPress={() => cardPress(attendance.Title)}>
       <Card.Title title={attendance.Title} subtitle={`[${attendance.Code}]`} />
       <Card.Content>
         <Text>Atended : {attendance.Total_Attd}</Text>
