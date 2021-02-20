@@ -1,6 +1,5 @@
 import React from "react";
 import {
-  Appbar,
   ProgressBar,
   Colors,
   Surface,
@@ -8,38 +7,52 @@ import {
   Avatar,
 } from "react-native-paper";
 import { StyleSheet, ScrollView, View } from "react-native";
+import { ProgressCircle } from "react-native-svg-charts";
+
+let infoRow = () => {
+  return (
+    <DataTable.Row>
+      <DataTable.Cell>Frozen yogurt</DataTable.Cell>
+      <DataTable.Cell numeric>159 / 200</DataTable.Cell>
+    </DataTable.Row>
+  );
+};
 
 export default function DetailedAttendance() {
-  const _goBack = () => console.log("Went back");
-
-  const _handleSearch = () => console.log("Searching");
-
-  const _handleMore = () => console.log("Shown more");
   return (
-    <View>
+    <>
       <ProgressBar progress={0.8} color={Colors.green500} />
-      <Avatar.Text
-        style={styles.percentCircle}
-        labelStyle={styles.percent}
-        size={150}
-        label="90%"
-      />
+
       <ScrollView style={styles.container}>
+        <Avatar.Text
+          style={styles.percentCircle}
+          labelStyle={styles.percent}
+          size={150}
+          label="90%"
+        />
+        <ProgressCircle
+          style={{ height: 100 }}
+          progress={0.7}
+          progressColor={Colors.purple400}
+        />
         <Surface style={styles.surface}>
           <DataTable>
-            <DataTable.Row>
-              <DataTable.Cell>Frozen yogurt</DataTable.Cell>
-              <DataTable.Cell numeric>159 / 200</DataTable.Cell>
-            </DataTable.Row>
-
-            <DataTable.Row>
-              <DataTable.Cell>Ice cream sandwich</DataTable.Cell>
-              <DataTable.Cell numeric>237 / 400</DataTable.Cell>
-            </DataTable.Row>
+            {infoRow()}
+            {infoRow()}
+            {infoRow()}
+            {infoRow()}
+            {infoRow()}
+            {infoRow()}
+            {infoRow()}
+            {infoRow()}
+            {infoRow()}
+            {infoRow()}
+            {infoRow()}
+            {infoRow()}
           </DataTable>
         </Surface>
       </ScrollView>
-    </View>
+    </>
   );
 }
 const styles = StyleSheet.create({
@@ -62,7 +75,6 @@ const styles = StyleSheet.create({
   percentCircle: {
     alignSelf: "center",
     marginVertical: "15%",
-    // backgroundColor: "green500",
   },
   percent: {
     fontSize: 50,

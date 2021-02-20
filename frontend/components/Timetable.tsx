@@ -4,6 +4,8 @@ import DaySelector from "./DaySelector";
 import LectureCard from "./LectureCard";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { TIMETABLE } from "../placeholder/timetable";
+import { VictoryBar } from "victory-native";
+
 interface Props {
   style: object;
 }
