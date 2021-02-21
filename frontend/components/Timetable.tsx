@@ -7,33 +7,31 @@ import { TIMETABLE } from "../placeholder/timetable";
 import { observer } from "mobx-react-lite";
 import { TimeTableStoreContext } from "../mobx/contexts";
 
-interface Props {
-  style: object;
-}
-
-const DayMap = {
-  1: "Mon",
-  2: "Tue",
-  3: "Wed",
-  4: "Thu",
-  5: "Fri",
-  6: "Sat",
-  7: "Sun",
-};
+const DayMap = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
 export const Timetable = observer(() => {
   const TimeTableStore = useContext(TimeTableStoreContext);
+
+  const TT =
+    TIMETABLE[DayMap[TimeTableStore.currentDay]] !== undefined
+      ? TIMETABLE[DayMap[TimeTableStore.currentDay]]
+      : { "#": "#" };
+  const keys = Object.keys(TT).sort();
+
   return (
     <SafeAreaView>
       <View style={styles.container}>
         <ScrollView>
-          {Object.keys(TIMETABLE[DayMap[TimeTableStore.currentDay]]).map(
-            (lecture) => (
+          {keys.map((lectureTime, idx, arr) => {
+            return (
               <LectureCard
-                lecture={TIMETABLE[DayMap[TimeTableStore.currentDay]][lecture]}
+                key={idx}
+                lecture={TT[lectureTime]}
+                time={lectureTime.toString()}
+                holiday={arr[0] === "#"}
               />
-            )
-          )}
+            );
+          })}
         </ScrollView>
         <DaySelector />
       </View>
@@ -42,9 +40,8 @@ export const Timetable = observer(() => {
 });
 const styles = StyleSheet.create({
   container: {
-    // display: "flex",
-    // flexDirection: "column",
     width: "100%",
+    height: "100%",
   },
 });
 

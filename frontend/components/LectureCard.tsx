@@ -1,35 +1,59 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import {
-  Avatar,
-  Button,
-  Card,
-  Title,
-  Paragraph,
-  Text,
-  Badge,
-  Chip,
-} from "react-native-paper";
-const LeftContent = (props: object) => (
-  <Avatar.Icon {...props} icon="alpha-j" />
+import { Avatar, Card, Chip } from "react-native-paper";
+
+type Lecture = {
+  title: string;
+  type: string;
+  group: string;
+  teacher: string;
+};
+
+interface LectureCardProps {
+  lecture: Lecture | null;
+  time: string;
+  holiday: boolean;
+}
+
+interface ContentProps {
+  obj: string | null;
+}
+
+const LeftContent = ({ obj, ...props }: ContentProps) => (
+  <Avatar.Icon {...props} icon={obj ? `alpha-${obj}` : "star-face"} />
 );
 
-export default function LectureCard({ lecture }) {
-  return (
-    <>
-      <Card style={styles.card}>
-        <Card.Title title={lecture.title} subtitle="Vtrix" left={LeftContent} />
+export default function LectureCard({
+  lecture,
+  time,
+  holiday,
+}: LectureCardProps) {
+  return lecture !== null ? (
+    <Card style={styles.card}>
+      <Card.Title
+        title={holiday ? "Wohoooooo!" : lecture.title}
+        subtitle={holiday ? "No classes today" : lecture.teacher}
+        left={(props) =>
+          LeftContent({
+            obj: holiday ? null : lecture.title[0].toLowerCase(),
+            ...props,
+          })
+        }
+        titleNumberOfLines={2}
+        titleStyle={styles.cardTitle}
+      />
+      {holiday ? null : (
         <Card.Content style={styles.cardContent}>
           <Chip style={styles.time} icon="clock">
-            {lecture}
+            {time}
           </Chip>
           <Chip mode="outlined" style={styles.lecType}>
             {lecture.type}
           </Chip>
         </Card.Content>
-      </Card>
-    </>
-  );
+      )}
+    </Card>
+  ) : null;
 }
 const styles = StyleSheet.create({
   card: {
@@ -45,13 +69,19 @@ const styles = StyleSheet.create({
   },
   time: {
     margin: 7,
-    width: "55%",
+    // width: "55%",
   },
   lecType: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
     margin: 7,
-    width: "25%",
+    // width: "25%",
+  },
+  cardTitle: {
+    fontSize: 18,
+    width: "90%",
+    lineHeight: 22,
+    marginTop: 10,
   },
 });

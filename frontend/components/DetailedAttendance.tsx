@@ -4,7 +4,7 @@ import {
   Colors,
   Surface,
   DataTable,
-  Avatar,
+  Headline,
 } from "react-native-paper";
 import { StyleSheet, ScrollView, View } from "react-native";
 import { ProgressCircle } from "react-native-svg-charts";
@@ -24,17 +24,13 @@ export default function DetailedAttendance() {
       <ProgressBar progress={0.8} color={Colors.green500} />
 
       <ScrollView style={styles.container}>
-        <Avatar.Text
-          style={styles.percentCircle}
-          labelStyle={styles.percent}
-          size={150}
-          label="90%"
-        />
-        <ProgressCircle
+        <Headline>90%</Headline>
+
+        {/* <ProgressCircle
           style={{ height: 100 }}
           progress={0.7}
           progressColor={Colors.purple400}
-        />
+        /> */}
         <Surface style={styles.surface}>
           <DataTable>
             {infoRow()}
@@ -73,10 +69,11 @@ const styles = StyleSheet.create({
     marginHorizontal: "auto",
   },
   percentCircle: {
-    alignSelf: "center",
-    marginVertical: "15%",
-  },
-  percent: {
+    // alignSelf: "center",
+    padding: "7%",
+    // marginVertical: "15%",
+    color: "white",
+    marginHorizontal: "5%",
     fontSize: 50,
   },
 });
