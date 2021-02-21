@@ -14,17 +14,17 @@ const LeftContent = (props: object) => (
   <Avatar.Icon {...props} icon="alpha-j" />
 );
 
-export default function LectureCard(params: object) {
+export default function LectureCard(props: object) {
   return (
     <>
       <Card style={styles.card}>
-        <Card.Title title="JavaScript" subtitle="Vtrix" left={LeftContent} />
+        <Card.Title title={props.title} subtitle="Vtrix" left={LeftContent} />
         <Card.Content style={styles.cardContent}>
           <Chip style={styles.time} icon="clock">
             10:30 - 11:30 AM
           </Chip>
           <Chip mode="outlined" style={styles.lecType}>
-            Lecture
+            {props.type}
           </Chip>
         </Card.Content>
       </Card>
