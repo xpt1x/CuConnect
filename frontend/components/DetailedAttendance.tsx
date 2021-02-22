@@ -4,7 +4,7 @@ import {
   Colors,
   Surface,
   DataTable,
-  Headline,
+  Chip,
   Text,
 } from "react-native-paper";
 import { StyleSheet, ScrollView, View } from "react-native";
@@ -13,8 +13,8 @@ import { AnimatedCircularProgress } from "react-native-circular-progress";
 let infoRow = () => {
   return (
     <DataTable.Row>
-      <DataTable.Cell>Frozen yogurt</DataTable.Cell>
-      <DataTable.Cell numeric>159 / 200</DataTable.Cell>
+      <DataTable.Cell>Required To Hit 75%</DataTable.Cell>
+      <DataTable.Cell numeric>6</DataTable.Cell>
     </DataTable.Row>
   );
 };
@@ -25,17 +25,21 @@ export default function DetailedAttendance() {
       <ProgressBar progress={0.8} color={Colors.green500} />
 
       <ScrollView style={styles.container}>
-        {/* <AnimatedCircularProgress
-          style={styles.circularProgress}
-          size={100}
-          width={3}
-          fill={90}
-          tintColor={Colors.blue500}
-          backgroundColor="#3d5875"
-        >
-          {() => <Text style={styles.circularLabel}>90%</Text>}
-        </AnimatedCircularProgress> */}
         <Surface style={styles.surface}>
+          <Chip textStyle={styles.chipText} style={styles.chip}>
+            8/10
+          </Chip>
+          <AnimatedCircularProgress
+            style={styles.cardPercent}
+            size={110}
+            width={9}
+            fill={86}
+            tintColor={"green"}
+            backgroundColor="#3d5875"
+          >
+            {() => <Text style={styles.percentText}>90%</Text>}
+          </AnimatedCircularProgress>
+
           <DataTable>
             {infoRow()}
             {infoRow()}
@@ -72,19 +76,21 @@ const styles = StyleSheet.create({
     elevation: 4,
     marginHorizontal: "auto",
   },
-  percentCircle: {
-    // alignSelf: "center",
-    padding: "7%",
-    // marginVertical: "15%",
-    color: "white",
-    marginHorizontal: "5%",
-    fontSize: 50,
+  chip: {
+    marginBottom: "4%",
+    marginTop: "2%",
+    marginRight: "5%",
+    alignSelf: "flex-end",
   },
-  circularLabel: {
+  chipText: {
+    fontSize: 18,
+  },
+  cardPercent: {
+    alignSelf: "center",
+    marginBottom: "18%",
+    marginTop: "2%",
+  },
+  percentText: {
     fontSize: 20,
-  },
-  circularProgress: {
-    display: "flex",
-    justifyContent: "center",
   },
 });

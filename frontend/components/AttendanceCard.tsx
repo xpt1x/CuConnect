@@ -116,6 +116,5 @@ const styles = StyleSheet.create({
     // marginRight: "1%",
     // marginBottom: 1,
     // fontWeight: "bold",
-    fontSize: 25,
   },
 });
