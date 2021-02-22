@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import { Avatar, Card, Chip } from "react-native-paper";
+import { Avatar, Card, Chip, Divider } from "react-native-paper";
 
 type Lecture = {
   title: string;
@@ -53,7 +53,9 @@ export default function LectureCard({
         </Card.Content>
       )}
     </Card>
-  ) : null;
+  ) : (
+    <Divider />
+  );
 }
 const styles = StyleSheet.create({
   card: {

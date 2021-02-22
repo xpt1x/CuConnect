@@ -1,7 +1,15 @@
 import React, { FunctionComponent } from "react";
-import { StyleSheet } from "react-native";
-import { Button, Card, ProgressBar, Colors, Text } from "react-native-paper";
+import { StyleSheet, View } from "react-native";
+import {
+  Button,
+  Card,
+  ProgressBar,
+  Colors,
+  Text,
+  Surface,
+} from "react-native-paper";
 import { NavigationStackProp } from "react-navigation-stack";
+import { AnimatedCircularProgress } from "react-native-circular-progress";
 
 interface Subject {
   UId: string;
@@ -51,25 +59,25 @@ export default function AttendanceCard({ attendance, navigation }: Props) {
     else return Colors.red500;
   }
   return (
-    // <Card
-    //   header={Header}
-    //   style={styles.card}
-    //   status="success"
-    //   appearance="filled"
-    // >
-    //   <Text category="s1">Total Attended: 2</Text>
-    //   <Text category="s1">Total Delivered: 2</Text>
-    // </Card>
     <Card style={styles.card} onPress={() => cardPress(attendance.Title)}>
       <Card.Title title={attendance.Title} subtitle={`[${attendance.Code}]`} />
       <Card.Content>
         <Text>Atended : {attendance.Total_Attd}</Text>
         <Text>Delivered : {attendance.Total_Delv}</Text>
-      </Card.Content>
-      <Card.Content>
-        <Text style={styles.cardPercent}>
-          {attendance.Total_Delv == 0 ? "N/A" : attendance.Total_Perc}%
-        </Text>
+        <AnimatedCircularProgress
+          style={styles.cardPercent}
+          size={60}
+          width={3}
+          fill={attendance.Total_Perc}
+          tintColor={setColor(attendance.Total_Perc)}
+          backgroundColor="#3d5875"
+        >
+          {() => (
+            <Text>
+              {attendance.Total_Delv == 0 ? "N/A" : attendance.Total_Perc}%
+            </Text>
+          )}
+        </AnimatedCircularProgress>
       </Card.Content>
       <ProgressBar
         style={styles.progressBar}
@@ -103,7 +111,8 @@ const styles = StyleSheet.create({
   cardPercent: {
     marginLeft: "auto",
     // color: "#77E666",
-    marginTop: "-11%",
+    marginTop: "-18%",
+    paddingBottom: "2%",
     // marginRight: "1%",
     // marginBottom: 1,
     // fontWeight: "bold",

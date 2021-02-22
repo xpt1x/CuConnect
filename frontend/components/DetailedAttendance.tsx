@@ -5,9 +5,10 @@ import {
   Surface,
   DataTable,
   Headline,
+  Text,
 } from "react-native-paper";
 import { StyleSheet, ScrollView, View } from "react-native";
-import { ProgressCircle } from "react-native-svg-charts";
+import { AnimatedCircularProgress } from "react-native-circular-progress";
 
 let infoRow = () => {
   return (
@@ -24,13 +25,16 @@ export default function DetailedAttendance() {
       <ProgressBar progress={0.8} color={Colors.green500} />
 
       <ScrollView style={styles.container}>
-        <Headline>90%</Headline>
-
-        {/* <ProgressCircle
-          style={{ height: 100 }}
-          progress={0.7}
-          progressColor={Colors.purple400}
-        /> */}
+        {/* <AnimatedCircularProgress
+          style={styles.circularProgress}
+          size={100}
+          width={3}
+          fill={90}
+          tintColor={Colors.blue500}
+          backgroundColor="#3d5875"
+        >
+          {() => <Text style={styles.circularLabel}>90%</Text>}
+        </AnimatedCircularProgress> */}
         <Surface style={styles.surface}>
           <DataTable>
             {infoRow()}
@@ -75,5 +79,12 @@ const styles = StyleSheet.create({
     color: "white",
     marginHorizontal: "5%",
     fontSize: 50,
+  },
+  circularLabel: {
+    fontSize: 20,
+  },
+  circularProgress: {
+    display: "flex",
+    justifyContent: "center",
   },
 });
