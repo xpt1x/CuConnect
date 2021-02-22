@@ -8,8 +8,9 @@ import {
   List,
   Text,
 } from "react-native-paper";
-import { StyleSheet, ScrollView, View } from "react-native";
+import { StyleSheet, ScrollView } from "react-native";
 import { AnimatedCircularProgress } from "react-native-circular-progress";
+import Calendar from "./Calendar";
 
 let infoRow = () => {
   return (
@@ -32,8 +33,7 @@ let calendar = () => {
         expanded={expanded}
         onPress={handlePress}
       >
-        {/* Add calender component here */}
-        <Text style={styles.calendarAccordionItem}>Days</Text>
+        <Calendar />
       </List.Accordion>
     </List.Section>
   );
