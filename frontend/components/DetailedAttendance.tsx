@@ -5,6 +5,7 @@ import {
   Surface,
   DataTable,
   Chip,
+  List,
   Text,
 } from "react-native-paper";
 import { StyleSheet, ScrollView, View } from "react-native";
@@ -19,6 +20,24 @@ let infoRow = () => {
   );
 };
 
+let calendar = () => {
+  const [expanded, setExpanded] = React.useState(true);
+  const handlePress = () => setExpanded(!expanded);
+
+  return (
+    <List.Section style={styles.calendarSection}>
+      <List.Accordion
+        title="Calendar"
+        left={(props) => <List.Icon {...props} icon="calendar" />}
+        expanded={expanded}
+        onPress={handlePress}
+      >
+        {/* Add calender component here */}
+        <Text style={styles.calendarAccordionItem}>Days</Text>
+      </List.Accordion>
+    </List.Section>
+  );
+};
 export default function DetailedAttendance() {
   return (
     <>
@@ -39,7 +58,7 @@ export default function DetailedAttendance() {
           >
             {() => <Text style={styles.percentText}>90%</Text>}
           </AnimatedCircularProgress>
-
+          {calendar()}
           <DataTable>
             {infoRow()}
             {infoRow()}
@@ -75,6 +94,14 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     elevation: 4,
     marginHorizontal: "auto",
+  },
+  calendarSection: {
+    width: "112%",
+  },
+  calendarAccordionItem: {
+    backgroundColor: "grey",
+    // change background color
+    height: 50,
   },
   chip: {
     marginBottom: "4%",
