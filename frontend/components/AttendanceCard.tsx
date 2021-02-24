@@ -49,7 +49,7 @@ interface Props {
 export default function AttendanceCard({ attendance, navigation }: Props) {
   const cardPress = (headerName: string) => {
     navigation.push("Detailed Attendance", {
-      headerName: headerName,
+      subject: headerName,
     });
   };
 
@@ -60,7 +60,11 @@ export default function AttendanceCard({ attendance, navigation }: Props) {
   }
   return (
     <Card style={styles.card} onPress={() => cardPress(attendance.Title)}>
-      <Card.Title title={attendance.Title} subtitle={`[${attendance.Code}]`} />
+      <Card.Title
+        title={attendance.Title}
+        subtitle={`[${attendance.Code}]`}
+        titleNumberOfLines={2}
+      />
       <Card.Content>
         <Text>Atended : {attendance.Total_Attd}</Text>
         <Text>Delivered : {attendance.Total_Delv}</Text>

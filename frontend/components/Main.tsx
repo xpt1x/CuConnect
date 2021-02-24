@@ -1,54 +1,22 @@
 import React from "react";
 import DetailedAttendance from "./DetailedAttendance";
-import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
+import {
+  createMaterialTopTabNavigator,
+  MaterialTopTabBarProps,
+  MaterialTopTabNavigationProp,
+  MaterialTopTabScreenProps,
+} from "@react-navigation/material-top-tabs";
 import { SCREENS as screens } from "../constants/Screens";
 import { IconButton } from "react-native-paper";
 import { StackNavigationProp } from "react-navigation-stack/lib/typescript/src/vendor/types";
-import { Animated } from "react-native";
+import { StyleSheet } from "react-native";
 import {
   createStackNavigator,
-  StackCardInterpolatedStyle,
-  StackCardInterpolationProps,
   CardStyleInterpolators,
 } from "@react-navigation/stack";
+import { MaterialBottomTabNavigationProp } from "@react-navigation/material-bottom-tabs/lib/typescript/src/types";
 
 const Stack = createStackNavigator();
-
-// const horizontalAnimation = ({
-//   current,
-//   layouts,
-//   inverted,
-// }: StackCardInterpolationProps): StackCardInterpolatedStyle => {
-//   const translateFocused = Animated.multiply(
-//     current.progress.interpolate({
-//       inputRange: [0, 1],
-//       outputRange: [layouts.screen.width, 0],
-//       extrapolate: "clamp",
-//     }),
-//     inverted
-//   );
-
-//   const overlayOpacity = current.progress.interpolate({
-//     inputRange: [0, 1],
-//     outputRange: [0, 0.07],
-//     extrapolate: "clamp",
-//   });
-
-//   const shadowOpacity = current.progress.interpolate({
-//     inputRange: [0, 1],
-//     outputRange: [0, 0.3],
-//     extrapolate: "clamp",
-//   });
-
-//   return {
-//     cardStyle: {
-//       transform: [{ translateX: translateFocused }, { translateX: 0 }],
-//     },
-//     overlayStyle: { opacity: overlayOpacity },
-//     shadowStyle: { shadowOpacity },
-//   };
-// };
-
 const navigatorProps: StackNavigationProp = {
   initialRouteName: "Nav",
   mode: "card",
@@ -66,28 +34,36 @@ const navigatorProps: StackNavigationProp = {
     gestureEnabled: true,
     gestureDirection: "horizontal",
     gestureResponseDistance: {
-      horizontal: 400,
+      horizontal: 100,
     },
   },
 };
 
-const BottomNav = createMaterialBottomTabNavigator();
+const BottomNav = createMaterialTopTabNavigator();
+const styles = StyleSheet.create({
+  tabStyle: {
+    height: 55,
+    backgroundColor: "#000000",
+  },
+});
+
+const TabProps = {
+  initialRouteName: "Attendance",
+  backBehavior: "initialRoute",
+  tabBarPosition: "bottom",
+  tabBarOptions: {
+    showIcon: true,
+    showLabel: false,
+    tabStyle: styles.tabStyle,
+  },
+};
 const BottomNavComponent = () => (
-  <BottomNav.Navigator {...BottomNavProps}>
+  <BottomNav.Navigator {...TabProps}>
     {screens.map((screen, idx) => (
       <BottomNav.Screen {...screen} key={idx} />
     ))}
   </BottomNav.Navigator>
 );
-
-const BottomNavProps = {
-  initialRouteName: "Attendance",
-  shifting: true,
-  labeled: false,
-  barStyle: {
-    backgroundColor: "#000000",
-  },
-};
 
 export default function Main() {
   return (
@@ -97,7 +73,7 @@ export default function Main() {
           name="Detailed Attendance"
           component={DetailedAttendance}
           options={({ route }) => ({
-            title: route.params.headerName,
+            title: route.params ? route.params.subject : route.name,
           })}
         />
         <Stack.Screen

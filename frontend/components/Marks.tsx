@@ -3,15 +3,12 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { MARKS } from "../placeholder/marks";
 import { StyleSheet, ScrollView, View } from "react-native";
 import MarksCard from "./MarksCard";
-import { Appbar } from "react-native-paper";
 
 const Marks = () => {
+  MARKS.sort((obj1, obj2) => obj1.name > obj2.name);
   return (
-    <View>
+    <SafeAreaView>
       <ScrollView style={styles.container}>
-        <Appbar.Header style={styles.appbar}>
-          <Appbar.Content title="Marks" />
-        </Appbar.Header>
         {MARKS.map((data, idx) => (
           <MarksCard
             name={data.name.substring(0, data.name.lastIndexOf("("))}
@@ -19,11 +16,12 @@ const Marks = () => {
               data.name.lastIndexOf("(") + 1,
               data.name.lastIndexOf(")")
             )}
+            marks={data.marks}
             key={idx}
           />
         ))}
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 };
 export default Marks;
@@ -34,7 +32,7 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   appbar: {
-    backgroundColor: "#000000",
+    backgroundColor: "#1C95FF",
   },
   scrollContainer: {
     width: "100%",

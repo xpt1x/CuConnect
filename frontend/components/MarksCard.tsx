@@ -1,12 +1,36 @@
 import React from "react";
-import { Card, Title, Paragraph } from "react-native-paper";
+import { Card, Avatar, Text } from "react-native-paper";
 import { StyleSheet } from "react-native";
+
+type ElementMarks = {
+  element: string;
+  obtained: string;
+  total: string;
+};
 interface Props {
   name: string;
   subCode: string;
+  marks: ReadonlyArray<ElementMarks>;
   // navigation?: NavigationStackProp;
 }
-export default function MarksCard({ name, subCode /*, navigation */ }: Props) {
+
+const emojiType = (elementMarks: ReadonlyArray<ElementMarks>): string => {
+  let totalSum = 0.0,
+    obtainedSum = 0.0;
+  elementMarks.forEach((element) => {
+    totalSum += parseFloat(element.total);
+    obtainedSum += parseFloat(element.obtained);
+  });
+  console.log(`${obtainedSum}/${totalSum}`);
+  if (obtainedSum >= totalSum / 2) return "emoticon";
+  return "emoticon-sad";
+};
+
+export default function MarksCard({
+  name,
+  subCode,
+  marks /*, navigation */,
+}: Props) {
   const cardPress = (headerName: string) => {
     // navigation.push("Detailed Attendance", {
     //   headerName: headerName,
@@ -15,9 +39,14 @@ export default function MarksCard({ name, subCode /*, navigation */ }: Props) {
 
   return (
     <Card style={styles.card} onPress={() => cardPress(name)}>
+      <Card.Title
+        title={name}
+        subtitle={`[${subCode}]`}
+        titleNumberOfLines={2}
+        style={{ width: "85%" }}
+      />
       <Card.Content>
-        <Title>{name}</Title>
-        <Paragraph>{`[${subCode}]`}</Paragraph>
+        <Avatar.Icon style={styles.emoji} size={36} icon={emojiType(marks)} />
       </Card.Content>
     </Card>
   );
@@ -30,5 +59,9 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     alignSelf: "center",
     overflow: "hidden",
+  },
+  emoji: {
+    marginLeft: "auto",
+    marginTop: "-10%",
   },
 });

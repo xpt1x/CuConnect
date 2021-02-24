@@ -21,20 +21,19 @@ let infoRow = () => {
   );
 };
 
-let calendar = () => {
-  const [expanded, setExpanded] = React.useState(true);
+const calendar = () => {
+  const [expanded, setExpanded] = React.useState(false);
   const handlePress = () => setExpanded(!expanded);
 
   return (
     <List.Section style={styles.calendarSection}>
+      <Calendar />
       <List.Accordion
         title="Calendar"
         left={(props) => <List.Icon {...props} icon="calendar" />}
         expanded={expanded}
         onPress={handlePress}
-      >
-        <Calendar />
-      </List.Accordion>
+      ></List.Accordion>
     </List.Section>
   );
 };
@@ -46,14 +45,14 @@ export default function DetailedAttendance() {
       <ScrollView style={styles.container}>
         <Surface style={styles.surface}>
           <Chip textStyle={styles.chipText} style={styles.chip}>
-            8/10
+            9/10
           </Chip>
           <AnimatedCircularProgress
             style={styles.cardPercent}
             size={110}
             width={9}
             fill={86}
-            tintColor={"green"}
+            tintColor={Colors.greenA700}
             backgroundColor="#3d5875"
           >
             {() => <Text style={styles.percentText}>90%</Text>}
@@ -97,6 +96,7 @@ const styles = StyleSheet.create({
   },
   calendarSection: {
     width: "112%",
+    marginBottom: "4%",
   },
   calendarAccordionItem: {
     backgroundColor: "grey",
