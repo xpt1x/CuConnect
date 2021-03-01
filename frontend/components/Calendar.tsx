@@ -1,12 +1,12 @@
 import React from "react";
-import { StyleSheet, View, ScrollView } from "react-native";
-import { Surface, Title, Text, Colors, Chip } from "react-native-paper";
+import { StyleSheet, ScrollView } from "react-native";
+import { Surface, Title, Text, Colors } from "react-native-paper";
 
 export default function Calendar() {
   const [month, setMonth] = React.useState("January, 2021");
 
   return (
-    <View>
+    <>
       <ScrollView horizontal={true} style={styles.calender}>
         <Surface style={[styles.surface, styles.green]}>
           <Title>25</Title>
@@ -42,7 +42,7 @@ export default function Calendar() {
         </Surface>
       </ScrollView>
       <Title style={styles.title}>{month}</Title>
-    </View>
+    </>
   );
 }
 
@@ -64,7 +64,9 @@ const styles = StyleSheet.create({
 
   title: {
     // marginLeft: 15,
+    marginRight: "auto",
     marginHorizontal: 15,
+    marginBottom: 12,
   },
   green: {
     backgroundColor: Colors.green800,
@@ -74,6 +76,7 @@ const styles = StyleSheet.create({
   },
   calender: {
     paddingBottom: 15,
+    width: "111%",
     paddingTop: 15,
   },
 });

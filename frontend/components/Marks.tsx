@@ -4,7 +4,7 @@ import { MARKS } from "../placeholder/marks";
 import { StyleSheet, ScrollView, View } from "react-native";
 import MarksCard from "./MarksCard";
 
-const Marks = () => {
+const Marks = ({ navigation }) => {
   MARKS.sort((obj1, obj2) => obj1.name > obj2.name);
   return (
     <SafeAreaView>
@@ -18,6 +18,7 @@ const Marks = () => {
             )}
             marks={data.marks}
             key={idx}
+            navigation={navigation}
           />
         ))}
       </ScrollView>

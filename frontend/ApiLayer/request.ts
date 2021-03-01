@@ -1,58 +1,62 @@
-export interface RequestInterface {
-  baseUrl: string;
+export interface PromiseInterface {
+  ok: boolean;
+  error?: string;
+  sysError?: string | boolean;
+  data?: any;
 }
 
-export class Request {
+export default class Request {
   baseUrl: string;
   constructor(baseUrl: string) {
     this.baseUrl = baseUrl;
   }
-  get(route: string, options: object) {
+  get(route: string, options?: object) {
     return request(this.baseUrl + route, { method: "GET", ...options });
   }
-  post(route: string, options: object) {
+  post(route: string, options?: object) {
     return request(this.baseUrl + route, { method: "POST", ...options });
   }
-  put(route: string, options: object) {
+  put(route: string, options?: object) {
     return request(this.baseUrl + route, { method: "PUT", ...options });
   }
-  delete(route: string, options: object) {
+  delete(route: string, options?: object) {
     return request(this.baseUrl + route, { method: "DELETE", ...options });
   }
-  patch(route: string, options: object) {
+  patch(route: string, options?: object) {
     return request(this.baseUrl + route, { method: "PATCH", ...options });
   }
 }
-function request(url: string, options: object): Promise<object | string> {
-  return fetch(url, options)
-    .then((res) => {
-      if (res.status != 200) {
-        return {
-          ok: false,
-          error: "Whoa! Something doesn't look right.",
-          sysError: `${res.status}: ${res.statusText}`,
-        };
-      }
-      return res.json().then((data) => {
-        if ("error" in data) {
-          return {
-            ok: false,
-            error: data.error,
-            sysError: false,
-          };
-        } else {
-          return {
-            ok: true,
-            ...data,
-          };
-        }
-      });
-    })
-    .catch((error) => {
+async function request(
+  url: string,
+  options?: object
+): Promise<PromiseInterface> {
+  try {
+    const res = await fetch(url, options);
+    if (res.status != 200) {
       return {
-        error: "Whoa! Something doesn't look right.",
-        sysError: error,
         ok: false,
+        error: "Whoa! Something doesn't look right.",
+        sysError: `${res.status}: ${res.statusText}`,
       };
-    });
+    }
+    const data = await res.json();
+    if ("error" in data) {
+      return {
+        ok: false,
+        error: data.error,
+        sysError: false,
+      };
+    } else {
+      return {
+        ok: true,
+        ...data,
+      };
+    }
+  } catch (error) {
+    return {
+      error: "Whoa! Fetch failed",
+      sysError: error,
+      ok: false,
+    };
+  }
 }

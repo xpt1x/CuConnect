@@ -1,11 +1,7 @@
 import React from "react";
 import DetailedAttendance from "./DetailedAttendance";
-import {
-  createMaterialTopTabNavigator,
-  MaterialTopTabBarProps,
-  MaterialTopTabNavigationProp,
-  MaterialTopTabScreenProps,
-} from "@react-navigation/material-top-tabs";
+import DetailedMarks from "./DetailedMarks";
+import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { SCREENS as screens } from "../constants/Screens";
 import { IconButton } from "react-native-paper";
 import { StackNavigationProp } from "react-navigation-stack/lib/typescript/src/vendor/types";
@@ -14,7 +10,7 @@ import {
   createStackNavigator,
   CardStyleInterpolators,
 } from "@react-navigation/stack";
-import { MaterialBottomTabNavigationProp } from "@react-navigation/material-bottom-tabs/lib/typescript/src/types";
+import { Text } from "react-native-paper";
 
 const Stack = createStackNavigator();
 const navigatorProps: StackNavigationProp = {
@@ -65,6 +61,10 @@ const BottomNavComponent = () => (
   </BottomNav.Navigator>
 );
 
+function DetailedMarksRightAccessory(code) {
+  return <Text>{code}</Text>;
+}
+
 export default function Main() {
   return (
     <>
@@ -74,6 +74,17 @@ export default function Main() {
           component={DetailedAttendance}
           options={({ route }) => ({
             title: route.params ? route.params.subject : route.name,
+          })}
+        />
+        <Stack.Screen
+          name="Detailed Marks"
+          component={DetailedMarks}
+          options={({ route }) => ({
+            title: "",
+            headerRight: () =>
+              DetailedMarksRightAccessory(
+                route.params ? route.params.subject : route.name
+              ),
           })}
         />
         <Stack.Screen
