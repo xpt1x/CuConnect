@@ -28,8 +28,9 @@ export default class Request {
 }
 async function request(
   url: string,
-  options?: object
+  options?: RequestInit
 ): Promise<PromiseInterface> {
+  console.log("Request URL: " + url);
   try {
     const res = await fetch(url, options);
     if (res.status != 200) {
@@ -49,7 +50,7 @@ async function request(
     } else {
       return {
         ok: true,
-        ...data,
+        data: data,
       };
     }
   } catch (error) {

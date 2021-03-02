@@ -30,7 +30,7 @@ const navigatorProps: StackNavigationProp = {
     gestureEnabled: true,
     gestureDirection: "horizontal",
     gestureResponseDistance: {
-      horizontal: 100,
+      horizontal: 120,
     },
   },
 };
@@ -62,7 +62,7 @@ const BottomNavComponent = () => (
 );
 
 function DetailedMarksRightAccessory(code) {
-  return <Text>{code}</Text>;
+  return <Text style={{ padding: 24 }}>{code}</Text>;
 }
 
 export default function Main() {

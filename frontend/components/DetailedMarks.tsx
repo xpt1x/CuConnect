@@ -5,8 +5,8 @@ import { Text, StyleSheet, ScrollView } from "react-native";
 let infoRow = () => {
   return (
     <DataTable.Row>
-      <DataTable.Cell>Required To Hit 75%</DataTable.Cell>
-      <DataTable.Cell numeric>6</DataTable.Cell>
+      <DataTable.Cell>Mid-Semester Test-1</DataTable.Cell>
+      <DataTable.Cell numeric>30/40</DataTable.Cell>
     </DataTable.Row>
   );
 };
@@ -14,10 +14,7 @@ let infoRow = () => {
 export default function DetailedMarks() {
   return (
     <>
-      <Text style={{ color: "white", alignSelf: "center", fontSize: 24 }}>
-        {" "}
-        Subject ka naam
-      </Text>
+      <Text style={styles.title}>DESIGN AND ANALYSIS OF ALGORITHMS</Text>
       <ScrollView style={styles.container}>
         <Surface style={styles.surface}>
           <DataTable>
@@ -41,11 +38,7 @@ export default function DetailedMarks() {
 }
 const styles = StyleSheet.create({
   container: {
-    // display: "flex",
-    // flexDirection: "column",
     width: "100%",
-    // justifyContent: "center",
-    // alignItems: "center",
   },
 
   surface: {
@@ -56,22 +49,11 @@ const styles = StyleSheet.create({
     elevation: 4,
     marginHorizontal: "auto",
   },
-
-  chip: {
-    marginBottom: "4%",
-    marginTop: "2%",
-    marginRight: "5%",
-    alignSelf: "flex-end",
-  },
-  chipText: {
-    fontSize: 18,
-  },
-  cardPercent: {
+  title: {
+    padding: 24,
+    color: "white",
     alignSelf: "center",
-    marginBottom: "18%",
-    marginTop: "2%",
-  },
-  percentText: {
-    fontSize: 20,
+    fontSize: 24,
+    marginBottom: 12,
   },
 });

@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { StyleSheet, ScrollView } from "react-native";
 import AttendanceCard from "./AttendanceCard";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { ATTENDANCE } from "../placeholder/attendance";
+import { ProgressBar } from "react-native-paper";
 import { NavigationStackProp } from "react-navigation-stack";
 import Api from "../ApiLayer/Api";
 import { PromiseInterface } from "../ApiLayer/request";
@@ -12,29 +12,38 @@ interface Props {
 }
 
 export default function Attendance({ navigation }: Props) {
+  const [attendance, setAttendance] = useState(undefined);
   React.useEffect(() => {
-    // async function makeRequest() {
-    //   const res = await fetch("http://127.0.0.1:8000/pims/attendance", {
-    //     method: "POST",
-    //     body: JSON.stringify({
-    //       uid: "18BCS2430",
-    //       password: "Swarnim@2",
-    //     }),
-    //   });
-    //   console.log(res);
-    // }
-    // makeRequest();
+    async function makeRequest() {
+      const res: PromiseInterface = await Api.post("/attendance", {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          uid: "",
+          password: "",
+        }),
+      });
+      if (res.ok) {
+        setAttendance(res.data);
+      }
+    }
+    makeRequest();
   }, []);
   return (
     <SafeAreaView>
       <ScrollView style={styles.container}>
-        {ATTENDANCE.map((subject, idx) => (
-          <AttendanceCard
-            attendance={subject}
-            key={idx}
-            navigation={navigation}
-          />
-        ))}
+        {attendance ? (
+          attendance.map((subject, idx) => (
+            <AttendanceCard
+              attendance={subject}
+              key={idx}
+              navigation={navigation}
+            />
+          ))
+        ) : (
+          <ProgressBar indeterminate={true} />
+        )}
       </ScrollView>
     </SafeAreaView>
   );
