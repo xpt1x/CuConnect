@@ -1,1 +1,1 @@
-web: gunicorn CuConnect.wsgi
+web: sh -c 'cd ./CuConnect/ && exec gunicorn CuConnect.wsgi'
