@@ -1,5 +1,10 @@
-Django==3.1.5
 requests==2.25.1
+Flask_Cors==3.0.8
+Flask==1.1.2
+Django==3.1.5
 beautifulsoup4==4.9.3
 djangorestframework==3.12.2
-django-storages==1.11.1
+
+#heroku
+gunicorn
+django-heroku

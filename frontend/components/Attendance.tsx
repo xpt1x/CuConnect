@@ -6,13 +6,16 @@ import { ProgressBar } from "react-native-paper";
 import { NavigationStackProp } from "react-navigation-stack";
 import Api from "../ApiLayer/Api";
 import { PromiseInterface } from "../ApiLayer/request";
+import { Subject } from "../types/Subject";
 
 interface Props {
   navigation?: NavigationStackProp;
 }
 
 export default function Attendance({ navigation }: Props) {
-  const [attendance, setAttendance] = useState(undefined);
+  const [attendance, setAttendance] = useState<
+    undefined | ReadonlyArray<Subject>
+  >(undefined);
   React.useEffect(() => {
     async function makeRequest() {
       const res: PromiseInterface = await Api.post("/attendance", {
@@ -20,12 +23,14 @@ export default function Attendance({ navigation }: Props) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          uid: "",
-          password: "",
+          uid: "18bcs6543",
+          password: "Astar@4",
         }),
       });
       if (res.ok) {
         setAttendance(res.data);
+      } else {
+        console.log(res.sysError);
       }
     }
     makeRequest();
@@ -34,7 +39,7 @@ export default function Attendance({ navigation }: Props) {
     <SafeAreaView>
       <ScrollView style={styles.container}>
         {attendance ? (
-          attendance.map((subject, idx) => (
+          attendance.map((subject: Subject, idx: number) => (
             <AttendanceCard
               attendance={subject}
               key={idx}

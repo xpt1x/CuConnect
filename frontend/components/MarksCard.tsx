@@ -2,12 +2,8 @@ import React from "react";
 import { Card, Avatar, Text } from "react-native-paper";
 import { StyleSheet } from "react-native";
 import { NavigationStackProp } from "react-navigation-stack";
+import { ElementMarks } from "../types/ElementMarks";
 
-type ElementMarks = {
-  element: string;
-  obtained: string;
-  total: string;
-};
 interface Props {
   name: string;
   subCode: string;
