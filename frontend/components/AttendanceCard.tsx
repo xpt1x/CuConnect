@@ -10,37 +10,7 @@ import {
 } from "react-native-paper";
 import { NavigationStackProp } from "react-navigation-stack";
 import { AnimatedCircularProgress } from "react-native-circular-progress";
-
-interface Subject {
-  UId: string;
-  Code: string;
-  Title: string;
-  DutyLeave: number;
-  DutyLeave_N_P: number;
-  DutyLeave_Others: number;
-  MedicalLeave: number;
-  EncryptCode: string;
-  Lec_Attd: number;
-  Lec_Delv: number;
-  Lec_Perc: number;
-  name: string;
-  Prac_Attd: number;
-  Prac_Delv: number;
-  Prac_Perc: number;
-  Trl_Attd: number;
-  Trl_Delv: number;
-  Trl_Perc: number;
-  Semester: number;
-  StudentId: number;
-  Total_Attd: string;
-  Total_Delv: number;
-  Total_Perc: number;
-  colorcode: string;
-  TotalPercentage: string;
-  EligibilityDelivered: string;
-  EligibilityPercentage: string;
-  EligibilityAttended: string;
-}
+import { Subject } from "../types/Subject";
 
 interface Props {
   attendance: Subject;

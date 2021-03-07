@@ -1,13 +1,7 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
 import { Avatar, Card, Chip, Divider } from "react-native-paper";
-
-type Lecture = {
-  title: string;
-  type: string;
-  group: string;
-  teacher: string;
-};
+import { Lecture } from "../types/Lecture";
 
 interface LectureCardProps {
   lecture: Lecture | null;
