@@ -54,14 +54,23 @@ const TabProps = {
   },
 };
 const BottomNavComponent = () => (
-  <BottomNav.Navigator {...TabProps}>
+  <BottomNav.Navigator
+    initialRouteName="Attendance"
+    backBehavior="initialRoute"
+    tabBarPosition="bottom"
+    tabBarOptions={{
+      showIcon: true,
+      showLabel: false,
+      tabStyle: styles.tabStyle,
+    }}
+  >
     {screens.map((screen, idx) => (
       <BottomNav.Screen {...screen} key={idx} />
     ))}
   </BottomNav.Navigator>
 );
 
-function DetailedMarksRightAccessory(code) {
+function DetailedMarksRightAccessory(code: string) {
   return <Text style={{ padding: 24 }}>{code}</Text>;
 }
 
@@ -72,14 +81,14 @@ export default function Main() {
         <Stack.Screen
           name="Detailed Attendance"
           component={DetailedAttendance}
-          options={({ route }) => ({
-            title: route.params ? route.params.subject : route.name,
+          options={({ route }: any) => ({
+            title: route.params ? route.params.subject.Title : route.name,
           })}
         />
         <Stack.Screen
           name="Detailed Marks"
           component={DetailedMarks}
-          options={({ route }) => ({
+          options={({ route }: any) => ({
             title: "",
             headerRight: () =>
               DetailedMarksRightAccessory(

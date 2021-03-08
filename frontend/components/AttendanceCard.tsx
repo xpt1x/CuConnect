@@ -1,25 +1,21 @@
 import React, { FunctionComponent } from "react";
-import { StyleSheet, View } from "react-native";
-import {
-  Button,
-  Card,
-  ProgressBar,
-  Colors,
-  Text,
-  Surface,
-} from "react-native-paper";
+import { StyleSheet } from "react-native";
+import { Card, ProgressBar, Colors, Text } from "react-native-paper";
 import { NavigationStackProp } from "react-navigation-stack";
 import { AnimatedCircularProgress } from "react-native-circular-progress";
 import { Subject } from "../types/Subject";
 
 interface Props {
-  attendance: Subject;
+  subjectAttendance: Subject;
   navigation?: NavigationStackProp;
 }
-export default function AttendanceCard({ attendance, navigation }: Props) {
-  const cardPress = (headerName: string) => {
+export default function AttendanceCard({
+  subjectAttendance,
+  navigation,
+}: Props) {
+  const cardPress = (subject: any) => {
     navigation.push("Detailed Attendance", {
-      subject: headerName,
+      subject: subject,
     });
   };
 
@@ -29,34 +25,37 @@ export default function AttendanceCard({ attendance, navigation }: Props) {
     else return Colors.red500;
   }
   return (
-    <Card style={styles.card} onPress={() => cardPress(attendance.Title)}>
+    <Card style={styles.card} onPress={() => cardPress(subjectAttendance)}>
       <Card.Title
-        title={attendance.Title}
-        subtitle={`[${attendance.Code}]`}
+        title={subjectAttendance.Title}
+        subtitle={`[${subjectAttendance.Code}]`}
         titleNumberOfLines={2}
       />
       <Card.Content>
-        <Text>Atended : {attendance.Total_Attd}</Text>
-        <Text>Delivered : {attendance.Total_Delv}</Text>
+        <Text>Atended : {subjectAttendance.Total_Attd}</Text>
+        <Text>Delivered : {subjectAttendance.Total_Delv}</Text>
         <AnimatedCircularProgress
           style={styles.cardPercent}
           size={60}
           width={3}
-          fill={attendance.Total_Perc}
-          tintColor={setColor(attendance.Total_Perc)}
+          fill={subjectAttendance.Total_Perc}
+          tintColor={setColor(subjectAttendance.Total_Perc)}
           backgroundColor="#3d5875"
         >
           {() => (
             <Text>
-              {attendance.Total_Delv == 0 ? "N/A" : attendance.Total_Perc}%
+              {subjectAttendance.Total_Delv == 0
+                ? "N/A"
+                : subjectAttendance.Total_Perc}
+              %
             </Text>
           )}
         </AnimatedCircularProgress>
       </Card.Content>
       <ProgressBar
         style={styles.progressBar}
-        progress={attendance.Total_Perc / 100}
-        color={setColor(attendance.Total_Perc)}
+        progress={subjectAttendance.Total_Perc / 100}
+        color={setColor(subjectAttendance.Total_Perc)}
         indeterminate={false}
       />
     </Card>

@@ -10,6 +10,11 @@ import {
 import { StyleSheet, ScrollView } from "react-native";
 import { AnimatedCircularProgress } from "react-native-circular-progress";
 import Calendar from "./Calendar";
+import { Subject } from "../types/Subject";
+
+interface RouteParam {
+  subject: Subject;
+}
 
 let infoRow = () => {
   return (
@@ -20,25 +25,30 @@ let infoRow = () => {
   );
 };
 
-export default function DetailedAttendance() {
+export default function DetailedAttendance({ route }: any) {
+  const { subject }: RouteParam = route.params;
   return (
     <>
-      <ProgressBar progress={0.8} color={Colors.green500} />
-
+      <ProgressBar
+        progress={subject.Total_Perc / 100}
+        color={Colors.green500}
+      />
       <ScrollView style={styles.container}>
         <Surface style={styles.surface}>
           <Chip textStyle={styles.chipText} style={styles.chip}>
-            9/10
+            {`${subject.Total_Attd}/${subject.Total_Delv}`}
           </Chip>
           <AnimatedCircularProgress
             style={styles.cardPercent}
             size={110}
             width={9}
-            fill={86}
+            fill={subject.Total_Perc}
             tintColor={Colors.greenA700}
             backgroundColor="#3d5875"
           >
-            {() => <Text style={styles.percentText}>90%</Text>}
+            {() => (
+              <Text style={styles.percentText}>{`${subject.Total_Perc}%`}</Text>
+            )}
           </AnimatedCircularProgress>
           <Calendar />
           <DataTable>

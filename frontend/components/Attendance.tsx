@@ -14,18 +14,15 @@ interface Props {
 
 export default function Attendance({ navigation }: Props) {
   const [attendance, setAttendance] = useState<
-    undefined | ReadonlyArray<Subject>
+    ReadonlyArray<Subject> | undefined
   >(undefined);
   React.useEffect(() => {
     async function makeRequest() {
+      const xyz = new FormData();
+      xyz.append("uid", "18bcs6543");
+      xyz.append("password", "Astar@4");
       const res: PromiseInterface = await Api.post("/attendance", {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          uid: "18bcs6543",
-          password: "Astar@4",
-        }),
+        body: xyz,
       });
       if (res.ok) {
         setAttendance(res.data);
@@ -41,7 +38,7 @@ export default function Attendance({ navigation }: Props) {
         {attendance ? (
           attendance.map((subject: Subject, idx: number) => (
             <AttendanceCard
-              attendance={subject}
+              subjectAttendance={subject}
               key={idx}
               navigation={navigation}
             />
