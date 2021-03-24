@@ -1,3 +1,7 @@
+interface FullReport {
+  [key: string]: string;
+}
+
 export interface Subject {
   UId: string;
   Code: string;
@@ -27,4 +31,5 @@ export interface Subject {
   EligibilityDelivered: string;
   EligibilityPercentage: string;
   EligibilityAttended: string;
+  FullAttendanceReport: ReadonlyArray<FullReport>;
 }

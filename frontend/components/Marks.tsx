@@ -13,9 +13,12 @@ import Menu from "./Menu";
 const Marks = ({ navigation }: any) => {
   // MARKS.sort((obj1, obj2) => obj1.name > obj2.name);
   return (
+    
+
     <SafeAreaView>
+    <Menu />
       <ScrollView style={styles.container}>
-        <Menu />
+  
         {MARKS.map((data, idx) => (
           <MarksCard
             name={data.name.substring(0, data.name.lastIndexOf("("))}
@@ -30,6 +33,7 @@ const Marks = ({ navigation }: any) => {
         ))}
       </ScrollView>
     </SafeAreaView>
+
     // <Provider>
     //   <View>
     //     <Menu

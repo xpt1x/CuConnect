@@ -1,7 +1,6 @@
 import * as React from "react";
-import { View } from "react-native";
-import { Button, Menu, Divider, Provider } from "react-native-paper";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { StyleSheet} from "react-native";
+import { Button, Menu, Divider } from "react-native-paper";
 
 const MyComponent = () => {
   const [visible, setVisible] = React.useState(false);
@@ -11,15 +10,23 @@ const MyComponent = () => {
   const closeMenu = () => setVisible(false);
 
   return (
+    
     <Menu
+    style={styles.menu}
       visible={visible}
       onDismiss={closeMenu}
-      anchor={<Button onPress={openMenu}>Show menu</Button>}
+      anchor={<Button onPress={openMenu}>Select Session</Button>}
     >
-      <Menu.Item onPress={() => {}} title="Item 1" />
-      <Menu.Item onPress={() => {}} title="Item 2" />
+      <Menu.Item onPress={() => {}} title="CurrentSession-20212" />
+      <Divider />
+      <Menu.Item onPress={() => {}} title="PreviousSession-20211" />
     </Menu>
   );
 };
 
 export default MyComponent;
+const styles = StyleSheet.create({
+  menu:{
+    marginLeft: 80,
+  },
+});

@@ -7,17 +7,19 @@ import {
   Colors,
 } from "react-native-paper";
 import { SCREENS as screens } from "../constants/Screens";
-import Attendance from "../components/Attendance";
-import Timetable from "../components/Timetable";
-import { SafeAreaView } from "react-native-safe-area-context";
+import Social from "./Social";
+import Attendance from "./Attendance";
+import Timetable from "./Timetable";
 import Marks from "./Marks";
+import { SafeAreaView } from "react-native-safe-area-context";
+
 import DetailedAttendance from "./DetailedAttendance";
 
+const SocialRoute = () => <Social/>
 const AttendanceRoute = () => <Attendance />;
-
 const TimetableRoute = () => <Timetable />;
-
 const MarksRoute = () => <Marks />;
+
 
 export default function BottomNav({ navigation }: any) {
   const [index, setIndex] = React.useState(0);

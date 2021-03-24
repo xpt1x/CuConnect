@@ -4,9 +4,9 @@ import AttendanceCard from "./AttendanceCard";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ProgressBar } from "react-native-paper";
 import { NavigationStackProp } from "react-navigation-stack";
-import Api from "../ApiLayer/Api";
-import { PromiseInterface } from "../ApiLayer/request";
+import {getAttendance} from "../ApiLayer/Api";
 import { Subject } from "../types/Subject";
+import { Error } from "../types/Error";
 
 interface Props {
   navigation?: NavigationStackProp;
@@ -18,17 +18,12 @@ export default function Attendance({ navigation }: Props) {
   >(undefined);
   React.useEffect(() => {
     async function makeRequest() {
-      const xyz = new FormData();
-      xyz.append("uid", "18bcs6543");
-      xyz.append("password", "Astar@4");
-      const res: PromiseInterface = await Api.post("/attendance", {
-        body: xyz,
-      });
-      if (res.ok) {
-        setAttendance(res.data);
-      } else {
-        console.log(res.sysError);
+      const response = await getAttendance();
+      if("message" in response) { 
+        throw new Error((response as Error).message);
       }
+      else 
+        setAttendance(response);
     }
     makeRequest();
   }, []);

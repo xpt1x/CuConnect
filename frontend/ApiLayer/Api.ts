@@ -1,12 +1,68 @@
-import Request from "./request";
-const localURL = "https://cuconnect-back.herokuapp.com/pims";
-//const productionURL = "https://pocketims.herokuapp.com/api";
-const productionURL = "https://cuconnect-back.herokuapp.com/pims";
+import config from "../config.json";
+import { Lecture } from "../types/Lecture";
+import { Subject } from "../types/Subject";
+import { Error } from "../types/Error";
 
-const Api = new Request(
-  !process.env.NODE_ENV || process.env.NODE_ENV === "development"
-    ? localURL
-    : productionURL
-);
-//attendence full atte, timetable
-export default Api;
+const createUserData = (): FormData => {
+  const user = new FormData();
+  user.append("uid", "18bcs6543");
+  user.append("password", "Astar@4");
+
+  return user;
+};
+
+interface Timetable {
+  [key: string]: {
+    [key: string]: Lecture | null;
+  };
+}
+
+const getAttendance = async (): Promise<ReadonlyArray<Subject> | Error> => {
+  try {
+    const response = await fetch(config.imsApiUrl + "/attendance", {
+      method: "POST",
+      body: createUserData(),
+    });
+
+    const jsonResponse = await response.json();
+    const { error } = jsonResponse;
+    return error ? { message: error } : jsonResponse;
+  } catch (error) {
+    console.log(error);
+    return { message: error };
+  }
+};
+
+const getTimetable = async (): Promise<Timetable | Error> => {
+  try {
+    const response = await fetch(config.imsApiUrl + "/timetable", {
+      method: "POST",
+      body: createUserData(),
+    });
+
+    const jsonResponse = await response.json();
+    const { error } = jsonResponse;
+    return error ? { message: error } : jsonResponse;
+  } catch (error) {
+    console.log(error);
+    return { message: error };
+  }
+};
+
+const getFullAttendance = async (): Promise<ReadonlyArray<Subject> | Error> => {
+  try {
+    const response = await fetch(config.imsApiUrl + "/fullattendance", {
+      method: "POST",
+      body: createUserData(),
+    });
+
+    const jsonResponse = await response.json();
+    const { error } = jsonResponse;
+    return error ? { message: error } : jsonResponse;
+  } catch (error) {
+    console.log(error);
+    return { message: error };
+  }
+};
+
+export { getAttendance, getTimetable, getFullAttendance };

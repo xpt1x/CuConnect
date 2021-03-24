@@ -1,4 +1,5 @@
 import React from "react";
+import Social from "../components/Social";
 import Attendance from "../components/Attendance";
 import Timetable from "../components/Timetable";
 import Marks from "../components/Marks";
@@ -19,6 +20,23 @@ const styles = StyleSheet.create({
 });
 
 export const SCREENS = [
+  {
+    component: Social,
+    name: "Social",
+    options: {
+      tabBarIcon: ({ color, focused }: TabBarIconProps) => {
+        return (
+          <IconButton
+            icon="fire"
+            color={color}
+            size={iconSize}
+            style={styles.icons}
+          />
+        );
+      },
+      size: iconSize,
+    },
+  },
   {
     component: Attendance,
     name: "Attendance",
