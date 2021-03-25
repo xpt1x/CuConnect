@@ -1,5 +1,5 @@
 import config from "../config.json";
-import { Lecture } from "../types/Lecture";
+import { TimetableTypes } from "../types/TimetableTypes";
 import { Subject } from "../types/Subject";
 import { Error } from "../types/Error";
 
@@ -11,11 +11,6 @@ const createUserData = (): FormData => {
   return user;
 };
 
-interface Timetable {
-  [key: string]: {
-    [key: string]: Lecture | null;
-  };
-}
 
 const getAttendance = async (): Promise<ReadonlyArray<Subject> | Error> => {
   try {
@@ -33,7 +28,7 @@ const getAttendance = async (): Promise<ReadonlyArray<Subject> | Error> => {
   }
 };
 
-const getTimetable = async (): Promise<Timetable | Error> => {
+const getTimetable = async (): Promise<TimetableTypes | Error> => {
   try {
     const response = await fetch(config.imsApiUrl + "/timetable", {
       method: "POST",

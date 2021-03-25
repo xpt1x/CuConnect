@@ -4,3 +4,9 @@ export interface Lecture {
   group: string;
   teacher: string;
 }
+
+export interface TimetableTypes {
+  [key: string]: {
+    [key: string]: Lecture | null;
+  };
+}
