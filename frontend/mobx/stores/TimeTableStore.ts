@@ -1,14 +1,19 @@
 import { action, makeAutoObservable } from "mobx";
-import {TimetableTypes} from "../../types/TimetableTypes"
+import {TimetableType} from "../../types/TimetableTypes"
 
 export default class TimeTableStore {
   date = new Date();
   currentDay = this.date.getDay();
-  timetable: TimetableTypes|null = null;
+  timetable: TimetableType|null = null;
 
   @action.bound
   changeCurrentDay(day: number) {
     this.currentDay = day;
+  }
+
+  @action.bound
+  setTimetable(tt: TimetableType){
+    this.timetable = tt;
   }
 
   constructor() {

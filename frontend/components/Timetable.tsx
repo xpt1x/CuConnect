@@ -7,14 +7,11 @@ import { TIMETABLE } from "../placeholder/timetable";
 import { observer } from "mobx-react-lite";
 import { TimeTableStoreContext } from "../mobx/contexts";
 import { getTimetable } from "../ApiLayer/Api";
-import { TimetableTypes, Lecture } from "../types/TimetableTypes";
+import { Lecture } from "../types/TimetableTypes";
 
 const DayMap = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 interface WorkingDay {
-  [key: string]: Lecture | null;
-}
-interface Holiday {
-  "#": string;
+  [key: string]: Lecture | null | string;
 }
 
 export const Timetable = observer(() => {
@@ -22,26 +19,31 @@ export const Timetable = observer(() => {
   const [timetableKeys, setTimetableKeys] = React.useState<
     ReadonlyArray<string> | undefined
   >(undefined);
-  const [timetable, setTimetable] = React.useState<WorkingDay | Holiday>();
+  const [timetable, setTimetable] = React.useState<WorkingDay>();
   React.useEffect(() => {
     async function makeRequest() {
       const response = await getTimetable();
       if ("message" in response) {
         throw new Error((response as Error).message);
       } else {
-        TimeTableStore.timetable = response;
-        const TT =
-          TimeTableStore.timetable[DayMap[TimeTableStore.currentDay]] !==
-          undefined
-            ? TimeTableStore.timetable[DayMap[TimeTableStore.currentDay]]
-            : { "#": "#" };
-        const keys = Object.keys(TT).sort();
-        setTimetableKeys(keys);
-        setTimetable(TT);
+        TimeTableStore.setTimetable(response);
       }
     }
     makeRequest();
   }, []);
+
+  React.useEffect(() => {
+    if (TimeTableStore.timetable) {
+      const TT =
+        TimeTableStore.timetable[DayMap[TimeTableStore.currentDay]] !==
+        undefined
+          ? TimeTableStore.timetable[DayMap[TimeTableStore.currentDay]]
+          : { "#": "#" };
+      const keys = Object.keys(TT).sort();
+      setTimetableKeys(keys);
+      setTimetable(TT);
+    }
+  }, [TimeTableStore.timetable, TimeTableStore.currentDay]);
 
   return (
     <SafeAreaView>

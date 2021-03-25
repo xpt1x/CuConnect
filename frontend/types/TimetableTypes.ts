@@ -5,7 +5,7 @@ export interface Lecture {
   teacher: string;
 }
 
-export interface TimetableTypes {
+export interface TimetableType {
   [key: string]: {
     [key: string]: Lecture | null;
   };
