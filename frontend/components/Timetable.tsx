@@ -3,7 +3,6 @@ import { StyleSheet, ScrollView, View } from "react-native";
 import DaySelector from "./DaySelector";
 import LectureCard from "./LectureCard";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { TIMETABLE } from "../placeholder/timetable";
 import { observer } from "mobx-react-lite";
 import { TimeTableStoreContext } from "../mobx/contexts";
 import { getTimetable } from "../ApiLayer/Api";

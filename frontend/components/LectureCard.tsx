@@ -58,6 +58,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 20,
     overflow: "hidden",
+    backgroundColor: "#0d0d0d",
   },
   cardContent: {
     flex: 1,

@@ -25,7 +25,13 @@ export default function AttendanceCard({
     else return Colors.red500;
   }
   return (
-    <Card style={styles.card} onPress={() => cardPress(subjectAttendance)}>
+    <Card
+      style={{
+        ...styles.card,
+        borderColor: setColor(subjectAttendance.Total_Perc),
+      }}
+      onPress={() => cardPress(subjectAttendance)}
+    >
       <Card.Title
         title={subjectAttendance.Title}
         subtitle={`[${subjectAttendance.Code}]`}
@@ -46,18 +52,11 @@ export default function AttendanceCard({
             <Text>
               {subjectAttendance.Total_Delv == 0
                 ? "N/A"
-                : subjectAttendance.Total_Perc}
-              %
+                : `${subjectAttendance.Total_Perc}%`}
             </Text>
           )}
         </AnimatedCircularProgress>
       </Card.Content>
-      <ProgressBar
-        style={styles.progressBar}
-        progress={subjectAttendance.Total_Perc / 100}
-        color={setColor(subjectAttendance.Total_Perc)}
-        indeterminate={false}
-      />
     </Card>
   );
 }
@@ -69,6 +68,9 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     alignSelf: "center",
     overflow: "hidden",
+    backgroundColor: "#000",
+    borderWidth: 0.2,
+    borderRadius: 7,
   },
   progressBar: {
     marginTop: 15,

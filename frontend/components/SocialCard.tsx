@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Image } from "react-native";
+import { StyleSheet, Image, Dimensions } from "react-native";
 
 import {
   Avatar,
@@ -11,7 +11,7 @@ import {
 } from "react-native-paper";
 
 const LeftContent = (props: { size: number }) => (
-  <Avatar.Icon {...props} icon="folder" />
+  <Avatar.Icon {...props} icon="account" />
 );
 const RightContent = (props: { size: number }) => (
   <IconButton
@@ -28,27 +28,9 @@ function getRandom(min: number, max: number): number {
 
 export default function SocialCard() {
   const [liked, setLiked] = React.useState(false);
-  const [imgDimensions, setImgDimensions] = React.useState({
-    height: 0,
-    width: 0,
-  });
-  const [imgWidth, setImgWidth] = React.useState(0);
-  const tempUri = `https://picsum.photos/${getRandom(1, 10) * 100}/${
-    getRandom(2, 6) * 100
-  }`;
-  React.useEffect(() => {
-    Image.getSize(
-      tempUri,
-      (width, height) => {
-        const finalHeight = height > 450 ? 450 : height;
-        setImgDimensions({ height: finalHeight, width });
-      },
-      (error) => {
-        return error;
-      }
-    );
-  }, []);
-
+  const [imgUri, setImgUri] = React.useState(
+    `https://picsum.photos/${getRandom(4, 10) * 100}/${getRandom(3, 10) * 100}`
+  );
   const toggleLike = () => setLiked(!liked);
 
   let lastTap: number | null = null;
@@ -69,21 +51,24 @@ export default function SocialCard() {
       }}
     >
       <Card.Title
-        title="Title"
-        subtitle="Card Subtitle"
+        title="Vtrix"
+        subtitle="Google Placement programm @ block 6 on 25th of september"
         left={LeftContent}
         right={RightContent}
       />
 
       <Card.Cover
-        style={{ height: imgDimensions.height, width: "100%" }}
-        source={{ uri: tempUri }}
+        resizeMode="center"
+        style={{ height: 450, width: "100%" }}
+        // style={{ height: imgDimensions.height, width: "100%" }}
+        source={{ uri: imgUri }}
       />
       <Card.Actions>
         <IconButton
           color={liked ? "#f27d0c" : "#757676"}
           style={styles.button}
-          icon="fire"
+          icon={"fire"}
+          size={30}
           onPress={() => {
             toggleLike();
           }}
@@ -91,7 +76,7 @@ export default function SocialCard() {
         <IconButton
           color={"#757676"}
           style={styles.button}
-          icon="comment"
+          icon={"comment"}
           onPress={() => {}}
         />
       </Card.Actions>
@@ -100,7 +85,8 @@ export default function SocialCard() {
 }
 const styles = StyleSheet.create({
   card: {
-    marginVertical: 20,
+    marginVertical: 0,
+    backgroundColor: "#000",
   },
   button: {
     width: 50,

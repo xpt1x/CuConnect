@@ -52,6 +52,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     alignSelf: "center",
     overflow: "hidden",
+    backgroundColor: "#0d0d0d",
   },
   emoji: {
     marginLeft: "auto",

@@ -1,24 +1,46 @@
-import React, { useState } from "react";
+import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { MARKS } from "../placeholder/marks";
-import { StyleSheet, ScrollView, View } from "react-native";
+import { StyleSheet, ScrollView, View, Text } from "react-native";
 import MarksCard from "./MarksCard";
-import Menu from "./Menu";
-// import { Button, Menu, Provider } from "react-native-paper";
+import { FAB, Button } from "react-native-paper";
 
-// const [visible, setVisible] = useState(false);
-// const openMenu = () => setVisible(true);
-// const closeMenu = () => setVisible(false);
+import RBSheet from "react-native-raw-bottom-sheet";
 
 const Marks = ({ navigation }: any) => {
-  // MARKS.sort((obj1, obj2) => obj1.name > obj2.name);
+  const refRBSheet = React.useRef<RBSheet>() as React.MutableRefObject<RBSheet>;
+  const fabAction = () => {
+    if (refRBSheet && refRBSheet.current) return refRBSheet.current.open();
+  };
   return (
-    
-
     <SafeAreaView>
-    <Menu />
       <ScrollView style={styles.container}>
-  
+        <RBSheet
+          height={140}
+          ref={refRBSheet}
+          closeOnDragDown={true}
+          closeOnPressMask={true}
+          closeOnPressBack={true}
+          customStyles={{
+            wrapper: {
+              backgroundColor: "transparent",
+            },
+            container: {
+              backgroundColor: "#1c1c1c",
+            },
+            draggableIcon: {
+              backgroundColor: "#757676",
+            },
+          }}
+        >
+          <Button mode="text" onPress={() => console.log("Pressed")}>
+            Current Session
+          </Button>
+          <Button mode="text" onPress={() => console.log("Pressed")}>
+            Previous Session
+          </Button>
+        </RBSheet>
+
         {MARKS.map((data, idx) => (
           <MarksCard
             name={data.name.substring(0, data.name.lastIndexOf("("))}
@@ -32,6 +54,13 @@ const Marks = ({ navigation }: any) => {
           />
         ))}
       </ScrollView>
+      <FAB
+        style={styles.fab}
+        small={true}
+        label={"Session"}
+        icon="chevron-up"
+        onPress={fabAction}
+      />
     </SafeAreaView>
 
     // <Provider>
@@ -60,5 +89,11 @@ const styles = StyleSheet.create({
   },
   scrollContainer: {
     width: "100%",
+  },
+  fab: {
+    position: "absolute",
+    margin: 16,
+    right: 0,
+    bottom: 0,
   },
 });

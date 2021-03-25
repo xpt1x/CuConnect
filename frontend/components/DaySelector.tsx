@@ -7,8 +7,6 @@ import { observer } from "mobx-react-lite";
 
 export const DaySelector = (params: object) => {
   const [state, setState] = React.useState({ open: false });
-  // const date = new Date();
-  // const [day, setDay] = React.useState(date.getDay());
   const TimeTableStore = useContext(TimeTableStoreContext);
 
   var weekday = [
@@ -26,7 +24,6 @@ export const DaySelector = (params: object) => {
   }
   const onStateChange = ({ open }: Props) => setState({ open });
   const onFABPress = (idx: number) => {
-    // setDay(idx);
     TimeTableStore.changeCurrentDay(idx);
     copyActions = Array.from(actions);
     copyActions[idx].style = styles.activeFAB;
@@ -92,10 +89,10 @@ const styles = StyleSheet.create({
     zIndex: 5,
   },
   fabButton: {
-    backgroundColor: "#0186FC",
+    backgroundColor: "#00dac6",
   },
   activeFAB: {
-    backgroundColor: "rgba(1, 134, 252, 0.48)",
+    backgroundColor: "#00dac6",
   },
 });
 

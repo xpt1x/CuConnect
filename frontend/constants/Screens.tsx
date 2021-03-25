@@ -27,7 +27,7 @@ export const SCREENS = [
       tabBarIcon: ({ color, focused }: TabBarIconProps) => {
         return (
           <IconButton
-            icon="blur"
+            icon={focused ? "compass" : "compass-outline"}
             color={color}
             size={iconSize}
             style={styles.icons}
