@@ -1,6 +1,5 @@
 import React from "react";
 import { StyleSheet, Image, Dimensions } from "react-native";
-
 import {
   Avatar,
   Button,
@@ -10,23 +9,25 @@ import {
   IconButton,
 } from "react-native-paper";
 
-const LeftContent = (props: { size: number }) => (
-  <Avatar.Icon {...props} icon="account" />
-);
-const RightContent = (props: { size: number }) => (
-  <IconButton
-    color={"#757676"}
-    icon="dots-vertical"
-    onPress={() => {}}
-    style={{ marginRight: 10 }}
-  />
-);
-
 function getRandom(min: number, max: number): number {
   return Math.floor(Math.random() * (max - min) + min);
 }
 
-export default function SocialCard() {
+export default function SocialCard({ tripleDotAction }) {
+  const LeftContent = (props: { size: number }) => (
+    <Avatar.Icon {...props} icon="account" />
+  );
+  const RightContent = (props: { size: number }) => (
+    <IconButton
+      color={"#757676"}
+      icon="dots-vertical"
+      onPress={() => {
+        tripleDotAction();
+      }}
+      style={{ marginRight: 10 }}
+    />
+  );
+
   const [liked, setLiked] = React.useState(false);
   const [imgUri, setImgUri] = React.useState(
     `https://picsum.photos/${getRandom(4, 10) * 100}/${getRandom(3, 10) * 100}`

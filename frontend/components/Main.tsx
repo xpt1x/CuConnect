@@ -43,16 +43,6 @@ const styles = StyleSheet.create({
   },
 });
 
-// const TabProps = {
-//   initialRouteName: "Attendance",
-//   backBehavior: "initialRoute",
-//   tabBarPosition: "bottom",
-//   tabBarOptions: {
-//     showIcon: true,
-//     showLabel: false,
-//     tabStyle: styles.tabStyle,
-//   },
-// };
 const BottomNavComponent = () => (
   <BottomNav.Navigator
     initialRouteName="Social"

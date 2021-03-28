@@ -4,7 +4,6 @@ import { MARKS } from "../placeholder/marks";
 import { StyleSheet, ScrollView, View, Text } from "react-native";
 import MarksCard from "./MarksCard";
 import { FAB, Button } from "react-native-paper";
-
 import RBSheet from "react-native-raw-bottom-sheet";
 
 const Marks = ({ navigation }: any) => {

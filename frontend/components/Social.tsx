@@ -1,11 +1,16 @@
 import React from "react";
 import { SafeAreaView, View, Text, StyleSheet, ScrollView } from "react-native";
-import { Appbar } from "react-native-paper";
+import { Appbar, Button } from "react-native-paper";
 import SocialCard from "./SocialCard";
 import { useFonts, Pacifico_400Regular } from "@expo-google-fonts/pacifico";
 import AppLoading from "expo-app-loading";
+import RBSheet from "react-native-raw-bottom-sheet";
 
 export default function Social() {
+  const refRBSheet = React.useRef<RBSheet>() as React.MutableRefObject<RBSheet>;
+  const tripleDotAction = () => {
+    if (refRBSheet && refRBSheet.current) return refRBSheet.current.open();
+  };
   let [fontsLoaded] = useFonts({
     Pacifico_400Regular,
   });
@@ -18,10 +23,41 @@ export default function Social() {
           <Appbar.Content titleStyle={styles.appbar} title={" Social "} />
         </Appbar.Header>
         <ScrollView style={styles.container}>
-          <SocialCard />
-          <SocialCard />
-          <SocialCard />
-          <SocialCard />
+          <RBSheet
+            height={140}
+            ref={refRBSheet}
+            closeOnDragDown={true}
+            closeOnPressMask={true}
+            closeOnPressBack={true}
+            customStyles={{
+              wrapper: {
+                backgroundColor: "transparent",
+              },
+              container: {
+                backgroundColor: "#1c1c1c",
+              },
+              draggableIcon: {
+                backgroundColor: "#757676",
+              },
+            }}
+          >
+            <Button mode="text" onPress={() => console.log("Pressed")}>
+              View Profile
+            </Button>
+            <Button
+              color="#fa1e0e"
+              mode="text"
+              onPress={() => console.log("Pressed")}
+              icon="flag"
+            >
+              Report User
+            </Button>
+          </RBSheet>
+
+          <SocialCard tripleDotAction={tripleDotAction} />
+          <SocialCard tripleDotAction={tripleDotAction} />
+          <SocialCard tripleDotAction={tripleDotAction} />
+          <SocialCard tripleDotAction={tripleDotAction} />
         </ScrollView>
       </SafeAreaView>
     );
