@@ -31,5 +31,5 @@ export interface Subject {
   EligibilityDelivered: string;
   EligibilityPercentage: string;
   EligibilityAttended: string;
-  FullAttendanceReport: ReadonlyArray<FullReport>;
+  FullAttendanceReport?: ReadonlyArray<FullReport>;
 }
