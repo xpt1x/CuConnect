@@ -1,5 +1,5 @@
 import config from "../config.json";
-import { TimetableTypes } from "../types/TimetableTypes";
+import { TimetableType } from "../types/TimetableTypes";
 import { Subject } from "../types/Subject";
 import { Error } from "../types/Error";
 
@@ -18,9 +18,9 @@ const getAttendance = async (): Promise<ReadonlyArray<Subject> | Error> => {
       method: "POST",
       body: createUserData(),
     });
-
     const jsonResponse = await response.json();
     const { error } = jsonResponse;
+
     return error ? { message: error } : jsonResponse;
   } catch (error) {
     console.log(error);
@@ -28,7 +28,7 @@ const getAttendance = async (): Promise<ReadonlyArray<Subject> | Error> => {
   }
 };
 
-const getTimetable = async (): Promise<TimetableTypes | Error> => {
+const getTimetable = async (): Promise<TimetableType | Error> => {
   try {
     const response = await fetch(config.imsApiUrl + "/timetable", {
       method: "POST",

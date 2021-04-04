@@ -32,10 +32,10 @@ const Marks = ({ navigation }: any) => {
             },
           }}
         >
-          <Button mode="text" onPress={() => console.log("Pressed")}>
+          <Button mode="text">
             Current Session
           </Button>
-          <Button mode="text" onPress={() => console.log("Pressed")}>
+          <Button mode="text">
             Previous Session
           </Button>
         </RBSheet>

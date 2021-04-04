@@ -31,5 +31,8 @@ export interface Subject {
   EligibilityDelivered: string;
   EligibilityPercentage: string;
   EligibilityAttended: string;
-  FullAttendanceReport?: ReadonlyArray<FullReport>;
+}
+
+export interface FullSubject extends Subject { 
+  FullAttendanceReport: ReadonlyArray<FullReport>;
 }

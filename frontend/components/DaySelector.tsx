@@ -68,6 +68,7 @@ export const DaySelector = (params: object) => {
   let copyActions: Actions[] = Array.from(actions);
   copyActions[TimeTableStore.currentDay].style = styles.activeFAB;
   const { open } = state;
+
   return (
     <Provider>
       <Portal>
