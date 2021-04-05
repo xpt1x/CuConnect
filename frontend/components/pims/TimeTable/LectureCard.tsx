@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
 import { Avatar, Card, Chip, Divider } from "react-native-paper";
-import { Lecture } from "../types/Lecture";
+import { Lecture } from "../../../types/TimetableTypes";
 
 interface LectureCardProps {
   lecture: Lecture | null;

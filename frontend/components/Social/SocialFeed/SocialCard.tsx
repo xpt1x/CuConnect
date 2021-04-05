@@ -8,7 +8,6 @@ import {
   Paragraph,
   IconButton,
 } from "react-native-paper";
-import FireSvg from "../assets/fire.svg";
 
 interface SocialCardProps {
   tripleDotAction: () => void;
@@ -52,7 +51,6 @@ export default function SocialCard({ tripleDotAction }: SocialCardProps) {
       lastTap = now;
     }
   };
-  console.log(FireSvg);
   return (
     <Card
       style={styles.card}

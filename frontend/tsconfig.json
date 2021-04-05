@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "baseUrl": "src",
     "allowSyntheticDefaultImports": true,
     "jsx": "react-native",
     "lib": ["dom", "esnext"],
@@ -8,6 +9,11 @@
     "skipLibCheck": true,
     "resolveJsonModule": true,
     "strict": true,
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
+    "paths": {
+      "@components/*": ["components/*"],
+      "@TYPES/*": ["types/*"],
+      "@PIMS/*": ["components/pims/*"]
+    }
   }
 }

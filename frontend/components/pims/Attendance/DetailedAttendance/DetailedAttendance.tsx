@@ -10,7 +10,7 @@ import {
 import { StyleSheet, ScrollView } from "react-native";
 import { AnimatedCircularProgress } from "react-native-circular-progress";
 import Calendar from "./Calendar";
-import { Subject } from "../types/Subject";
+import { Subject } from "../../../../types/Subject";
 
 interface RouteParam {
   subject: Subject;

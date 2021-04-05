@@ -1,6 +1,6 @@
 import React from "react";
-import DetailedAttendance from "../DetailedAttendance";
-import DetailedMarks from "../DetailedMarks";
+import DetailedAttendance from "../pims/Attendance/DetailedAttendance/DetailedAttendance";
+import DetailedMarks from "../pims/MarksView/DetailedMarks";
 import { IconButton } from "react-native-paper";
 import { StackNavigationProp } from "react-navigation-stack/lib/typescript/src/vendor/types";
 import {

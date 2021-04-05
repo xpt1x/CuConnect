@@ -2,7 +2,7 @@ import React from "react";
 import { Card, Avatar, Text } from "react-native-paper";
 import { StyleSheet } from "react-native";
 import { NavigationStackProp } from "react-navigation-stack";
-import { ElementMarks } from "../types/ElementMarks";
+import { ElementMarks } from "../../../types/ElementMarks";
 
 interface Props {
   name: string;

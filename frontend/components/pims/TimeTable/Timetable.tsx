@@ -4,16 +4,16 @@ import DaySelector from "./DaySelector";
 import LectureCard from "./LectureCard";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { observer } from "mobx-react-lite";
-import { TimeTableStoreContext } from "../mobx/contexts";
-import { getTimetable } from "../ApiLayer/Api";
-import { Lecture } from "../types/TimetableTypes";
-import { Error } from "../types/Error";
-import ErrorScreen from "./ErrorScreen";
-import Loader from "./Loader";
+import { TimeTableStoreContext } from "../../../mobx/contexts";
+import { getTimetable } from "../../../ApiLayer/Api";
+import { Lecture } from "../../../types/TimetableTypes";
+import { Error } from "../../../types/Error";
+import ErrorScreen from "./../Utils/ErrorScreen";
+import Loader from "../Utils/Loader";
 
 const DayMap = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 interface WorkingDay {
-  [key: string]: Lecture | null | string;
+  [key: string]: Lecture | null;
 }
 
 export const Timetable = observer(() => {
@@ -52,7 +52,7 @@ export const Timetable = observer(() => {
         TimeTableStore.timetable[DayMap[TimeTableStore.currentDay]] !==
         undefined
           ? TimeTableStore.timetable[DayMap[TimeTableStore.currentDay]]
-          : { "#": "#" };
+          : { null: null };
       const keys = Object.keys(TT).sort();
       setTimetableKeys(keys);
       setTimetable(TT);
@@ -81,7 +81,7 @@ export const Timetable = observer(() => {
                   key={idx}
                   lecture={timetable[lectureTime]}
                   time={lectureTime.toString()}
-                  holiday={arr[0] === "#"}
+                  holiday={arr[0] === null}
                 />
               );
             })

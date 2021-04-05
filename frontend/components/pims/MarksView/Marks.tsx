@@ -1,6 +1,6 @@
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { MARKS } from "../placeholder/marks";
+import { MARKS } from "../../../placeholder/marks";
 import { StyleSheet, ScrollView, View, Text } from "react-native";
 import MarksCard from "./MarksCard";
 import { FAB, Button } from "react-native-paper";
@@ -32,12 +32,8 @@ const Marks = ({ navigation }: any) => {
             },
           }}
         >
-          <Button mode="text">
-            Current Session
-          </Button>
-          <Button mode="text">
-            Previous Session
-          </Button>
+          <Button mode="text">Current Session</Button>
+          <Button mode="text">Previous Session</Button>
         </RBSheet>
 
         {MARKS.map((data, idx) => (

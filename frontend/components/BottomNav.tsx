@@ -10,13 +10,10 @@ import {
   Colors,
 } from "react-native-paper";
 import { SCREENS as screens } from "../constants/Screens";
-import Social from "./Social";
-import Attendance from "./Attendance";
-import Timetable from "./Timetable";
-import Marks from "./Marks";
-import { SafeAreaView } from "react-native-safe-area-context";
-
-import DetailedAttendance from "./DetailedAttendance";
+import Social from "../components/Social/SocialFeed/Social";
+import Attendance from "./pims/Attendance/Attendance";
+import Timetable from "./pims/TimeTable/Timetable";
+import Marks from "../components/pims/MarksView/Marks";
 
 const SocialRoute = () => <Social />;
 const AttendanceRoute = () => <Attendance />;

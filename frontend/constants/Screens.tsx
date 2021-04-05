@@ -1,11 +1,11 @@
 import React from "react";
-import Social from "../components/Social";
-import Attendance from "../components/Attendance";
-import Timetable from "../components/Timetable";
-import Marks from "../components/Marks";
+import Social from "../components/Social/SocialFeed/Social";
+import Attendance from "../components/pims/Attendance/Attendance";
+import Timetable from "../components/pims/TimeTable/Timetable";
+import Marks from "../components/pims/MarksView/Marks";
 import { IconButton } from "react-native-paper";
 import { StyleSheet } from "react-native";
-import SignOut from "../components/SignOut";
+import SignOut from "../components/pims/Utils/SignOut";
 
 interface TabBarIconProps {
   color: string;

@@ -3,7 +3,7 @@ import { StyleSheet } from "react-native";
 import { Card, ProgressBar, Colors, Text } from "react-native-paper";
 import { NavigationStackProp } from "react-navigation-stack";
 import { AnimatedCircularProgress } from "react-native-circular-progress";
-import { Subject } from "../types/Subject";
+import { Subject } from "../../../types/Subject";
 
 interface Props {
   subjectAttendance: Subject;

@@ -3,11 +3,11 @@ import { StyleSheet, ScrollView, View, RefreshControl } from "react-native";
 import AttendanceCard from "./AttendanceCard";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { NavigationStackProp } from "react-navigation-stack";
-import { getAttendance } from "../ApiLayer/Api";
-import { Subject } from "../types/Subject";
-import { Error } from "../types/Error";
-import Loader from "./Loader";
-import ErrorScreen from "./ErrorScreen";
+import { getAttendance } from "../../../ApiLayer/Api";
+import { Subject } from "../../../types/Subject";
+import { Error } from "../../../types/Error";
+import Loader from "../Utils/Loader";
+import ErrorScreen from "../Utils/ErrorScreen";
 
 interface Props {
   navigation?: NavigationStackProp;

@@ -2,8 +2,7 @@ import React, { useContext } from "react";
 import { FAB, Portal, Provider } from "react-native-paper";
 import { StyleSheet, View } from "react-native";
 import { IconSource } from "react-native-paper/lib/typescript/components/Icon";
-import { TimeTableStoreContext } from "../mobx/contexts";
-import { observer } from "mobx-react-lite";
+import { TimeTableStoreContext } from "../../../mobx/contexts";
 
 export const DaySelector = (params: object) => {
   const [state, setState] = React.useState({ open: false });

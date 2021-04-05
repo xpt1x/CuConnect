@@ -6,7 +6,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import {
   AttendanceStoreContext,
   TimeTableStoreContext,
-} from "../mobx/contexts";
+} from "../../../mobx/contexts";
 
 const SignOut = observer(() => {
   const TimeTableStore = React.useContext(TimeTableStoreContext);
