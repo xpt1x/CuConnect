@@ -20,7 +20,9 @@ export default function Social() {
     return (
       <SafeAreaView>
         <Appbar.Header style={styles.header}>
+          <Appbar.Action icon="camera-iris" onPress={() => {}} />
           <Appbar.Content titleStyle={styles.appbar} title={" Social "} />
+          <Appbar.Action icon="alien" onPress={() => {}} />
         </Appbar.Header>
         <ScrollView style={styles.container}>
           <RBSheet

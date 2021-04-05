@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Image, Dimensions } from "react-native";
+import { StyleSheet } from "react-native";
 import {
   Avatar,
   Button,
@@ -8,12 +8,17 @@ import {
   Paragraph,
   IconButton,
 } from "react-native-paper";
+import FireSvg from "../assets/fire.svg";
+
+interface SocialCardProps {
+  tripleDotAction: () => void;
+}
 
 function getRandom(min: number, max: number): number {
   return Math.floor(Math.random() * (max - min) + min);
 }
 
-export default function SocialCard({ tripleDotAction }) {
+export default function SocialCard({ tripleDotAction }: SocialCardProps) {
   const LeftContent = (props: { size: number }) => (
     <Avatar.Icon {...props} icon="account" />
   );
@@ -29,10 +34,13 @@ export default function SocialCard({ tripleDotAction }) {
   );
 
   const [liked, setLiked] = React.useState(false);
+
   const [imgUri, setImgUri] = React.useState(
     `https://picsum.photos/${getRandom(4, 10) * 100}/${getRandom(3, 10) * 100}`
   );
-  const toggleLike = () => setLiked(!liked);
+  const toggleLike = () => {
+    setLiked(!liked);
+  };
 
   let lastTap: number | null = null;
   const handleDoubleTap = () => {
@@ -44,6 +52,7 @@ export default function SocialCard({ tripleDotAction }) {
       lastTap = now;
     }
   };
+  console.log(FireSvg);
   return (
     <Card
       style={styles.card}
@@ -66,7 +75,7 @@ export default function SocialCard({ tripleDotAction }) {
       />
       <Card.Actions>
         <IconButton
-          color={liked ? "#f27d0c" : "#757676"}
+          color={"#757676"}
           style={styles.button}
           icon={"fire"}
           size={30}

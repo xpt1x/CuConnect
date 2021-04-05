@@ -1,3 +1,6 @@
+//No longer in use
+//Staged for deletion
+//Bottom Nav now in Navigators
 import React from "react";
 import { StyleSheet, View } from "react-native";
 import {
@@ -15,11 +18,10 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 import DetailedAttendance from "./DetailedAttendance";
 
-const SocialRoute = () => <Social/>
+const SocialRoute = () => <Social />;
 const AttendanceRoute = () => <Attendance />;
 const TimetableRoute = () => <Timetable />;
 const MarksRoute = () => <Marks />;
-
 
 export default function BottomNav({ navigation }: any) {
   const [index, setIndex] = React.useState(0);

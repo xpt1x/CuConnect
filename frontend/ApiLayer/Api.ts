@@ -5,12 +5,12 @@ import { Error } from "../types/Error";
 
 const createUserData = (): FormData => {
   const user = new FormData();
-  user.append("uid", "18bcs6543");
-  user.append("password", "Astar@4");
-
+  user.append("uid", "18bcs2430");
+  user.append("password", "Swarnim@2");
+  // user.append("uid", "18bcs6543");
+  // user.append("password", "Astar@4");
   return user;
 };
-
 
 const getAttendance = async (): Promise<ReadonlyArray<Subject> | Error> => {
   try {
