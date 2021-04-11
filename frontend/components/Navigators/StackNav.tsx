@@ -40,14 +40,8 @@ function DetailedMarksRightAccessory(code: string) {
   return <Text style={{ padding: 24 }}>{code}</Text>;
 }
 
-function UserProfileRightAccessory(navigation: any) {
-  return (
-    <IconButton
-      onPress={() => navigation.push("SettingsMenu")}
-      icon="cog"
-      style={{ marginRight: 25 }}
-    />
-  );
+function UserProfileRightAccessory() {
+  return <IconButton icon="cog" style={{ marginRight: 25 }} />;
 }
 
 export default function StackNav() {
@@ -81,7 +75,7 @@ export default function StackNav() {
         component={UserProfile}
         options={({ route }: any) => ({
           title: "",
-          headerRight: () => UserProfileRightAccessory(route.params.navigation),
+          headerRight: () => UserProfileRightAccessory(),
         })}
       />
       <Stack.Screen
