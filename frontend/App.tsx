@@ -1,10 +1,10 @@
 import React from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-
 import { StyleSheet, View } from "react-native";
 import {
   Provider as PaperProvider,
   DarkTheme as PaperDarkTheme,
+  configureFonts,
 } from "react-native-paper";
 import { StatusBar } from "expo-status-bar";
 import Main from "./components/Main";
@@ -14,6 +14,7 @@ import {
   NavigationContainer,
   DarkTheme as NavigationDarkTheme,
 } from "@react-navigation/native";
+import { fontConfig } from "./constants/Fonts";
 
 const CombinedDarkTheme = {
   ...PaperDarkTheme,
@@ -22,12 +23,13 @@ const CombinedDarkTheme = {
     ...PaperDarkTheme.colors,
     ...NavigationDarkTheme.colors,
   },
+  fonts: configureFonts(fontConfig),
 };
 function App() {
   return (
     <View style={styles.container}>
-      <Main />
       <StatusBar style="light" />
+      <Main />
     </View>
   );
 }

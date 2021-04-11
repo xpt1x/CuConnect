@@ -59,7 +59,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     // elevation: 10,
-    borderRadius: 15,
+    borderRadius: 7,
+    borderTopWidth: 10,
   },
 
   title: {
@@ -69,10 +70,10 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   green: {
-    backgroundColor: Colors.green800,
+    borderTopColor: Colors.green800,
   },
   red: {
-    backgroundColor: Colors.red900,
+    borderTopColor: Colors.red900,
   },
   calender: {
     paddingBottom: 15,

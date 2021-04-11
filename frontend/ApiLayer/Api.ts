@@ -2,13 +2,12 @@ import config from "../config.json";
 import { TimetableType } from "../types/TimetableTypes";
 import { Subject } from "../types/Subject";
 import { Error } from "../types/Error";
+import {SubjectMarks, Sessions} from "../types/MarksTypes";
 
 const createUserData = (): FormData => {
   const user = new FormData();
-  user.append("uid", "18bcs2430");
-  user.append("password", "Swarnim@2");
-  // user.append("uid", "18bcs6543");
-  // user.append("password", "Astar@4");
+  user.append("uid", "18bcs2414");
+  user.append("password", "Sanuthe)44");
   return user;
 };
 
@@ -60,4 +59,35 @@ const getFullAttendance = async (): Promise<ReadonlyArray<Subject> | Error> => {
   }
 };
 
-export { getAttendance, getTimetable, getFullAttendance };
+const getAvailableSessions = async (): Promise<Sessions | Error> => {
+  try {
+    const response = await fetch(config.imsApiUrl + "/availablesessions", {
+      method: "POST",
+      body: createUserData(),
+    });
+    const jsonResponse = await response.json();
+    const { error } = jsonResponse;
+    return error ? { message: error } : jsonResponse;
+  } catch (error) {
+    console.log(error);
+    return { message: error };
+  }
+};
+
+const getMarks = async (session: string): Promise<ReadonlyArray<SubjectMarks> | Error> => {
+  try {
+    const response = await fetch(config.imsApiUrl + `/marks/${session}`, {
+      method: "POST",
+      body: createUserData(),
+    });
+
+    const jsonResponse = await response.json();
+    const { error } = jsonResponse;
+    return error ? { message: error } : jsonResponse;
+  } catch (error) {
+    console.log(error);
+    return { message: error };
+  }
+};
+
+export { getAttendance, getTimetable, getFullAttendance, getMarks, getAvailableSessions };

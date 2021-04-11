@@ -9,6 +9,7 @@ import {
 } from "@react-navigation/stack";
 import { Text } from "react-native-paper";
 import { SwipeableBottomNav } from "./SwipeableBottomNav";
+import UserProfile from "../Social/Profile/UserProfile";
 
 const Stack = createStackNavigator();
 const navigatorProps: StackNavigationProp = {
@@ -37,6 +38,10 @@ function DetailedMarksRightAccessory(code: string) {
   return <Text style={{ padding: 24 }}>{code}</Text>;
 }
 
+function UserProfileRightAccessory() {
+  return <IconButton icon="cog" style={{ marginRight: 25 }} />;
+}
+
 export default function StackNav() {
   return (
     <Stack.Navigator {...navigatorProps}>
@@ -62,6 +67,14 @@ export default function StackNav() {
         name="Nav"
         component={SwipeableBottomNav}
         options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="User Profile"
+        component={UserProfile}
+        options={({ route }: any) => ({
+          title: "",
+          headerRight: () => UserProfileRightAccessory(),
+        })}
       />
     </Stack.Navigator>
   );

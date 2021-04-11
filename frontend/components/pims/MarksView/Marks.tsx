@@ -1,19 +1,90 @@
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { MARKS } from "../../../placeholder/marks";
-import { StyleSheet, ScrollView, View, Text } from "react-native";
+import {
+  StyleSheet,
+  ScrollView,
+  View,
+  Text,
+  RefreshControl,
+} from "react-native";
 import MarksCard from "./MarksCard";
 import { FAB, Button } from "react-native-paper";
 import RBSheet from "react-native-raw-bottom-sheet";
+import { SubjectMarks, Sessions } from "../../../types/MarksTypes";
+import { getAvailableSessions, getMarks } from "../../../ApiLayer/Api";
+import { Error } from "../../../types/Error";
+import { observer } from "mobx-react-lite";
+import { MarksStoreContext } from "../../../mobx/contexts";
+import ErrorScreen from "./../Utils/ErrorScreen";
+import Loader from "../Utils/Loader";
 
-const Marks = ({ navigation }: any) => {
+enum Session {
+  Previous,
+  Current,
+}
+
+const Marks = observer(({ navigation }: any) => {
+  const MarksStore = React.useContext(MarksStoreContext);
   const refRBSheet = React.useRef<RBSheet>() as React.MutableRefObject<RBSheet>;
   const fabAction = () => {
     if (refRBSheet && refRBSheet.current) return refRBSheet.current.open();
   };
+  const [error, setError] = React.useState<Error | null>(null);
+  const [refreshing, setRefreshing] = React.useState<boolean>(false);
+  const [update, forceUpdate] = React.useState<boolean>(false);
+
+  const changeSession = (session: Session) => {
+    setRefreshing(true);
+    switch (session) {
+      case Session.Current:
+        makeRequest(MarksStore.currentSession);
+        break;
+      case Session.Previous:
+        makeRequest(MarksStore.previousSession);
+        break;
+      default:
+        break;
+    }
+  };
+
+  async function makeRequest(session: string | undefined) {
+    try {
+      const response = await getAvailableSessions();
+      if ("message" in response) return;
+      MarksStore.sessions = response;
+      const marksResponse = await getMarks(
+        session ? session : MarksStore.currentSession
+      );
+      setRefreshing(false);
+      if ("message" in marksResponse) {
+        const error = marksResponse as Error;
+        console.log(`Error from Marks Component: ${error.message}`);
+        setError(error);
+      } else MarksStore.setMarks(marksResponse);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  React.useEffect(() => {
+    if (MarksStore.marks) return;
+    makeRequest(undefined);
+    return () => setError({ message: "Waiting...." });
+  }, [update]);
+
+  const onRefreshFn = () => {
+    setRefreshing(true);
+    forceUpdate(!update);
+  };
   return (
     <SafeAreaView>
-      <ScrollView style={styles.container}>
+      <ScrollView
+        style={styles.container}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefreshFn} />
+        }
+      >
         <RBSheet
           height={140}
           ref={refRBSheet}
@@ -32,46 +103,45 @@ const Marks = ({ navigation }: any) => {
             },
           }}
         >
-          <Button mode="text">Current Session</Button>
-          <Button mode="text">Previous Session</Button>
+          <Button mode="text" onPress={() => changeSession(Session.Current)}>
+            Current Session
+          </Button>
+          <Button mode="text" onPress={() => changeSession(Session.Previous)}>
+            Previous Session
+          </Button>
         </RBSheet>
 
-        {MARKS.map((data, idx) => (
-          <MarksCard
-            name={data.name.substring(0, data.name.lastIndexOf("("))}
-            subCode={data.name.substring(
-              data.name.lastIndexOf("(") + 1,
-              data.name.lastIndexOf(")")
-            )}
-            marks={data.marks}
-            key={idx}
-            navigation={navigation}
-          />
-        ))}
+        {MarksStore && MarksStore.marks ? (
+          MarksStore.marks.map((data, idx) => (
+            <MarksCard
+              name={data.name.substring(0, data.name.lastIndexOf("("))}
+              subCode={data.name.substring(
+                data.name.lastIndexOf("(") + 1,
+                data.name.lastIndexOf(")")
+              )}
+              marks={data.marks}
+              key={idx}
+              navigation={navigation}
+            />
+          ))
+        ) : error ? (
+          <ErrorScreen message={error.message} />
+        ) : (
+          <Loader />
+        )}
       </ScrollView>
-      <FAB
-        style={styles.fab}
-        small={true}
-        label={"Session"}
-        icon="chevron-up"
-        onPress={fabAction}
-      />
+      {MarksStore.marks ? (
+        <FAB
+          style={styles.fab}
+          small={true}
+          label={"Session"}
+          icon="chevron-up"
+          onPress={fabAction}
+        />
+      ) : null}
     </SafeAreaView>
-
-    // <Provider>
-    //   <View>
-    //     <Menu
-    //       visible={visible}
-    //       onDismiss={closeMenu}
-    //       anchor={<Button onPress={openMenu}>Show menu</Button>}
-    //     >
-    //       <Menu.Item onPress={() => {}} title="Item 1" />
-    //       <Menu.Item onPress={() => {}} title="Item 2" />
-    //     </Menu>
-    //   </View>
-    // </Provider>
   );
-};
+});
 export default Marks;
 const styles = StyleSheet.create({
   container: {

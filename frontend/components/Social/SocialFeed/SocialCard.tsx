@@ -58,6 +58,7 @@ export default function SocialCard({ tripleDotAction }: SocialCardProps) {
         handleDoubleTap();
       }}
     >
+      {/* content : date and time and caption */}
       <Card.Title
         title="Vtrix"
         subtitle="Google Placement programm @ block 6 on 25th of september"
@@ -73,7 +74,7 @@ export default function SocialCard({ tripleDotAction }: SocialCardProps) {
       />
       <Card.Actions>
         <IconButton
-          color={"#757676"}
+          color={liked ? "#f27d0c" : "#757676"}
           style={styles.button}
           icon={"fire"}
           size={30}

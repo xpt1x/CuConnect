@@ -29,10 +29,6 @@ export default function DetailedAttendance({ route }: any) {
   const { subject }: RouteParam = route.params;
   return (
     <>
-      <ProgressBar
-        progress={subject.Total_Perc / 100}
-        color={Colors.green500}
-      />
       <ScrollView style={styles.container}>
         <Surface style={styles.surface}>
           <Chip textStyle={styles.chipText} style={styles.chip}>
@@ -100,7 +96,7 @@ const styles = StyleSheet.create({
   },
   cardPercent: {
     alignSelf: "center",
-    marginBottom: "18%",
+    marginBottom: "14%",
     marginTop: "2%",
   },
   percentText: {

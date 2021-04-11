@@ -90,21 +90,4 @@ export const SCREENS = [
 
     size: iconSize,
   },
-  {
-    component: SignOut,
-    name: "Reset",
-    options: {
-      tabBarIcon: ({ color, focused }: TabBarIconProps) => {
-        return (
-          <IconButton
-            icon={"reload"}
-            color={color}
-            size={iconSize}
-            style={styles.icons}
-          />
-        );
-      },
-      size: iconSize,
-    },
-  },
 ];

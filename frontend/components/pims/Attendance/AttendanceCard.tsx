@@ -26,10 +26,10 @@ export default function AttendanceCard({
   }
   return (
     <Card
-      style={{
-        ...styles.card,
-        borderColor: setColor(subjectAttendance.Total_Perc),
-      }}
+      style={
+        styles.card
+        // borderColor: setColor(subjectAttendance.Total_Perc),
+      }
       onPress={() => cardPress(subjectAttendance)}
     >
       <Card.Title
@@ -68,28 +68,17 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     alignSelf: "center",
     overflow: "hidden",
-    backgroundColor: "#000",
+    backgroundColor: "#0d0d0d",
     borderWidth: 0.2,
     borderRadius: 7,
   },
   progressBar: {
     marginTop: 15,
   },
-  // cardPercent: {
-  //   marginLeft: "auto",
-  //   color: "#77E666",
-  //   marginVertical: -38,
-  //   marginRight: -18,
-  //   fontWeight: "bold",
-  //   fontSize: 62,
-  // },
+
   cardPercent: {
     marginLeft: "auto",
-    // color: "#77E666",
     marginTop: "-18%",
     paddingBottom: "2%",
-    // marginRight: "1%",
-    // marginBottom: 1,
-    // fontWeight: "bold",
   },
 });

@@ -1034,10 +1034,20 @@
   resolved "https://registry.yarnpkg.com/@expo-google-fonts/monoton/-/monoton-0.1.0.tgz#fb94b0d233f22a409c884bc90e7af1a17266c9f3"
   integrity sha512-ISPDY/PRl2et/Wg9NhDa3vCikDWGkMuUD5gJX18gS8HG+skzVDfNw0Dp6Ok+H40GLVp3OS7Mq0jey9hrT4LGhw==
 
+"@expo-google-fonts/open-sans@^0.1.0":
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/@expo-google-fonts/open-sans/-/open-sans-0.1.0.tgz#3825d48afa7b9176af7202be28067ad774536819"
+  integrity sha512-haXOb/9IF8UxXIGRUIrXqPDJF/QIicuJUqbBrPUshqJ8q8On4/Om1qPltlfl/ijn/15LYyhIQJRYKfrigJmO4g==
+
 "@expo-google-fonts/pacifico@^0.1.0":
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/@expo-google-fonts/pacifico/-/pacifico-0.1.0.tgz#f46da10e9eeed7aa3abc2d3e15a1a3b2e4bad6eb"
   integrity sha512-XA5hJ7aqyi+Uz4hRXD3NGmIHzUpjDoudKrFOQ/lIF+0Niu0D5v+rXV8iODy6WzhhHMmVx+kyWU0foBhG5cCsOg==
+
+"@expo-google-fonts/poppins@^0.1.0":
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/@expo-google-fonts/poppins/-/poppins-0.1.0.tgz#aae4df9e80d68ec9dc6764e57dc931f1f64016cd"
+  integrity sha512-iC8ii7hYyK22N3ivvLyIspLQ0D4dn1mB+llhYnUCr/h/QfwUWyEosq1uWiwNC47yCedsiPiZ99vJSfpYRjBDrA==
 
 "@expo/babel-preset-cli@0.2.18":
   version "0.2.18"
