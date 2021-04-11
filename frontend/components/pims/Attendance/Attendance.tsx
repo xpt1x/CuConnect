@@ -21,18 +21,19 @@ export default function Attendance({ navigation }: Props) {
     ReadonlyArray<Subject> | undefined
   >(undefined);
 
+  const makeRequest = async () => {
+    const response = await getAttendance().catch((error) => {
+      return { message: error };
+    });
+    setRefreshing(false);
+    if ("message" in response) {
+      const error = response as Error;
+      console.log(`Error from Attendance Component: ${error.message}`);
+      setError(error);
+    } else setAttendance(response);
+  };
+
   React.useEffect(() => {
-    async function makeRequest() {
-      const response = await getAttendance().catch((error) => {
-        return { message: error };
-      });
-      setRefreshing(false);
-      if ("message" in response) {
-        const error = response as Error;
-        console.log(`Error from Attendance Component: ${error.message}`);
-        setError(error);
-      } else setAttendance(response);
-    }
     makeRequest();
     return () => setError({ message: "Waiting...." });
   }, [update]);

@@ -48,15 +48,18 @@ const Marks = observer(({ navigation }: any) => {
     }
   };
 
-  async function makeRequest(session: string | undefined) {
+  const makeRequest = async (session: string | undefined) => {
     try {
-      const response = await getAvailableSessions();
-      if ("message" in response) return;
-      MarksStore.sessions = response;
+      if (session === undefined) {
+        const response = await getAvailableSessions();
+        if ("message" in response) return;
+        MarksStore.sessions = response;
+      }
       const marksResponse = await getMarks(
         session ? session : MarksStore.currentSession
       );
       setRefreshing(false);
+      refRBSheet.current.close();
       if ("message" in marksResponse) {
         const error = marksResponse as Error;
         console.log(`Error from Marks Component: ${error.message}`);
@@ -65,10 +68,9 @@ const Marks = observer(({ navigation }: any) => {
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
   React.useEffect(() => {
-    if (MarksStore.marks) return;
     makeRequest(undefined);
     return () => setError({ message: "Waiting...." });
   }, [update]);
@@ -112,14 +114,17 @@ const Marks = observer(({ navigation }: any) => {
         </RBSheet>
 
         {MarksStore && MarksStore.marks ? (
-          MarksStore.marks.map((data, idx) => (
+          MarksStore.marks.map((subjectMarks, idx) => (
             <MarksCard
-              name={data.name.substring(0, data.name.lastIndexOf("("))}
-              subCode={data.name.substring(
-                data.name.lastIndexOf("(") + 1,
-                data.name.lastIndexOf(")")
+              name={subjectMarks.name.substring(
+                0,
+                subjectMarks.name.lastIndexOf("(")
               )}
-              marks={data.marks}
+              subCode={subjectMarks.name.substring(
+                subjectMarks.name.lastIndexOf("(") + 1,
+                subjectMarks.name.lastIndexOf(")")
+              )}
+              marks={subjectMarks.marks}
               key={idx}
               navigation={navigation}
             />
@@ -134,7 +139,7 @@ const Marks = observer(({ navigation }: any) => {
         <FAB
           style={styles.fab}
           small={true}
-          label={"Session"}
+          label={MarksStore.sessionLabel}
           icon="chevron-up"
           onPress={fabAction}
         />

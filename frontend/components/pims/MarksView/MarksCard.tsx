@@ -26,7 +26,9 @@ const emojiType = (elementMarks: ReadonlyArray<ElementMarks>): string => {
 export default function MarksCard({ name, subCode, marks, navigation }: Props) {
   const cardPress = (headerName: string) => {
     navigation.push("Detailed Marks", {
-      subject: headerName,
+      subjectCode: headerName,
+      marks: marks,
+      name: name,
     });
   };
 

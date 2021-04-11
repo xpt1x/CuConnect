@@ -22,6 +22,8 @@ import {
   Poppins_900Black,
   Poppins_900Black_Italic,
 } from "@expo-google-fonts/poppins";
+import { Text } from "react-native-paper";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function Main() {
   let [fontsLoaded] = useFonts({
@@ -47,6 +49,11 @@ export default function Main() {
   if (!fontsLoaded) {
     return <AppLoading />;
   } else {
-    return <StackNav />;
+    return (
+      // <SafeAreaView>
+      //   <Text>Hello vivek</Text>
+      // </SafeAreaView>
+      <StackNav />
+    );
   }
 }

@@ -10,10 +10,12 @@ import {
 import { Text } from "react-native-paper";
 import { SwipeableBottomNav } from "./SwipeableBottomNav";
 import UserProfile from "../Social/Profile/UserProfile";
+import LoginPims from "../Authentication/LoginPims";
+import SettingsMenu from "../Social/Profile/SettingsMenu";
 
 const Stack = createStackNavigator();
 const navigatorProps: StackNavigationProp = {
-  initialRouteName: "Nav",
+  initialRouteName: "Sign In",
   mode: "card",
   headerMode: "float",
   detachInactiveScreens: false,
@@ -38,8 +40,14 @@ function DetailedMarksRightAccessory(code: string) {
   return <Text style={{ padding: 24 }}>{code}</Text>;
 }
 
-function UserProfileRightAccessory() {
-  return <IconButton icon="cog" style={{ marginRight: 25 }} />;
+function UserProfileRightAccessory(navigation: any) {
+  return (
+    <IconButton
+      onPress={() => navigation.push("SettingsMenu")}
+      icon="cog"
+      style={{ marginRight: 25 }}
+    />
+  );
 }
 
 export default function StackNav() {
@@ -59,7 +67,7 @@ export default function StackNav() {
           title: "",
           headerRight: () =>
             DetailedMarksRightAccessory(
-              route.params ? route.params.subject : route.name
+              route.params ? route.params.subjectCode : route.name
             ),
         })}
       />
@@ -73,8 +81,18 @@ export default function StackNav() {
         component={UserProfile}
         options={({ route }: any) => ({
           title: "",
-          headerRight: () => UserProfileRightAccessory(),
+          headerRight: () => UserProfileRightAccessory(route.params.navigation),
         })}
+      />
+      <Stack.Screen
+        name="Settings"
+        component={SettingsMenu}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Sign In"
+        component={LoginPims}
+        options={{ headerShown: false }}
       />
     </Stack.Navigator>
   );
