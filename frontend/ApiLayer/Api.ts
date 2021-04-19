@@ -1,6 +1,6 @@
 import config from "../config.json";
 import { TimetableType } from "../types/TimetableTypes";
-import { Subject } from "../types/Subject";
+import { FullSubject, Subject } from "../types/Subject";
 import { Error } from "../types/Error";
 import { SubjectMarks, Sessions } from "../types/MarksTypes";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -54,7 +54,7 @@ const getTimetable = async (): Promise<TimetableType | Error> => {
   }
 };
 
-const getFullAttendance = async (): Promise<ReadonlyArray<Subject> | Error> => {
+const getFullAttendance = async (): Promise<ReadonlyArray<FullSubject> | Error> => {
   try {
     const response = await fetch(config.imsApiUrl + "/fullattendance", {
       method: "POST",
