@@ -16,6 +16,9 @@ export default function Social({ navigation }: Props) {
   const tripleDotAction = () => {
     if (refRBSheet && refRBSheet.current) return refRBSheet.current.open();
   };
+  function openCamera() {
+    navigation.push("Camera");
+  }
   let [fontsLoaded] = useFonts({
     Pacifico_400Regular,
   });
@@ -31,7 +34,7 @@ export default function Social({ navigation }: Props) {
       <SafeAreaView>
         <View>
           <Appbar.Header style={styles.header}>
-            <Appbar.Action icon="camera-iris" onPress={() => {}} />
+            <Appbar.Action icon="camera-iris" onPress={openCamera} />
             <Appbar.Content titleStyle={styles.appbar} title={" Social "} />
             <Appbar.Action icon="alien" onPress={goToProfile} />
           </Appbar.Header>
