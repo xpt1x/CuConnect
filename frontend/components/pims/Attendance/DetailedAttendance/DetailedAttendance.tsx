@@ -7,13 +7,12 @@ import {
   Chip,
   Text,
 } from "react-native-paper";
-import { StyleSheet, ScrollView } from "react-native";
+import { StyleSheet, ScrollView, View } from "react-native";
 import { AnimatedCircularProgress } from "react-native-circular-progress";
 import Calendar from "./Calendar";
 import { Subject, FullSubject } from "../../../../types/Subject";
 import { observer } from "mobx-react-lite";
 import { AttendanceStoreContext } from "../../../../mobx/contexts";
-import Loader from "../../Utils/Loader";
 
 interface RouteParam {
   subject: Subject;
@@ -62,7 +61,17 @@ const DetailedAttendance = observer(({ route }: any) => {
               <Text style={styles.percentText}>{`${subject.Total_Perc}%`}</Text>
             )}
           </AnimatedCircularProgress>
-          {attendanceStore.fullAttendance ? <Calendar /> : <Loader />}
+          {attendanceStore.fullAttendance ? (
+            <Calendar subject={attendanceStore.fullAttendance[subject.Title]} />
+          ) : (
+            <View style={styles.calendarLoader}>
+              <ProgressBar
+                indeterminate={true}
+                color={Colors.blue400}
+                style={styles.linearLoader}
+              />
+            </View>
+          )}
           <DataTable>
             {infoRow("Required to hit 75%", calculateLectures(subject, 75))}
             {infoRow("Required to hit 80%", calculateLectures(subject, 80))}
@@ -117,6 +126,16 @@ const styles = StyleSheet.create({
   },
   percentText: {
     fontSize: 20,
+  },
+  calendarLoader: {
+    height: 86,
+    width: "100%",
+    display: "flex",
+    justifyContent: "center",
+  },
+  linearLoader: {
+    width: "40%",
+    alignSelf: "center",
   },
 });
 export default DetailedAttendance;
