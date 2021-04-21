@@ -17,7 +17,7 @@ export default function Social({ navigation }: Props) {
     if (refRBSheet && refRBSheet.current) return refRBSheet.current.open();
   };
   function openCamera() {
-    navigation.push("Camera");
+    navigation.navigate("Camera");
   }
   let [fontsLoaded] = useFonts({
     Pacifico_400Regular,

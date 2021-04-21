@@ -13,6 +13,7 @@ import Calendar from "./Calendar";
 import { Subject, FullSubject } from "../../../../types/Subject";
 import { observer } from "mobx-react-lite";
 import { AttendanceStoreContext } from "../../../../mobx/contexts";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 interface RouteParam {
   subject: Subject;
@@ -41,6 +42,26 @@ function calculateLectures(subject: Subject, req: number) {
 const DetailedAttendance = observer(({ route }: any) => {
   const { subject, index }: RouteParam = route.params;
   const attendanceStore = React.useContext(AttendanceStoreContext);
+  const storeAttendence = async () => {
+    try {
+      await AsyncStorage.setItem("subject", JSON.stringify(subject));
+      await AsyncStorage.setItem("index", JSON.stringify(index));
+      await AsyncStorage.setItem(
+        "detailAttendanceTimeStamp",
+        JSON.stringify(new Date().getTime())
+      );
+    } catch (e) {
+      console.log("DetailAttendence Storage error");
+    }
+    console.log(`DetailAttendence stored`);
+  };
+  const update = async () => {
+    const oldTime = await AsyncStorage.getItem("detailAttendanceTimeStamp");
+    if (JSON.parse(oldTime) - new Date().getTime() > 100) {
+      // api call
+    } else {
+    }
+  };
 
   return (
     <>

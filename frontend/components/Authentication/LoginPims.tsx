@@ -4,10 +4,9 @@ import { Colors, Button, TextInput } from "react-native-paper";
 import { SessionStoreContext } from "../../mobx/contexts";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export default function LoginPims({ navigation }: any) {
+export default function LoginPims({ navigation, route }: any) {
   const [uid, setUid] = React.useState("");
   const [password, setPassword] = React.useState("");
-
   const recordCreds = async () => {
     try {
       await AsyncStorage.setItem("uid", uid);
@@ -16,8 +15,22 @@ export default function LoginPims({ navigation }: any) {
       console.log("Creds saving error");
     }
     console.log(`Creds stored! Uid:${uid} Password:${password}`);
-    navigation.push("Nav");
+    navigation.replace("Nav");
   };
+
+  const checkCredsInStorage = async () => {
+    try {
+      const uid = await AsyncStorage.getItem("uid");
+      x;
+      if (uid !== null) return navigation.replace("Nav");
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  React.useEffect(() => {
+    checkCredsInStorage();
+  }, []);
 
   return (
     <SafeAreaView

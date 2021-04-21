@@ -22,7 +22,6 @@ export default class AttendanceStore {
       fullAttendance[item.Title] = item;
     });
     this.fullAttendance = fullAttendance;
-    console.log(this.fullAttendance)
   }
 
   constructor() {
