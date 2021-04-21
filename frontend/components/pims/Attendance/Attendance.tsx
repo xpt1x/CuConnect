@@ -3,23 +3,23 @@ import { StyleSheet, ScrollView, View, RefreshControl } from "react-native";
 import AttendanceCard from "./AttendanceCard";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { NavigationStackProp } from "react-navigation-stack";
-import { getAttendance } from "../../../ApiLayer/Api";
+import { getAttendance, getFullAttendance } from "../../../ApiLayer/Api";
 import { Subject } from "../../../types/Subject";
 import { Error } from "../../../types/Error";
 import Loader from "../Utils/Loader";
 import ErrorScreen from "../Utils/ErrorScreen";
+import { AttendanceStoreContext } from "../../../mobx/contexts";
+import { observer } from "mobx-react-lite";
 
 interface Props {
   navigation?: NavigationStackProp;
 }
 
-export default function Attendance({ navigation }: Props) {
+const Attendance = observer(({ navigation }: Props) => {
+  const attendanceStore = React.useContext(AttendanceStoreContext);
   const [error, setError] = React.useState<Error | null>(null);
   const [refreshing, setRefreshing] = React.useState<boolean>(false);
   const [update, forceUpdate] = React.useState<boolean>(false);
-  const [attendance, setAttendance] = React.useState<
-    ReadonlyArray<Subject> | undefined
-  >(undefined);
 
   const makeRequest = async () => {
     const response = await getAttendance().catch((error) => {
@@ -30,17 +30,30 @@ export default function Attendance({ navigation }: Props) {
       const error = response as Error;
       console.log(`Error from Attendance Component: ${error.message}`);
       setError(error);
-    } else setAttendance(response);
+    } else attendanceStore.setAttendance(response);
+  };
+
+  const makeFullAttendanceRequest = async () => {
+    const response = await getFullAttendance().catch((error) => {
+      return { message: error };
+    });
+    if ("message" in response) {
+      const error = response as Error;
+      console.log(`Error from Full Attendance Component: ${error.message}`);
+      setError(error);
+    } else attendanceStore.setFullAttendance(response);
   };
 
   React.useEffect(() => {
     makeRequest();
+    makeFullAttendanceRequest();
     return () => setError({ message: "Waiting...." });
   }, [update]);
 
   const onRefreshFn = () => {
     setRefreshing(true);
     forceUpdate(!update);
+    attendanceStore.setFullAttendance(null);
   };
 
   return (
@@ -51,8 +64,8 @@ export default function Attendance({ navigation }: Props) {
           <RefreshControl refreshing={refreshing} onRefresh={onRefreshFn} />
         }
       >
-        {attendance ? (
-          attendance.map((subject: Subject, idx: number) => (
+        {attendanceStore.attendance ? (
+          attendanceStore.attendance.map((subject: Subject, idx: number) => (
             <AttendanceCard
               subjectAttendance={subject}
               key={idx}
@@ -67,7 +80,7 @@ export default function Attendance({ navigation }: Props) {
       </ScrollView>
     </SafeAreaView>
   );
-}
+});
 
 const styles = StyleSheet.create({
   container: {
@@ -77,3 +90,5 @@ const styles = StyleSheet.create({
     width: "100%",
   },
 });
+
+export default Attendance;

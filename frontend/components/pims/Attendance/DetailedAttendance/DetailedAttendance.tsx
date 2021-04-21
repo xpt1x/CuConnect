@@ -7,26 +7,41 @@ import {
   Chip,
   Text,
 } from "react-native-paper";
-import { StyleSheet, ScrollView } from "react-native";
+import { StyleSheet, ScrollView, View } from "react-native";
 import { AnimatedCircularProgress } from "react-native-circular-progress";
 import Calendar from "./Calendar";
-import { Subject } from "../../../../types/Subject";
+import { Subject, FullSubject } from "../../../../types/Subject";
+import { observer } from "mobx-react-lite";
+import { AttendanceStoreContext } from "../../../../mobx/contexts";
 
 interface RouteParam {
   subject: Subject;
+  index: number;
 }
 
-let infoRow = () => {
+let infoRow = (text: string, value: string | number) => {
   return (
     <DataTable.Row>
-      <DataTable.Cell>Required To Hit 75%</DataTable.Cell>
-      <DataTable.Cell numeric>6</DataTable.Cell>
+      <DataTable.Cell>{text.toUpperCase()}</DataTable.Cell>
+      <DataTable.Cell numeric>{value}</DataTable.Cell>
     </DataTable.Row>
   );
 };
 
-export default function DetailedAttendance({ route }: any) {
-  const { subject }: RouteParam = route.params;
+function calculateLectures(subject: Subject, req: number) {
+  let att = parseInt(subject.Total_Attd);
+  let del = parseInt(subject.Total_Delv.toString());
+  if (del === 0 || att / del >= req / 100) return "NA";
+  else {
+    let lecs = (req * del - 100 * att) / (100 - req);
+    return `${Math.ceil(lecs)} lecture(s) more`;
+  }
+}
+
+const DetailedAttendance = observer(({ route }: any) => {
+  const { subject, index }: RouteParam = route.params;
+  const attendanceStore = React.useContext(AttendanceStoreContext);
+
   return (
     <>
       <ScrollView style={styles.container}>
@@ -46,33 +61,43 @@ export default function DetailedAttendance({ route }: any) {
               <Text style={styles.percentText}>{`${subject.Total_Perc}%`}</Text>
             )}
           </AnimatedCircularProgress>
-          <Calendar />
+          {attendanceStore.fullAttendance ? (
+            <Calendar subject={attendanceStore.fullAttendance[subject.Title]} />
+          ) : (
+            <View style={styles.calendarLoader}>
+              <ProgressBar
+                indeterminate={true}
+                color={Colors.blue400}
+                style={styles.linearLoader}
+              />
+            </View>
+          )}
           <DataTable>
-            {infoRow()}
-            {infoRow()}
-            {infoRow()}
-            {infoRow()}
-            {infoRow()}
-            {infoRow()}
-            {infoRow()}
-            {infoRow()}
-            {infoRow()}
-            {infoRow()}
-            {infoRow()}
-            {infoRow()}
+            {infoRow("Required to hit 75%", calculateLectures(subject, 75))}
+            {infoRow("Required to hit 80%", calculateLectures(subject, 80))}
+            {infoRow("Required to hit 85%", calculateLectures(subject, 85))}
+            {infoRow("Required to hit 90%", calculateLectures(subject, 90))}
+            {infoRow(
+              "Total Attendance",
+              `${subject.Total_Attd} / ${subject.Total_Delv}`
+            )}
+            {infoRow(
+              "Eligible Attendance",
+              `${subject.EligibilityAttended} / ${subject.EligibilityDelivered}`
+            )}
+            {infoRow("Duty Leave N P", subject.DutyLeave_N_P)}
+            {infoRow("Duty Leave Others", subject.DutyLeave_Others)}
+            {infoRow("Total Percentage", subject.Total_Perc)}
           </DataTable>
         </Surface>
       </ScrollView>
     </>
   );
-}
+});
+
 const styles = StyleSheet.create({
   container: {
-    // display: "flex",
-    // flexDirection: "column",
     width: "100%",
-    // justifyContent: "center",
-    // alignItems: "center",
   },
 
   surface: {
@@ -102,4 +127,15 @@ const styles = StyleSheet.create({
   percentText: {
     fontSize: 20,
   },
+  calendarLoader: {
+    height: 86,
+    width: "100%",
+    display: "flex",
+    justifyContent: "center",
+  },
+  linearLoader: {
+    width: "40%",
+    alignSelf: "center",
+  },
 });
+export default DetailedAttendance;

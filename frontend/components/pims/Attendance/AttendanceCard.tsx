@@ -13,7 +13,8 @@ export default function AttendanceCard({
   subjectAttendance,
   navigation,
 }: Props) {
-  const cardPress = (subject: any) => {
+  const cardPress = (subject: Subject) => {
+    if (subject.Total_Delv === 0) return;
     navigation.push("Detailed Attendance", {
       subject: subject,
     });

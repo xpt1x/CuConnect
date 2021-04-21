@@ -1,47 +1,36 @@
 import React from "react";
 import { StyleSheet, ScrollView } from "react-native";
 import { Surface, Title, Text, Colors } from "react-native-paper";
+import { FullSubject } from "../../../../types/Subject";
 
-export default function Calendar() {
+interface calendarProps {
+  subject: FullSubject;
+}
+
+function parseDate(date: string): ReadonlyArray<string> {
+  const splitDate = date.split(" ");
+  return [splitDate[1], splitDate[2]];
+}
+
+export default function Calendar({ subject }: calendarProps) {
   const [month, setMonth] = React.useState("January, 2021");
-
+  const { FullAttendanceReport } = subject;
   return (
     <>
       <ScrollView horizontal={true} style={styles.calender}>
-        <Surface style={[styles.surface, styles.green]}>
-          <Title>25</Title>
-          <Text>Feb</Text>
-        </Surface>
-        <Surface style={[styles.surface, styles.red]}>
-          <Title>25</Title>
-          <Text>Feb</Text>
-        </Surface>
-        <Surface style={[styles.surface, styles.red]}>
-          <Title>25</Title>
-          <Text>Feb</Text>
-        </Surface>
-        <Surface style={[styles.surface, styles.green]}>
-          <Title>25</Title>
-          <Text>Feb</Text>
-        </Surface>
-        <Surface style={[styles.surface, styles.green]}>
-          <Title>25</Title>
-          <Text>Feb</Text>
-        </Surface>
-        <Surface style={[styles.surface, styles.green]}>
-          <Title>25</Title>
-          <Text>Feb</Text>
-        </Surface>
-        <Surface style={[styles.surface, styles.red]}>
-          <Title>25</Title>
-          <Text>Feb</Text>
-        </Surface>
-        <Surface style={[styles.surface, styles.red]}>
-          <Title>25</Title>
-          <Text>Feb</Text>
-        </Surface>
+        {FullAttendanceReport.map((entry, idx) => {
+          const color =
+            entry.AttendanceCode === "P" ? styles.green : styles.red;
+          const [date, month] = parseDate(entry.AttDate);
+          return (
+            <Surface style={[styles.surface, color]} key={idx}>
+              <Title>{date}</Title>
+              <Text>{month}</Text>
+            </Surface>
+          );
+        })}
       </ScrollView>
-      <Title style={styles.title}>{month}</Title>
+      {/* <Title style={styles.title}>{month}</Title> */}
     </>
   );
 }

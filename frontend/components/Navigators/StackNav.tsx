@@ -12,6 +12,7 @@ import { SwipeableBottomNav } from "./SwipeableBottomNav";
 import UserProfile from "../Social/Profile/UserProfile";
 import LoginPims from "../Authentication/LoginPims";
 import SettingsMenu from "../Social/Profile/SettingsMenu";
+import Camera from "../Social/Camera/Camera";
 
 const Stack = createStackNavigator();
 const navigatorProps: StackNavigationProp = {
@@ -35,6 +36,12 @@ const navigatorProps: StackNavigationProp = {
     },
   },
 };
+
+const forFade = ({ current }: any) => ({
+  cardStyle: {
+    opacity: current.progress,
+  },
+});
 
 function DetailedMarksRightAccessory(code: string) {
   return <Text style={{ padding: 24 }}>{code}</Text>;
@@ -87,6 +94,11 @@ export default function StackNav() {
         name="Sign In"
         component={LoginPims}
         options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Camera"
+        component={Camera}
+        options={{ headerShown: false, cardStyleInterpolator: forFade }}
       />
     </Stack.Navigator>
   );
