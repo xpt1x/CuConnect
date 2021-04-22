@@ -28,7 +28,7 @@ const Attendance = observer(({ navigation }: Props) => {
     setRefreshing(false);
     if ("message" in response) {
       const error = response as Error;
-      console.log(`Error from Attendance Component: ${error.message}`);
+      // console.log(`Error from Attendance Component: ${error.message}`);
       setError(error);
     } else attendanceStore.setAttendance(response);
   };

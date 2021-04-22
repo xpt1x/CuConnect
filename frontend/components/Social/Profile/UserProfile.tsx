@@ -7,14 +7,21 @@ import {
   Divider,
   Chip,
   Colors,
+  Button,
 } from "react-native-paper";
 import profilePic from "../../../devAssets/avatar.png";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { NavigationStackProp } from "react-navigation-stack";
 
 function getRandom(min: number, max: number): number {
   return Math.floor(Math.random() * (max - min) + min);
 }
 
-export default function UserProfile() {
+interface UserProfileProps {
+  navigation: NavigationStackProp;
+}
+
+export default function UserProfile({ navigation }: UserProfileProps) {
   let images = [];
   for (let i = 0; i < 9; i++) {
     let link = `https://picsum.photos/${getRandom(10, 20) * 100}/${
@@ -22,6 +29,20 @@ export default function UserProfile() {
     }`;
     images.push(link);
   }
+
+  const clearData = async () => {
+    try {
+      await AsyncStorage.removeItem("uid");
+      await AsyncStorage.removeItem("password");
+      console.log("Creds removed");
+      navigation.popToTop();
+      navigation.replace("Sign In");
+    } catch (e) {
+      console.log(e);
+      // remove error
+    }
+  };
+
   return (
     <ScrollView>
       <View style={styles.nameAndPhoto}>
@@ -29,6 +50,7 @@ export default function UserProfile() {
         <Text style={styles.userName}>Jennifer Lawrence</Text>
         <Text style={styles.uid}>18BCS2414</Text>
       </View>
+      <Button onPress={clearData}>Sign Out</Button>
       <View style={styles.data}>
         <View style={styles.dataElement}>
           <Text style={styles.dataText}>Posts</Text>
