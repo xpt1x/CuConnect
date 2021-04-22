@@ -22,6 +22,29 @@ const createUserData = async () => {
   return user;
 };
 
+const validateUser = async (
+  uid: string,
+  password: string
+): Promise<boolean> => {
+  try {
+    const user = new FormData();
+    user.append("uid", uid);
+    user.append("password", password);
+
+    const response = await fetch(config.imsApiUrl + "/validate", {
+      method: "POST",
+      body: user,
+    });
+    const jsonResponse = await response.json();
+    const { error } = jsonResponse;
+
+    return error ? false : true;
+  } catch (error) {
+    console.log(error);
+    return false;
+  }
+};
+
 const getAttendance = async (): Promise<ReadonlyArray<Subject> | Error> => {
   try {
     const response = await fetch(config.imsApiUrl + "/attendance", {
@@ -54,7 +77,9 @@ const getTimetable = async (): Promise<TimetableType | Error> => {
   }
 };
 
-const getFullAttendance = async (): Promise<ReadonlyArray<FullSubject> | Error> => {
+const getFullAttendance = async (): Promise<
+  ReadonlyArray<FullSubject> | Error
+> => {
   try {
     const response = await fetch(config.imsApiUrl + "/fullattendance", {
       method: "POST",
@@ -104,6 +129,7 @@ const getMarks = async (
 };
 
 export {
+  validateUser,
   getAttendance,
   getTimetable,
   getFullAttendance,
