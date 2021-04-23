@@ -22,10 +22,7 @@ const createUserData = async () => {
   return user;
 };
 
-const validateUser = async (
-  uid: string,
-  password: string
-): Promise<boolean> => {
+const validateUser = async (uid: string, password: string): Promise<string> => {
   try {
     const user = new FormData();
     user.append("uid", uid);
@@ -38,14 +35,14 @@ const validateUser = async (
     const jsonResponse = await response.json();
     const { error } = jsonResponse;
 
-    return error ? false : true;
+    return error ? error : "OK";
   } catch (error) {
     console.log(error);
-    return false;
+    return "Application Internal Failure";
   }
 };
 
-const getAttendance = async (): Promise<ReadonlyArray<Subject> | Error> => {
+const getAttendance = async (): Promise<Array<Subject> | Error> => {
   try {
     const response = await fetch(config.imsApiUrl + "/attendance", {
       method: "POST",
@@ -77,9 +74,7 @@ const getTimetable = async (): Promise<TimetableType | Error> => {
   }
 };
 
-const getFullAttendance = async (): Promise<
-  ReadonlyArray<FullSubject> | Error
-> => {
+const getFullAttendance = async (): Promise<Array<FullSubject> | Error> => {
   try {
     const response = await fetch(config.imsApiUrl + "/fullattendance", {
       method: "POST",
@@ -112,7 +107,7 @@ const getAvailableSessions = async (): Promise<Sessions | Error> => {
 
 const getMarks = async (
   session: string
-): Promise<ReadonlyArray<SubjectMarks> | Error> => {
+): Promise<Array<SubjectMarks> | Error> => {
   try {
     const response = await fetch(config.imsApiUrl + `/marks/${session}`, {
       method: "POST",

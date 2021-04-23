@@ -12,20 +12,15 @@ import {
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { validateUser } from "../../ApiLayer/Api";
 
-enum Message {
-  CANT_VALIDATE = "Can't validate, visit UIMS to resolve",
-  PASSWORD_CHANGED = "Looks like your password is changed, please SignIn again",
-}
-
 export default function LoginPims({ navigation, route }: any) {
   const [uid, setUid] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [visible, setVisible] = React.useState<boolean>(false);
   const [validating, setValidating] = React.useState<boolean>(false);
   const [credsFound, setCredsFound] = React.useState<boolean>(true);
-  const [message, setMessage] = React.useState<Message>(Message.CANT_VALIDATE);
+  const [message, setMessage] = React.useState<string>("");
 
-  const showMessage = (message: Message) => {
+  const showMessage = (message: string) => {
     setMessage(message);
     setVisible(true);
   };
@@ -33,15 +28,16 @@ export default function LoginPims({ navigation, route }: any) {
   const recordCreds = async () => {
     setValidating(true);
     try {
-      const valid = await validateUser(uid, password);
-      if (valid) {
+      const response = await validateUser(uid, password);
+      if (response === "OK") {
         await AsyncStorage.setItem("uid", uid);
         await AsyncStorage.setItem("password", password);
         console.log(`Creds stored! Uid:${uid} Password:${password}`);
 
         navigation.replace("Nav");
       } else {
-        showMessage(Message.CANT_VALIDATE);
+        // show API error RESPONSE
+        showMessage(response);
       }
     } catch (e) {
       console.log("Something went wrong in recordCreds(LoginPims)");
@@ -54,14 +50,16 @@ export default function LoginPims({ navigation, route }: any) {
       const uid = await AsyncStorage.getItem("uid");
       const password = await AsyncStorage.getItem("password");
       if (uid !== null && password !== null) {
-        const valid = await validateUser(uid, password);
-        if (valid) return navigation.replace("Nav");
+        const response = await validateUser(uid, password);
+        if (response === "OK") return navigation.replace("Nav");
         else {
           // API return invalid, remove local creds, show sign in screen
           setCredsFound(false);
           await AsyncStorage.removeItem("uid");
           await AsyncStorage.removeItem("password");
-          showMessage(Message.PASSWORD_CHANGED);
+          showMessage(
+            "Looks like your password is changed, please SignIn again"
+          );
         }
       } else {
         setCredsFound(false);
@@ -118,6 +116,7 @@ export default function LoginPims({ navigation, route }: any) {
               style={{ marginVertical: 12 }}
               icon={"key"}
               mode="contained"
+              disabled={uid.length < 1}
               onPress={recordCreds}
             >
               Login

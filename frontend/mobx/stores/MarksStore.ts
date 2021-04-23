@@ -1,6 +1,12 @@
 import { action, makeAutoObservable, computed } from "mobx";
 import { SubjectMarks, Sessions } from "../../types/MarksTypes";
 
+function compareNames(a: SubjectMarks, b: SubjectMarks) {
+  if (a.name < b.name) return -1;
+  else if (a.name > b.name) return 1;
+  else return 0;
+}
+
 export default class MarksStore {
   marks: ReadonlyArray<SubjectMarks> | null = null;
   sessions: Sessions = {};
@@ -33,8 +39,8 @@ export default class MarksStore {
   }
 
   @action.bound
-  setMarks(marks: ReadonlyArray<SubjectMarks> | null) {
-    this.marks = marks;
+  setMarks(marks: Array<SubjectMarks> | null) {
+    this.marks = marks ? marks.sort(compareNames) : null;
   }
 
   constructor() {

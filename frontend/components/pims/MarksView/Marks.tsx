@@ -59,7 +59,7 @@ const Marks = observer(({ navigation }: any) => {
         session ? session : MarksStore.currentSession
       );
       setRefreshing(false);
-      refRBSheet.current.close();
+      if (refRBSheet && refRBSheet.current) refRBSheet.current.close();
       if ("message" in marksResponse) {
         const error = marksResponse as Error;
         console.log(`Error from Marks Component: ${error.message}`);

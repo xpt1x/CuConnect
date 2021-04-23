@@ -53,6 +53,7 @@ const Attendance = observer(({ navigation }: Props) => {
   const onRefreshFn = () => {
     setRefreshing(true);
     forceUpdate(!update);
+    attendanceStore.setAttendance(null);
     attendanceStore.setFullAttendance(null);
   };
 
