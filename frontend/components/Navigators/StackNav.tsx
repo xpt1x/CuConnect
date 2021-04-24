@@ -38,12 +38,6 @@ const navigatorProps: StackNavigationProp = {
   },
 };
 
-const forFade = ({ current }: any) => ({
-  cardStyle: {
-    opacity: current.progress,
-  },
-});
-
 function DetailedMarksRightAccessory(code: string) {
   return <Text style={{ padding: 24 }}>{code}</Text>;
 }
@@ -108,7 +102,10 @@ export default function StackNav() {
       <Stack.Screen
         name="Camera"
         component={Camera}
-        options={{ headerShown: false, cardStyleInterpolator: forFade }}
+        options={{
+          headerShown: false,
+          gestureDirection: "horizontal-inverted",
+        }}
       />
     </Stack.Navigator>
   );

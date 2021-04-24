@@ -34,9 +34,12 @@ export default function Social({ navigation }: Props) {
       <SafeAreaView>
         <View>
           <Appbar.Header style={styles.header}>
-            <Appbar.Action icon="camera-iris" onPress={openCamera} />
+            <Appbar.Action icon="plus-circle-outline" onPress={openCamera} />
             <Appbar.Content titleStyle={styles.appbar} title={" Social "} />
-            <Appbar.Action icon="alien" onPress={goToProfile} />
+            <Appbar.Action
+              icon="account-circle-outline"
+              onPress={goToProfile}
+            />
           </Appbar.Header>
           <ScrollView style={styles.container}>
             <RBSheet

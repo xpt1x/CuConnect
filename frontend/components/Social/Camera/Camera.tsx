@@ -1,32 +1,24 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View, SafeAreaView } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  SafeAreaView,
+  Platform,
+  Image,
+} from "react-native";
 import { Camera } from "expo-camera";
 import { IconButton, Colors } from "react-native-paper";
+import * as ImagePicker from "expo-image-picker";
 
-export default function SocialCamera() {
-  const [hasPermission, setHasPermission] = useState<boolean | null>(null);
-  const [type, setType] = useState(Camera.Constants.Type.back);
-  const [flashMode, setFlashMode] = useState(Camera.Constants.FlashMode.off);
-  const [flashIcon, setflashIcon] = useState("flash-outline");
-
-  const [camera, setCamera] = React.useState<Camera | null>(null);
-  let takePicture = async () => {
-    const img = await camera?.takePictureAsync({ exif: true });
-    console.log(img);
-  };
-  useEffect(() => {
-    (async () => {
-      const { status } = await Camera.requestPermissionsAsync();
-      setHasPermission(status === "granted");
-    })();
-  }, []);
-
-  if (hasPermission === null) {
-    return <View />;
-  }
-  if (hasPermission === false) {
-    return <Text>No access to camera</Text>;
-  }
+const PostSelector = ({
+  type,
+  flashMode,
+  setCamera,
+  pickImage,
+  takePicture,
+  setType,
+}) => {
   return (
     <SafeAreaView style={styles.container}>
       <Camera
@@ -38,30 +30,28 @@ export default function SocialCamera() {
           setCamera(ref);
         }}
       />
+      {/* <IconButton
+      icon={flashIcon}
+      color={Colors.grey100}
+      size={30}
+      style={styles.rotateCameraButton}
+      onPress={() => {
+        setFlashMode(
+          flashMode === Camera.Constants.FlashMode.off
+            ? Camera.Constants.FlashMode.torch
+            : Camera.Constants.FlashMode.off
+        );
+        setflashIcon(
+          flashIcon === "flash-outline" ? "flash" : "flash-outline"
+        );
+      }}
+    /> */}
       <View style={styles.buttonContainer}>
-        {/* <TouchableOpacity
-          style={styles.button}
-          onPress={() => {
-            
-          }}
-        >
-          <Text style={styles.text}> Flip </Text>
-        </TouchableOpacity> */}
         <IconButton
-          icon={flashIcon}
-          color={Colors.grey100}
+          icon="image-plus"
+          color={Colors.grey200}
           size={30}
-          style={styles.rotateCameraButton}
-          onPress={() => {
-            setFlashMode(
-              flashMode === Camera.Constants.FlashMode.off
-                ? Camera.Constants.FlashMode.torch
-                : Camera.Constants.FlashMode.off
-            );
-            setflashIcon(
-              flashIcon === "flash-outline" ? "flash" : "flash-outline"
-            );
-          }}
+          onPress={pickImage}
         />
         <IconButton
           icon="circle"
@@ -86,6 +76,72 @@ export default function SocialCamera() {
       </View>
     </SafeAreaView>
   );
+};
+
+export default function SocialCamera() {
+  const [hasCameraPermission, setHasCameraPermission] = useState<
+    boolean | null
+  >(null);
+  const [hasLibraryPermission, setHasLibraryPermission] = useState<
+    boolean | null
+  >(null);
+  const [type, setType] = useState(Camera.Constants.Type.back);
+  const [flashMode, setFlashMode] = useState(Camera.Constants.FlashMode.off);
+  const [flashIcon, setflashIcon] = useState("flash-outline");
+  const [images, setImage] = useState<string>();
+
+  const [camera, setCamera] = React.useState<Camera | null>(null);
+
+  useEffect(() => {
+    (async () => {
+      const { status } = await Camera.requestPermissionsAsync();
+      setHasCameraPermission(status === "granted");
+      if (Platform.OS !== "web") {
+        const {
+          status,
+        } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+        setHasLibraryPermission(status === "granted");
+      }
+    })();
+  }, []);
+
+  const takePicture = async () => {
+    const img = await camera?.takePictureAsync({ exif: true });
+    console.log(img);
+  };
+
+  const pickImage = async () => {
+    if (hasLibraryPermission) {
+      let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.All,
+        allowsEditing: true,
+        quality: 1,
+      });
+
+      console.log(result);
+
+      if (!result.cancelled) {
+        setImage(result.uri);
+      }
+    }
+  };
+
+  if (hasCameraPermission === null) {
+    return <View />;
+  }
+  if (hasCameraPermission === false) {
+    return <Text>No access to camera</Text>;
+  }
+  const postSelectorProps = {
+    type,
+    flashMode,
+    setCamera,
+    pickImage,
+    takePicture,
+    setType,
+  };
+
+  return <PostSelector {...postSelectorProps} />;
 }
 
 const styles = StyleSheet.create({
