@@ -7,7 +7,7 @@ import {
   SafeAreaView,
 } from "react-native";
 import { Camera } from "expo-camera";
-import { Button } from "react-native-paper";
+import { IconButton, Colors } from "react-native-paper";
 
 export default function SocialCamera() {
   const [hasPermission, setHasPermission] = useState<boolean | null>(null);
@@ -53,7 +53,13 @@ export default function SocialCamera() {
         >
           <Text style={styles.text}> Flip </Text>
         </TouchableOpacity>
-        <Button onPress={takePicture}>Click</Button>
+        <IconButton
+          icon="camera"
+          color={Colors.grey100}
+          size={35}
+          style={styles.captureButton}
+          onPress={takePicture}
+        />
       </View>
     </SafeAreaView>
   );
@@ -65,4 +71,12 @@ const styles = StyleSheet.create({
   buttonContainer: { flex: 1 },
   button: { width: 30, height: 30, color: "white" },
   text: {},
+  captureButton: {
+    alignSelf: "center",
+    borderColor: "grey",
+    borderRadius: 34,
+    borderWidth: 2,
+    width: 69,
+    height: 69,
+  },
 });

@@ -13,6 +13,7 @@ import UserProfile from "../Social/Profile/UserProfile";
 import LoginPims from "../Authentication/LoginPims";
 import SettingsMenu from "../Social/Profile/SettingsMenu";
 import Camera from "../Social/Camera/Camera";
+import { useNavigation } from "@react-navigation/core";
 
 const Stack = createStackNavigator();
 const navigatorProps: StackNavigationProp = {
@@ -48,7 +49,16 @@ function DetailedMarksRightAccessory(code: string) {
 }
 
 function UserProfileRightAccessory() {
-  return <IconButton icon="cog" style={{ marginRight: 25 }} />;
+  const navigation = useNavigation();
+  return (
+    <IconButton
+      icon="cog"
+      onPress={() => {
+        navigation.navigate("Settings");
+      }}
+      style={{ marginRight: 25 }}
+    />
+  );
 }
 
 export default function StackNav() {
@@ -80,7 +90,7 @@ export default function StackNav() {
       <Stack.Screen
         name="User Profile"
         component={UserProfile}
-        options={({ route }: any) => ({
+        options={() => ({
           title: "",
           headerRight: () => UserProfileRightAccessory(),
         })}
@@ -88,7 +98,7 @@ export default function StackNav() {
       <Stack.Screen
         name="Settings"
         component={SettingsMenu}
-        options={{ headerShown: false }}
+        options={{ title: "Settings" }}
       />
       <Stack.Screen
         name="Sign In"

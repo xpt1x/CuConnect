@@ -1,16 +1,7 @@
 import React from "react";
 import { StyleSheet, View, ScrollView, Image } from "react-native";
-import {
-  Text,
-  Avatar,
-  IconButton,
-  Divider,
-  Chip,
-  Colors,
-  Button,
-} from "react-native-paper";
+import { Text, Avatar, Divider, Chip, Colors } from "react-native-paper";
 import profilePic from "../../../devAssets/avatar.png";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { NavigationStackProp } from "react-navigation-stack";
 
 function getRandom(min: number, max: number): number {
@@ -30,19 +21,6 @@ export default function UserProfile({ navigation }: UserProfileProps) {
     images.push(link);
   }
 
-  const clearData = async () => {
-    try {
-      await AsyncStorage.removeItem("uid");
-      await AsyncStorage.removeItem("password");
-      console.log("Creds removed");
-      navigation.popToTop();
-      navigation.replace("Sign In");
-    } catch (e) {
-      console.log(e);
-      // remove error
-    }
-  };
-
   return (
     <ScrollView>
       <View style={styles.nameAndPhoto}>
@@ -50,7 +28,6 @@ export default function UserProfile({ navigation }: UserProfileProps) {
         <Text style={styles.userName}>Jennifer Lawrence</Text>
         <Text style={styles.uid}>18BCS2414</Text>
       </View>
-      <Button onPress={clearData}>Sign Out</Button>
       <View style={styles.data}>
         <View style={styles.dataElement}>
           <Text style={styles.dataText}>Posts</Text>

@@ -10,6 +10,8 @@ import { Lecture } from "../../../types/TimetableTypes";
 import { Error } from "../../../types/Error";
 import ErrorScreen from "./../Utils/ErrorScreen";
 import Loader from "../Utils/Loader";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import config from "../../../config";
 
 const DayMap = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 interface WorkingDay {
@@ -27,23 +29,63 @@ export const Timetable = observer(() => {
   const [refreshing, setRefreshing] = React.useState<boolean>(false);
   const [update, forceUpdate] = React.useState<boolean>(false);
 
-  React.useEffect(() => {
-    async function makeRequest() {
-      const response = await getTimetable().catch((error) => {
-        console.log(error);
-        return { message: error };
-      });
-      setRefreshing(false);
-      if ("message" in response) {
-        const error = response as Error;
-        console.log(`Error from Attendance Component: ${error.message}`);
-        setError(error);
+  const mountedRef = React.useRef(true);
+
+  const checkLocalTimetable = async () => {
+    try {
+      const timetable = await AsyncStorage.getItem("timetable");
+      const timestamp = await AsyncStorage.getItem("timestamp");
+
+      if (
+        timetable &&
+        timestamp &&
+        Date.now() - parseInt(timestamp) <= config.cacheMinute * 1000 * 60
+      ) {
+        // set attendance from storage
+        if (!mountedRef.current) return;
+        TimeTableStore.setTimetable(JSON.parse(timetable));
+        console.log("TT set from AsyncStorage");
       } else {
-        TimeTableStore.setTimetable(response);
+        makeRequest();
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  async function makeRequest() {
+    const response = await getTimetable().catch((error) => {
+      console.log(error);
+      return { message: error };
+    });
+    setRefreshing(false);
+    if ("message" in response) {
+      const error = response as Error;
+      console.log(`Error from Timetable Component: ${JSON.stringify(error)}`);
+      if (!mountedRef.current) return;
+      setError(error);
+    } else {
+      if (!mountedRef.current) return;
+
+      TimeTableStore.setTimetable(response);
+      try {
+        await AsyncStorage.setItem("timetable", JSON.stringify(response));
+        await AsyncStorage.setItem("timestamp", JSON.stringify(Date.now()));
+      } catch (e) {
+        console.log(e);
       }
     }
+  }
+
+  React.useEffect(() => {
+    checkLocalTimetable();
+    return () => {
+      mountedRef.current = false;
+    };
+  }, []);
+
+  React.useEffect(() => {
     makeRequest();
-    return () => setError({ message: "Waiting...." });
   }, [update]);
 
   React.useEffect(() => {
@@ -62,6 +104,7 @@ export const Timetable = observer(() => {
   }, [TimeTableStore.timetable, TimeTableStore.currentDay]);
 
   const onRefreshFn = () => {
+    TimeTableStore.setTimetable(null);
     setRefreshing(true);
     forceUpdate(!update);
   };
@@ -88,7 +131,7 @@ export const Timetable = observer(() => {
           ) : error ? (
             <ErrorScreen message={error.message} />
           ) : (
-            <Loader />
+            <Loader caption={"Fetching your timetable"} />
           )}
         </ScrollView>
         {timetable ? <DaySelector /> : null}

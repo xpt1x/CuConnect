@@ -7,6 +7,8 @@ function compareNames(a: SubjectMarks, b: SubjectMarks) {
   else return 0;
 }
 
+type Label = "Sessions" | "Current" | "Previous";
+
 export default class MarksStore {
   marks: ReadonlyArray<SubjectMarks> | null = null;
   sessions: Sessions = {};
@@ -34,7 +36,7 @@ export default class MarksStore {
   }
 
   @action
-  setLabel(label: string) {
+  setLabel(label: Label) {
     this.sessionLabel = label;
   }
 

@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View, SafeAreaView } from "react-native";
+import { SafeAreaView } from "react-native";
 import {
   Colors,
   Button,
@@ -11,6 +11,7 @@ import {
 } from "react-native-paper";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { validateUser } from "../../ApiLayer/Api";
+import { signOut } from "./utils";
 
 export default function LoginPims({ navigation, route }: any) {
   const [uid, setUid] = React.useState("");
@@ -30,9 +31,13 @@ export default function LoginPims({ navigation, route }: any) {
     try {
       const response = await validateUser(uid, password);
       if (response === "OK") {
-        await AsyncStorage.setItem("uid", uid);
-        await AsyncStorage.setItem("password", password);
-        console.log(`Creds stored! Uid:${uid} Password:${password}`);
+        try {
+          await AsyncStorage.setItem("uid", uid);
+          await AsyncStorage.setItem("password", password);
+          console.log(`Creds stored! Uid:${uid} Password:${password}`);
+        } catch (e) {
+          console.log(e);
+        }
 
         navigation.replace("Nav");
       } else {
@@ -55,8 +60,7 @@ export default function LoginPims({ navigation, route }: any) {
         else {
           // API return invalid, remove local creds, show sign in screen
           setCredsFound(false);
-          await AsyncStorage.removeItem("uid");
-          await AsyncStorage.removeItem("password");
+          await signOut();
           showMessage(
             "Looks like your password is changed, please SignIn again"
           );

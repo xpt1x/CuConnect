@@ -1,24 +1,34 @@
 import React from "react";
-import { SafeAreaView, StyleSheet, ScrollView } from "react-native";
+import { ScrollView } from "react-native";
 import { List } from "react-native-paper";
-export default function SettingsMenu() {
+import {
+  AttendanceStoreContext,
+  MarksStoreContext,
+  TimeTableStoreContext,
+} from "../../../mobx/contexts";
+import { signOut } from "../../Authentication/utils";
+
+export default function SettingsMenu({ navigation }: any) {
+  const attendanceStore = React.useContext(AttendanceStoreContext);
+  const timetableStore = React.useContext(TimeTableStoreContext);
+  const marksStore = React.useContext(MarksStoreContext);
+
+  const clearData = async () => {
+    try {
+      signOut(attendanceStore, timetableStore, marksStore);
+      navigation.popToTop();
+      navigation.replace("Sign In");
+    } catch (e) {
+      console.log(e);
+      // remove error
+    }
+  };
   return (
     <ScrollView>
-      <List.Item
-        title="First Item"
-        description="Item description"
-        left={(props) => <List.Icon {...props} icon="settings" />}
-      />
-      <List.Item
-        title="First Item"
-        description="Item description"
-        left={(props) => <List.Icon {...props} icon="settings" />}
-      />
-      <List.Item
-        title="First Item"
-        description="Item description"
-        left={(props) => <List.Icon {...props} icon="settings" />}
-      />
+      <List.Item title="Edit Profile" onPress={() => {}} />
+      <List.Item title="About" onPress={() => {}} />
+      <List.Item title="Contribute" onPress={() => {}} />
+      <List.Item title="Sign Out" onPress={clearData} />
     </ScrollView>
   );
 }

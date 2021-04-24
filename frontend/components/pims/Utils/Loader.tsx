@@ -1,18 +1,30 @@
 import React from "react";
-import { ActivityIndicator, Text } from "react-native-paper";
-import { View } from "react-native"
+import { View } from "react-native";
+import {
+  ActivityIndicator,
+  Caption,
+  Headline,
+  ProgressBar,
+  Text,
+} from "react-native-paper";
+import { SafeAreaView } from "react-native-safe-area-context";
 
-export default function Loader(){
-    return(
-        <View style={styles.loader}>
-          <ActivityIndicator animating={true} size={"large"} />
-        </View>
-    )
+interface LoaderProps {
+  heading?: string;
+  caption?: string;
 }
 
-const styles = {
-    loader: {
-        flex: 1,
-        marginTop: "70%"
-    }
+export default function Loader({ heading, caption }: LoaderProps) {
+  return (
+    <View
+      style={{
+        padding: 12,
+        marginTop: "80%",
+      }}
+    >
+      <Headline>{heading || "Loading..."}</Headline>
+      <Caption>{caption}</Caption>
+      <ProgressBar style={{ marginTop: 4 }} indeterminate={true} />
+    </View>
+  );
 }

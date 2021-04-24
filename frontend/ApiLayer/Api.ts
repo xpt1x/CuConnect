@@ -1,9 +1,9 @@
-import config from "../config.json";
 import { TimetableType } from "../types/TimetableTypes";
 import { FullSubject, Subject } from "../types/Subject";
 import { Error } from "../types/Error";
 import { SubjectMarks, Sessions } from "../types/MarksTypes";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import config from "../config";
 
 const createUserData = async () => {
   const user = new FormData();

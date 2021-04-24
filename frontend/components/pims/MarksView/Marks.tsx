@@ -11,13 +11,14 @@ import {
 import MarksCard from "./MarksCard";
 import { FAB, Button } from "react-native-paper";
 import RBSheet from "react-native-raw-bottom-sheet";
-import { SubjectMarks, Sessions } from "../../../types/MarksTypes";
 import { getAvailableSessions, getMarks } from "../../../ApiLayer/Api";
 import { Error } from "../../../types/Error";
 import { observer } from "mobx-react-lite";
 import { MarksStoreContext } from "../../../mobx/contexts";
 import ErrorScreen from "./../Utils/ErrorScreen";
 import Loader from "../Utils/Loader";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import config from "../../../config";
 
 enum Session {
   Previous,
@@ -34,6 +35,8 @@ const Marks = observer(({ navigation }: any) => {
   const [refreshing, setRefreshing] = React.useState<boolean>(false);
   const [update, forceUpdate] = React.useState<boolean>(false);
 
+  const mountedRef = React.useRef(true);
+
   const changeSession = (session: Session) => {
     setRefreshing(true);
     switch (session) {
@@ -45,6 +48,28 @@ const Marks = observer(({ navigation }: any) => {
         break;
       default:
         break;
+    }
+  };
+
+  const checkLocalMarks = async () => {
+    try {
+      const marks = await AsyncStorage.getItem("marks");
+      const timestamp = await AsyncStorage.getItem("timestamp");
+
+      if (
+        marks &&
+        timestamp &&
+        Date.now() - parseInt(timestamp) <= config.cacheMinute * 1000 * 60
+      ) {
+        // set attendance from storage
+        if (!mountedRef.current) return;
+        MarksStore.setMarks(JSON.parse(marks));
+        console.log("Marks set from AsyncStorage");
+      } else {
+        makeRequest(undefined);
+      }
+    } catch (e) {
+      console.log(e);
     }
   };
 
@@ -62,20 +87,37 @@ const Marks = observer(({ navigation }: any) => {
       if (refRBSheet && refRBSheet.current) refRBSheet.current.close();
       if ("message" in marksResponse) {
         const error = marksResponse as Error;
-        console.log(`Error from Marks Component: ${error.message}`);
+        console.log(`Error from Marks Component: ${JSON.stringify(error)}`);
+        if (!mountedRef.current) return;
         setError(error);
-      } else MarksStore.setMarks(marksResponse);
+      } else {
+        if (!mountedRef.current) return;
+        MarksStore.setMarks(marksResponse);
+        try {
+          await AsyncStorage.setItem("marks", JSON.stringify(marksResponse));
+          await AsyncStorage.setItem("timestamp", JSON.stringify(Date.now()));
+        } catch (e) {
+          console.log(e);
+        }
+      }
     } catch (error) {
       console.log(error);
     }
   };
 
   React.useEffect(() => {
+    checkLocalMarks();
+    return () => {
+      mountedRef.current = false;
+    };
+  }, []);
+
+  React.useEffect(() => {
     makeRequest(undefined);
-    return () => setError({ message: "Waiting...." });
   }, [update]);
 
   const onRefreshFn = () => {
+    MarksStore.setMarks(null);
     setRefreshing(true);
     forceUpdate(!update);
   };
@@ -132,7 +174,7 @@ const Marks = observer(({ navigation }: any) => {
         ) : error ? (
           <ErrorScreen message={error.message} />
         ) : (
-          <Loader />
+          <Loader caption={"Fetching your marks"} />
         )}
       </ScrollView>
       {MarksStore.marks ? (
