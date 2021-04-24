@@ -65,7 +65,7 @@ export const DaySelector = (params: object) => {
     },
   ];
   let copyActions: Actions[] = Array.from(actions);
-  copyActions[TimeTableStore.currentDay].style = styles.activeFAB;
+  copyActions[TimeTableStore.currentDayNumber].style = styles.activeFAB;
   const { open } = state;
 
   return (
@@ -73,7 +73,7 @@ export const DaySelector = (params: object) => {
       <Portal>
         <FAB.Group
           open={open}
-          icon={open ? "arrow-down" : weekday[TimeTableStore.currentDay]}
+          icon={open ? "arrow-down" : weekday[TimeTableStore.currentDayNumber]}
           fabStyle={styles.fabButton}
           style={styles.fabGroup}
           visible

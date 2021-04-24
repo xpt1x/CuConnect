@@ -113,19 +113,16 @@ export default function LoginPims({ navigation, route }: any) {
             secureTextEntry={true}
             returnKeyType={"done"}
           />
-          {validating ? (
-            <ProgressBar style={{ marginTop: 30 }} indeterminate={true} />
-          ) : (
-            <Button
-              style={{ marginVertical: 12 }}
-              icon={"key"}
-              mode="contained"
-              disabled={uid.length < 1}
-              onPress={recordCreds}
-            >
-              Login
-            </Button>
-          )}
+          <Button
+            style={{ marginVertical: 12 }}
+            icon={"key"}
+            loading={validating ? true : false}
+            mode="contained"
+            disabled={uid.length < 1}
+            onPress={validating ? undefined : recordCreds}
+          >
+            Login
+          </Button>
         </>
       )}
 

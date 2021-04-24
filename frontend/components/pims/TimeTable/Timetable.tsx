@@ -13,18 +13,9 @@ import Loader from "../Utils/Loader";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import config from "../../../config";
 
-const DayMap = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-interface WorkingDay {
-  [key: string]: Lecture | null;
-}
-
 export const Timetable = observer(() => {
   const TimeTableStore = useContext(TimeTableStoreContext);
-  const [timetableKeys, setTimetableKeys] = React.useState<
-    ReadonlyArray<string> | undefined
-  >(undefined);
 
-  const [timetable, setTimetable] = React.useState<WorkingDay>();
   const [error, setError] = React.useState<Error | null>(null);
   const [refreshing, setRefreshing] = React.useState<boolean>(false);
   const [update, forceUpdate] = React.useState<boolean>(false);
@@ -88,21 +79,6 @@ export const Timetable = observer(() => {
     makeRequest();
   }, [update]);
 
-  React.useEffect(() => {
-    if (TimeTableStore.timetable) {
-      const TT =
-        TimeTableStore.timetable[DayMap[TimeTableStore.currentDay]] !==
-        undefined
-          ? TimeTableStore.timetable[DayMap[TimeTableStore.currentDay]]
-          : { null: null };
-      const keys = Object.keys(TT).sort();
-      setTimetableKeys(keys);
-      setTimetable(TT);
-    } else {
-      setTimetable(undefined);
-    }
-  }, [TimeTableStore.timetable, TimeTableStore.currentDay]);
-
   const onRefreshFn = () => {
     TimeTableStore.setTimetable(null);
     setRefreshing(true);
@@ -117,24 +93,33 @@ export const Timetable = observer(() => {
             <RefreshControl refreshing={refreshing} onRefresh={onRefreshFn} />
           }
         >
-          {timetableKeys && timetable ? (
-            timetableKeys.map((lectureTime, idx, arr) => {
-              return (
-                <LectureCard
-                  key={idx}
-                  lecture={timetable[lectureTime]}
-                  time={lectureTime.toString()}
-                  holiday={arr[0] === null}
-                />
-              );
-            })
+          {TimeTableStore.timetable ? (
+            TimeTableStore.currentDayLectures ? (
+              TimeTableStore.currentDayLectures.map((lectureTime, idx, arr) => {
+                return (
+                  <LectureCard
+                    key={idx}
+                    lecture={
+                      TimeTableStore.timetable
+                        ? TimeTableStore.timetable[TimeTableStore.currentDay][
+                            lectureTime
+                          ]
+                        : null
+                    }
+                    time={lectureTime.toString()}
+                  />
+                );
+              })
+            ) : (
+              <LectureCard lecture={null} holiday={true} />
+            )
           ) : error ? (
             <ErrorScreen message={error.message} />
           ) : (
             <Loader caption={"Fetching your timetable"} />
           )}
         </ScrollView>
-        {timetable ? <DaySelector /> : null}
+        {TimeTableStore.timetable ? <DaySelector /> : null}
       </View>
     </SafeAreaView>
   );
