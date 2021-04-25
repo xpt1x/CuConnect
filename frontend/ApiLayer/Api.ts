@@ -20,6 +20,36 @@ const createUserData = async () => {
   return user;
 };
 
+interface FullNameResponse {
+  full_name: string | null;
+  exists: boolean;
+  error?: string;
+}
+
+const getFullName = async (
+  uid: string,
+  password: string
+): Promise<FullNameResponse> => {
+  try {
+    const user = new FormData();
+    user.append("uid", uid);
+    user.append("password", password);
+
+    const response = await fetch(config.imsApiUrl + "/checkuser", {
+      method: "POST",
+      body: user,
+    });
+    return await response.json();
+  } catch (error) {
+    console.log(error);
+  }
+  return {
+    exists: false,
+    full_name: null,
+    error: "Application faliure.",
+  };
+};
+
 const validateUser = async (uid: string, password: string): Promise<string> => {
   try {
     const user = new FormData();
@@ -156,4 +186,5 @@ export {
   getMarks,
   getAvailableSessions,
   registerUser,
+  getFullName,
 };
