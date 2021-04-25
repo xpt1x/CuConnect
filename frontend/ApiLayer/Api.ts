@@ -42,8 +42,11 @@ const validateUser = async (uid: string, password: string): Promise<string> => {
   }
 };
 
-
-const registerUser = async (uid: string, password: string, full_name: string): Promise<string | Error> => {
+const registerUser = async (
+  uid: string,
+  password: string,
+  full_name: string
+): Promise<string | Error> => {
   try {
     const response = await fetch(config.imsApiUrl + "/register", {
       method: "POST",
