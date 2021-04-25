@@ -26,16 +26,8 @@ export default function LoginPims({ navigation, route }: any) {
     setVisible(true);
   };
 
-  const GetUserName = async () => {
-    setValidating(true);
-    // try{
-    const userName = await getFullName(uid, password);
-    console.log(userName);
-    // } catch
-  };
   const recordCreds = async () => {
     setValidating(true);
-    GetUserName();
     try {
       const response = await validateUser(uid, password);
       if (response === "OK") {
