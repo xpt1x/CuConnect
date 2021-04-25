@@ -1,3 +1,6 @@
+//No longer in use
+//Staged for deletion
+//Bottom Nav now in Navigators
 import React from "react";
 import { Button, Colors } from "react-native-paper";
 import { ScrollView, View, StyleSheet } from "react-native";

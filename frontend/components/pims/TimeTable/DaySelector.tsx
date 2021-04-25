@@ -2,13 +2,10 @@ import React, { useContext } from "react";
 import { FAB, Portal, Provider } from "react-native-paper";
 import { StyleSheet, View } from "react-native";
 import { IconSource } from "react-native-paper/lib/typescript/components/Icon";
-import { TimeTableStoreContext } from "../mobx/contexts";
-import { observer } from "mobx-react-lite";
+import { TimeTableStoreContext } from "../../../mobx/contexts";
 
 export const DaySelector = (params: object) => {
   const [state, setState] = React.useState({ open: false });
-  // const date = new Date();
-  // const [day, setDay] = React.useState(date.getDay());
   const TimeTableStore = useContext(TimeTableStoreContext);
 
   var weekday = [
@@ -26,7 +23,6 @@ export const DaySelector = (params: object) => {
   }
   const onStateChange = ({ open }: Props) => setState({ open });
   const onFABPress = (idx: number) => {
-    // setDay(idx);
     TimeTableStore.changeCurrentDay(idx);
     copyActions = Array.from(actions);
     copyActions[idx].style = styles.activeFAB;
@@ -69,14 +65,15 @@ export const DaySelector = (params: object) => {
     },
   ];
   let copyActions: Actions[] = Array.from(actions);
-  copyActions[TimeTableStore.currentDay].style = styles.activeFAB;
+  copyActions[TimeTableStore.currentDayNumber].style = styles.activeFAB;
   const { open } = state;
+
   return (
     <Provider>
       <Portal>
         <FAB.Group
           open={open}
-          icon={open ? "arrow-down" : weekday[TimeTableStore.currentDay]}
+          icon={open ? "arrow-down" : weekday[TimeTableStore.currentDayNumber]}
           fabStyle={styles.fabButton}
           style={styles.fabGroup}
           visible
@@ -92,10 +89,10 @@ const styles = StyleSheet.create({
     zIndex: 5,
   },
   fabButton: {
-    backgroundColor: "#0186FC",
+    backgroundColor: "#00dac6",
   },
   activeFAB: {
-    backgroundColor: "rgba(1, 134, 252, 0.48)",
+    backgroundColor: "#00dac6",
   },
 });
 

@@ -2,7 +2,7 @@ import React from "react";
 import { Card, Avatar, Text } from "react-native-paper";
 import { StyleSheet } from "react-native";
 import { NavigationStackProp } from "react-navigation-stack";
-import { ElementMarks } from "../types/ElementMarks";
+import { ElementMarks } from "../../../types/ElementMarks";
 
 interface Props {
   name: string;
@@ -26,7 +26,9 @@ const emojiType = (elementMarks: ReadonlyArray<ElementMarks>): string => {
 export default function MarksCard({ name, subCode, marks, navigation }: Props) {
   const cardPress = (headerName: string) => {
     navigation.push("Detailed Marks", {
-      subject: headerName,
+      subjectCode: headerName,
+      marks: marks,
+      name: name,
     });
   };
 
@@ -52,6 +54,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     alignSelf: "center",
     overflow: "hidden",
+    backgroundColor: "#0d0d0d",
   },
   emoji: {
     marginLeft: "auto",

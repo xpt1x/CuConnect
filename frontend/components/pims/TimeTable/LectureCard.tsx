@@ -1,12 +1,12 @@
 import React from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import { Avatar, Card, Chip, Divider } from "react-native-paper";
-import { Lecture } from "../types/Lecture";
+import { Lecture } from "../../../types/TimetableTypes";
 
 interface LectureCardProps {
   lecture: Lecture | null;
-  time: string;
-  holiday: boolean;
+  time?: string;
+  holiday?: boolean;
 }
 
 interface ContentProps {
@@ -22,33 +22,46 @@ export default function LectureCard({
   time,
   holiday,
 }: LectureCardProps) {
-  return lecture !== null ? (
+  return holiday ? (
     <Card style={styles.card}>
       <Card.Title
-        title={holiday ? "Wohoooooo!" : lecture.title}
-        subtitle={holiday ? "No classes today" : lecture.teacher}
+        title={"Wohoooooo!"}
+        subtitle={"No classes today"}
         left={(props) =>
           LeftContent({
-            obj: holiday ? null : lecture.title[0].toLowerCase(),
+            obj: null,
             ...props,
           })
         }
         titleNumberOfLines={2}
         titleStyle={styles.cardTitle}
       />
-      {holiday ? null : (
-        <Card.Content style={styles.cardContent}>
-          <Chip style={styles.time} icon="clock">
-            {time}
-          </Chip>
-          <Chip mode="outlined" style={styles.lecType}>
-            {lecture.type}
-          </Chip>
-        </Card.Content>
-      )}
+    </Card>
+  ) : lecture ? (
+    <Card style={styles.card}>
+      <Card.Title
+        title={lecture.title}
+        subtitle={lecture.teacher}
+        left={(props) =>
+          LeftContent({
+            obj: lecture.title[0].toLowerCase(),
+            ...props,
+          })
+        }
+        titleNumberOfLines={2}
+        titleStyle={styles.cardTitle}
+      />
+      <Card.Content style={styles.cardContent}>
+        <Chip style={styles.time} icon="clock">
+          {time}
+        </Chip>
+        <Chip mode="outlined" style={styles.lecType}>
+          {lecture.type}
+        </Chip>
+      </Card.Content>
     </Card>
   ) : (
-    <Divider />
+    <Divider style={{ backgroundColor: "white" }} />
   );
 }
 const styles = StyleSheet.create({
@@ -58,6 +71,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 20,
     overflow: "hidden",
+    backgroundColor: "#0d0d0d",
   },
   cardContent: {
     flex: 1,

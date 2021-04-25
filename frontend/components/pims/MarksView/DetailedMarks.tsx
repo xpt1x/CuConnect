@@ -1,35 +1,33 @@
 import React from "react";
 import { Surface, DataTable } from "react-native-paper";
 import { Text, StyleSheet, ScrollView } from "react-native";
+import { ElementMarks } from "../../../types/ElementMarks";
 
-let infoRow = () => {
+const infoRow = (elementMarks: ElementMarks, idx: number) => {
   return (
-    <DataTable.Row>
-      <DataTable.Cell>Mid-Semester Test-1</DataTable.Cell>
-      <DataTable.Cell numeric>30/40</DataTable.Cell>
+    <DataTable.Row key={idx}>
+      <DataTable.Cell>{elementMarks.element}</DataTable.Cell>
+      <DataTable.Cell
+        numeric
+      >{`${elementMarks.obtained}/${elementMarks.total}`}</DataTable.Cell>
     </DataTable.Row>
   );
 };
 
-export default function DetailedMarks() {
+interface RouteParam {
+  name: string;
+  marks: ReadonlyArray<ElementMarks>;
+}
+
+export default function DetailedMarks({ route }: any) {
+  const { marks, name }: RouteParam = route.params;
   return (
     <>
-      <Text style={styles.title}>DESIGN AND ANALYSIS OF ALGORITHMS</Text>
+      <Text style={styles.title}>{name}</Text>
       <ScrollView style={styles.container}>
         <Surface style={styles.surface}>
           <DataTable>
-            {infoRow()}
-            {infoRow()}
-            {infoRow()}
-            {infoRow()}
-            {infoRow()}
-            {infoRow()}
-            {infoRow()}
-            {infoRow()}
-            {infoRow()}
-            {infoRow()}
-            {infoRow()}
-            {infoRow()}
+            {marks.map((elementMarks, idx) => infoRow(elementMarks, idx))}
           </DataTable>
         </Surface>
       </ScrollView>
@@ -42,12 +40,12 @@ const styles = StyleSheet.create({
   },
 
   surface: {
-    padding: "5%",
+    padding: "1.5%",
     width: "100%",
     alignItems: "center",
     justifyContent: "center",
-    elevation: 4,
     marginHorizontal: "auto",
+    backgroundColor: "#000",
   },
   title: {
     padding: 24,

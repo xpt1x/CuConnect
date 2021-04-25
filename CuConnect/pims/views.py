@@ -23,6 +23,20 @@ class UserProfileViewSet(viewsets.ModelViewSet):
 
 
 @api_view(http_method_names=["POST"])
+def checkUser(req):
+    user_exists = (
+        True
+        if UserProfile.objects.filter(user_id=req.POST.get("uid")).exists()
+        else False
+    )
+    status, obj = create_uims_session(req)
+    if status == -1:
+        return Response({"exists": user_exists, "full_name": None, "error": obj})
+    else:
+        return Response({"exists": user_exists, "full_name": obj.full_name})
+
+
+@api_view(http_method_names=["POST"])
 def validate(req):
     status, obj = create_uims_session(req)
     if status == -1:
