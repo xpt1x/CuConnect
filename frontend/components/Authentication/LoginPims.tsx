@@ -39,7 +39,7 @@ export default function LoginPims({ navigation, route }: any) {
           console.log(e);
         }
 
-        navigation.replace("Nav");
+        navigation.replace("Home");
       } else {
         // show API error RESPONSE
         showMessage(response);
@@ -56,7 +56,7 @@ export default function LoginPims({ navigation, route }: any) {
       const password = await AsyncStorage.getItem("password");
       if (uid !== null && password !== null) {
         const response = await validateUser(uid, password);
-        if (response === "OK") return navigation.replace("Nav");
+        if (response === "OK") return navigation.replace("Home");
         else {
           // API return invalid, remove local creds, show sign in screen
           setCredsFound(false);

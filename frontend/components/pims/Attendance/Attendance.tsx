@@ -30,7 +30,6 @@ const Attendance = observer(({ navigation }: Props) => {
       const fullAttendance = await AsyncStorage.getItem("fullattendance");
 
       const timestamp = await AsyncStorage.getItem("timestamp");
-
       if (
         attendance &&
         fullAttendance &&
@@ -62,8 +61,6 @@ const Attendance = observer(({ navigation }: Props) => {
       setError(error);
     } else {
       // set attendance in store, storage
-      console.log(`MountedREF: ${mountedRef.current}`);
-
       if (!mountedRef.current) return;
       attendanceStore.setAttendance(response);
       try {

@@ -18,7 +18,10 @@ const PostSelector = ({
   pickImage,
   takePicture,
   setType,
-}) => {
+  flashIcon,
+  setflashIcon,
+  setFlashMode,
+}: any) => {
   return (
     <SafeAreaView style={styles.container}>
       <Camera
@@ -78,6 +81,29 @@ const PostSelector = ({
   );
 };
 
+const ImagePreview = ({ uri, setUri }: any) => {
+  function closeAction() {
+    setUri(undefined);
+  }
+  return (
+    <View style={styles.imagePreviewContainer}>
+      <IconButton
+        icon={"chevron-left"}
+        size={25}
+        onPress={closeAction}
+        style={styles.imagePreviewBack}
+      />
+      <Image source={{ uri: uri }} style={styles.imagePreview} />
+      <IconButton
+        icon={"send"}
+        size={40}
+        onPress={closeAction}
+        style={styles.imagePreviewSend}
+      />
+    </View>
+  );
+};
+
 export default function SocialCamera() {
   const [hasCameraPermission, setHasCameraPermission] = useState<
     boolean | null
@@ -88,7 +114,7 @@ export default function SocialCamera() {
   const [type, setType] = useState(Camera.Constants.Type.back);
   const [flashMode, setFlashMode] = useState(Camera.Constants.FlashMode.off);
   const [flashIcon, setflashIcon] = useState("flash-outline");
-  const [images, setImage] = useState<string>();
+  const [image, setImage] = useState<string | undefined>(undefined);
 
   const [camera, setCamera] = React.useState<Camera | null>(null);
 
@@ -106,20 +132,16 @@ export default function SocialCamera() {
   }, []);
 
   const takePicture = async () => {
-    const img = await camera?.takePictureAsync({ exif: true });
-    console.log(img);
+    const img = await camera?.takePictureAsync();
+    setImage(img?.uri);
   };
 
   const pickImage = async () => {
     if (hasLibraryPermission) {
       let result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.All,
-        allowsEditing: true,
         quality: 1,
       });
-
-      console.log(result);
-
       if (!result.cancelled) {
         setImage(result.uri);
       }
@@ -139,9 +161,16 @@ export default function SocialCamera() {
     pickImage,
     takePicture,
     setType,
+    flashIcon,
+    setflashIcon,
+    setFlashMode,
   };
 
-  return <PostSelector {...postSelectorProps} />;
+  if (image) {
+    return <ImagePreview uri={image} setUri={setImage} />;
+  } else {
+    return <PostSelector {...postSelectorProps} />;
+  }
 }
 
 const styles = StyleSheet.create({
@@ -166,5 +195,28 @@ const styles = StyleSheet.create({
   rotateCameraButton: {
     width: 60,
     height: 60,
+  },
+  imagePreviewContainer: {
+    flex: 1,
+    justifyContent: "center",
+  },
+  imagePreview: {
+    width: "100%",
+    height: "100%",
+    alignSelf: "center",
+  },
+  imagePreviewBack: {
+    position: "absolute",
+    left: 10,
+    top: 30,
+    zIndex: 10,
+    backgroundColor: "rgba(0,0,0,0.3)",
+  },
+  imagePreviewSend: {
+    position: "absolute",
+    right: 10,
+    bottom: 10,
+    zIndex: 10,
+    transform: [{ rotateZ: "-30deg" }],
   },
 });

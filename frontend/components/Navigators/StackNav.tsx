@@ -77,7 +77,7 @@ export default function StackNav() {
         })}
       />
       <Stack.Screen
-        name="Nav"
+        name="Home"
         component={SwipeableBottomNav}
         options={{ headerShown: false }}
       />

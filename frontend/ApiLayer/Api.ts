@@ -35,10 +35,26 @@ const validateUser = async (uid: string, password: string): Promise<string> => {
     const jsonResponse = await response.json();
     const { error } = jsonResponse;
 
-    return error ? error : "OK";
+    return error ? error : jsonResponse;
   } catch (error) {
     console.log(error);
     return "Application Internal Failure";
+  }
+};
+
+
+const registerUser = async (uid: string, password: string, full_name: string): Promise<string | Error> => {
+  try {
+    const response = await fetch(config.imsApiUrl + "/register", {
+      method: "POST",
+      body: await createUserData(),
+    });
+    const jsonResponse = await response.json();
+    const { error } = jsonResponse;
+    return error ? { message: error } : jsonResponse;
+  } catch (error) {
+    console.log(error);
+    return { message: error };
   }
 };
 
@@ -130,4 +146,5 @@ export {
   getFullAttendance,
   getMarks,
   getAvailableSessions,
+  registerUser,
 };
