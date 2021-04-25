@@ -14,6 +14,7 @@ import LoginPims from "../Authentication/LoginPims";
 import SettingsMenu from "../Social/Profile/SettingsMenu";
 import Camera from "../Social/Camera/Camera";
 import { useNavigation } from "@react-navigation/core";
+import SignUp from "../Authentication/SignUp";
 
 const Stack = createStackNavigator();
 const navigatorProps: StackNavigationProp = {
@@ -81,6 +82,7 @@ export default function StackNav() {
         component={SwipeableBottomNav}
         options={{ headerShown: false }}
       />
+
       <Stack.Screen
         name="User Profile"
         component={UserProfile}
@@ -93,6 +95,11 @@ export default function StackNav() {
         name="Settings"
         component={SettingsMenu}
         options={{ title: "Settings" }}
+      />
+      <Stack.Screen
+        name="Sign Up"
+        component={SignUp}
+        options={{ headerShown: false }}
       />
       <Stack.Screen
         name="Sign In"

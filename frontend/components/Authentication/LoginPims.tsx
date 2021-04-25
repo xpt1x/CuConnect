@@ -12,7 +12,6 @@ import {
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { validateUser, getFullName } from "../../ApiLayer/Api";
 import { signOut } from "./utils";
-
 export default function LoginPims({ navigation, route }: any) {
   const [uid, setUid] = React.useState("");
   const [password, setPassword] = React.useState("");
@@ -26,6 +25,29 @@ export default function LoginPims({ navigation, route }: any) {
     setVisible(true);
   };
 
+  const setUserName = async (uid: string, password: string) => {
+    try {
+      const response = await getFullName(uid, password);
+      // in order to use full name for future
+      if (response.full_name) {
+        try {
+          await AsyncStorage.setItem("full_name", response.full_name);
+          console.log("Setting full name");
+        } catch (e) {
+          console.log(e);
+        }
+      }
+
+      if (response.exists && response.full_name) {
+        navigation.replace("Home");
+      } else {
+        navigation.replace("Sign Up", { fullName: response.full_name });
+      }
+    } catch (e) {
+      console.log(e);
+      console.log("Error setting user");
+    }
+  };
   const recordCreds = async () => {
     setValidating(true);
     try {
@@ -38,8 +60,7 @@ export default function LoginPims({ navigation, route }: any) {
         } catch (e) {
           console.log(e);
         }
-
-        navigation.replace("Home");
+        await setUserName(uid, password);
       } else {
         // show API error RESPONSE
         showMessage(response);

@@ -15,9 +15,7 @@ const createUserData = async () => {
       user.append("password", password);
     }
   } catch (e) {
-    console.log("Failed reading storage data, falling back to test creds..");
-    user.append("uid", "18bcs2414");
-    user.append("password", "Sanuthe)44");
+    console.log("Failed reading creds from storage");
   }
   return user;
 };
@@ -35,59 +33,37 @@ const validateUser = async (uid: string, password: string): Promise<string> => {
     const jsonResponse = await response.json();
     const { error } = jsonResponse;
 
-    return error ? error : "OK";
+    return error ? error : jsonResponse;
   } catch (error) {
     console.log(error);
     return "Application Internal Failure";
   }
 };
 
-interface FullNameResponse {
-  full_name: string | null;
-  exists: boolean;
+interface RegisterResponse {
   error?: string;
+  success?: string;
 }
 
-const getFullName = async (
+const registerUser = async (
   uid: string,
-  password: string
-): Promise<FullNameResponse> => {
-  try {
-    const user = new FormData();
-    user.append("uid", uid);
-    user.append("password", password);
+  password: string,
+  full_name: string
+): Promise<RegisterResponse> => {
+  const user = new FormData();
+  user.append("uid", uid);
+  user.append("password", password);
+  user.append("display_name", full_name);
 
-    const response = await fetch(config.imsApiUrl + "/checkuser", {
+  try {
+    const response = await fetch(config.imsApiUrl + "/register", {
       method: "POST",
       body: user,
     });
     return await response.json();
   } catch (error) {
     console.log(error);
-  }
-  return {
-    exists: false,
-    full_name: null,
-    error: "Application faliure.",
-  };
-};
-
-const registerUser = async (
-  uid: string,
-  password: string,
-  full_name: string
-): Promise<string | Error> => {
-  try {
-    const response = await fetch(config.imsApiUrl + "/register", {
-      method: "POST",
-      body: await createUserData(),
-    });
-    const jsonResponse = await response.json();
-    const { error } = jsonResponse;
-    return error ? { message: error } : jsonResponse;
-  } catch (error) {
-    console.log(error);
-    return { message: error };
+    return { error: "Internal Failure" };
   }
 };
 
@@ -180,5 +156,4 @@ export {
   getMarks,
   getAvailableSessions,
   registerUser,
-  getFullName,
 };

@@ -5,7 +5,6 @@ import Timetable from "../components/pims/TimeTable/Timetable";
 import Marks from "../components/pims/MarksView/Marks";
 import { IconButton } from "react-native-paper";
 import { StyleSheet } from "react-native";
-import SignOut from "../components/pims/Utils/SignOut";
 
 interface TabBarIconProps {
   color: string;

@@ -1,3 +1,4 @@
+from requests.api import post
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .helper import create_uims_session
@@ -5,6 +6,7 @@ from .models import Post, Comment, UserProfile
 from rest_framework import viewsets
 from .serializers import PostSerializer, CommentSerializer, UserProfileSerializer
 from .uims_api.exceptions import UIMSInternalError
+from django.core import serializers
 
 
 class PostViewSet(viewsets.ModelViewSet):
@@ -22,8 +24,16 @@ class UserProfileViewSet(viewsets.ModelViewSet):
     serializer_class = UserProfileSerializer
 
 
+@api_view(["GET"])
+def get_user_posts(req, uid):
+    posts = Post.objects.filter(author=uid)
+    return Response(
+        {"posts": PostSerializer(posts, many=True, context={"request": req}).data}
+    )
+
+
 @api_view(http_method_names=["POST"])
-def checkUser(req):
+def check_user(req):
     user_exists = (
         True
         if UserProfile.objects.filter(user_id=req.POST.get("uid")).exists()
