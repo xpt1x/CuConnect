@@ -10,7 +10,7 @@ import {
   Caption,
 } from "react-native-paper";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { validateUser } from "../../ApiLayer/Api";
+import { validateUser, getFullName } from "../../ApiLayer/Api";
 import { signOut } from "./utils";
 
 export default function LoginPims({ navigation, route }: any) {

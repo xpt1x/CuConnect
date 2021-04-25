@@ -93,7 +93,11 @@ const ImagePreview = ({ uri, setUri }: any) => {
         onPress={closeAction}
         style={styles.imagePreviewBack}
       />
-      <Image source={{ uri: uri }} style={styles.imagePreview} />
+      <Image
+        source={{ uri: uri }}
+        style={styles.imagePreview}
+        resizeMode={"contain"}
+      />
       <IconButton
         icon={"send"}
         size={40}
@@ -139,7 +143,7 @@ export default function SocialCamera() {
   const pickImage = async () => {
     if (hasLibraryPermission) {
       let result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.All,
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
         quality: 1,
       });
       if (!result.cancelled) {
@@ -210,7 +214,7 @@ const styles = StyleSheet.create({
     left: 10,
     top: 30,
     zIndex: 10,
-    backgroundColor: "rgba(0,0,0,0.3)",
+    backgroundColor: "rgba(0,0,0,0.7)",
   },
   imagePreviewSend: {
     position: "absolute",
