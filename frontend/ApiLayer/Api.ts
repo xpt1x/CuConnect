@@ -35,13 +35,32 @@ const validateUser = async (uid: string, password: string): Promise<string> => {
     const jsonResponse = await response.json();
     const { error } = jsonResponse;
 
-    return error ? error : jsonResponse;
+    return error ? error : "OK";
   } catch (error) {
     console.log(error);
     return "Application Internal Failure";
   }
 };
 
+const getFullName = async (uid: string, password: string): Promise<string> => {
+  try {
+    const user = new FormData();
+    user.append("uid", uid);
+    user.append("password", password);
+
+    const response = await fetch(config.imsApiUrl + "/validate", {
+      method: "POST",
+      body: user,
+    });
+    const jsonResponse = await response.json();
+    const { error } = jsonResponse;
+
+    return error ? error : jsonResponse;
+  } catch (error) {
+    console.log(error);
+    return "Application Internal Failure";
+  }
+};
 
 const registerUser = async (uid: string, password: string, full_name: string): Promise<string | Error> => {
   try {
@@ -147,4 +166,5 @@ export {
   getMarks,
   getAvailableSessions,
   registerUser,
+  getFullName,
 };

@@ -10,7 +10,7 @@ import {
   Caption,
 } from "react-native-paper";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { validateUser } from "../../ApiLayer/Api";
+import { validateUser, getFullName } from "../../ApiLayer/Api";
 import { signOut } from "./utils";
 
 export default function LoginPims({ navigation, route }: any) {
@@ -26,8 +26,16 @@ export default function LoginPims({ navigation, route }: any) {
     setVisible(true);
   };
 
+  const GetUserName = async () => {
+    setValidating(true);
+    // try{
+    const userName = await getFullName(uid, password);
+    console.log(userName);
+    // } catch
+  };
   const recordCreds = async () => {
     setValidating(true);
+    GetUserName();
     try {
       const response = await validateUser(uid, password);
       if (response === "OK") {
