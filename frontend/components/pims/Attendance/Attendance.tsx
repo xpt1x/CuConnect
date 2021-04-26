@@ -5,7 +5,6 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { NavigationStackProp } from "react-navigation-stack";
 import { getAttendance, getFullAttendance } from "../../../ApiLayer/Api";
 import { Subject } from "../../../types/Subject";
-import { Error } from "../../../types/Error";
 import Loader from "../Utils/Loader";
 import ErrorScreen from "../Utils/ErrorScreen";
 import { AttendanceStoreContext } from "../../../mobx/contexts";
@@ -18,7 +17,7 @@ interface Props {
 }
 const Attendance = observer(({ navigation }: Props) => {
   const attendanceStore = React.useContext(AttendanceStoreContext);
-  const [error, setError] = React.useState<Error | null>(null);
+  const [error, setError] = React.useState<string>("");
   const [refreshing, setRefreshing] = React.useState<boolean>(false);
   const [update, forceUpdate] = React.useState<boolean>(false);
 
@@ -51,20 +50,18 @@ const Attendance = observer(({ navigation }: Props) => {
   };
 
   const makeRequest = async () => {
-    const response = await getAttendance().catch((error) => {
-      return { message: error };
-    });
+    const { attendance, error } = await getAttendance();
     setRefreshing(false);
-    if ("message" in response) {
-      const error = response as Error;
+    console.log(attendance);
+    if (error) {
       if (!mountedRef.current) return;
       setError(error);
-    } else {
+    } else if (attendance) {
       // set attendance in store, storage
       if (!mountedRef.current) return;
-      attendanceStore.setAttendance(response);
+      attendanceStore.setAttendance(attendance);
       try {
-        await AsyncStorage.setItem("attendance", JSON.stringify(response));
+        await AsyncStorage.setItem("attendance", JSON.stringify(attendance));
         await AsyncStorage.setItem("timestamp", JSON.stringify(Date.now()));
       } catch (e) {
         console.log(e);
@@ -73,21 +70,18 @@ const Attendance = observer(({ navigation }: Props) => {
   };
 
   const makeFullAttendanceRequest = async () => {
-    const response = await getFullAttendance().catch((error) => {
-      return { message: error };
-    });
-    if ("message" in response) {
-      const error = response as Error;
-      console.log(
-        `Error from Full Attendance Component: ${JSON.stringify(error)}`
-      );
+    const { fullattendance, error } = await getFullAttendance();
+    if (error) {
       if (!mountedRef.current) return;
       setError(error);
-    } else {
+    } else if (fullattendance) {
       if (!mountedRef.current) return;
-      attendanceStore.setFullAttendance(response);
+      attendanceStore.setFullAttendance(fullattendance);
       try {
-        await AsyncStorage.setItem("fullattendance", JSON.stringify(response));
+        await AsyncStorage.setItem(
+          "fullattendance",
+          JSON.stringify(fullattendance)
+        );
         await AsyncStorage.setItem("timestamp", JSON.stringify(Date.now()));
       } catch (e) {
         console.log(e);
@@ -132,7 +126,7 @@ const Attendance = observer(({ navigation }: Props) => {
             />
           ))
         ) : error ? (
-          <ErrorScreen message={error.message} />
+          <ErrorScreen message={error} />
         ) : (
           <Loader caption={"Fetching your attendance"} />
         )}

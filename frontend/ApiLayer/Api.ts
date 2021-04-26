@@ -20,9 +20,44 @@ const createUserData = async () => {
   return user;
 };
 
+// interface ValidateUserResponse {
+//   full_name?: string;
+//   error?: string;
+// }
+
+interface RegisterResponse {
+  error?: string;
+  success?: string;
+}
+
 interface FullNameResponse {
   full_name: string | null;
   exists: boolean;
+  error?: string;
+}
+
+interface AttendanceResponse {
+  attendance?: Array<Subject>;
+  error?: string;
+}
+
+interface FullAttendanceResponse {
+  fullattendance?: Array<FullSubject>;
+  error?: string;
+}
+
+interface TimeTableResponse {
+  timetable?: TimetableType;
+  error?: string;
+}
+
+interface MarksResponse {
+  marks?: Array<SubjectMarks>;
+  error?: string;
+}
+
+interface AvailableSessionsResponse {
+  sessions?: Sessions;
   error?: string;
 }
 
@@ -50,30 +85,22 @@ const getFullName = async (
   };
 };
 
-const validateUser = async (uid: string, password: string): Promise<string> => {
-  try {
-    const user = new FormData();
-    user.append("uid", uid);
-    user.append("password", password);
+// const validateUser = async (uid: string, password: string): Promise<ValidateUserResponse> => {
+//   try {
+//     const user = new FormData();
+//     user.append("uid", uid);
+//     user.append("password", password);
 
-    const response = await fetch(config.imsApiUrl + "/validate", {
-      method: "POST",
-      body: user,
-    });
-    const jsonResponse = await response.json();
-    const { error } = jsonResponse;
-
-    return error ? error : jsonResponse;
-  } catch (error) {
-    console.log(error);
-    return "Application Internal Failure";
-  }
-};
-
-interface RegisterResponse {
-  error?: string;
-  success?: string;
-}
+//     const response = await fetch(config.imsApiUrl + "/validate", {
+//       method: "POST",
+//       body: user,
+//     });
+//     return await response.json();
+//   } catch (error) {
+//     console.log(error);
+//   }
+//   return {error: "Can't validate (Internal Failure)"}
+// };
 
 const registerUser = async (
   uid: string,
@@ -93,93 +120,78 @@ const registerUser = async (
     return await response.json();
   } catch (error) {
     console.log(error);
-    return { error: "Internal Failure" };
   }
+  return { error: "Error registering user (Internal Failure)" };
 };
 
-const getAttendance = async (): Promise<Array<Subject> | Error> => {
+const getAttendance = async (): Promise<AttendanceResponse> => {
   try {
     const response = await fetch(config.imsApiUrl + "/attendance", {
       method: "POST",
       body: await createUserData(),
     });
-    const jsonResponse = await response.json();
-    const { error } = jsonResponse;
-
-    return error ? { message: error } : jsonResponse;
+    return await response.json();
   } catch (error) {
     console.log(error);
-    return { message: error };
   }
+  return { error: "Error getting attendace" };
 };
 
-const getTimetable = async (): Promise<TimetableType | Error> => {
+const getTimetable = async (): Promise<TimeTableResponse> => {
   try {
     const response = await fetch(config.imsApiUrl + "/timetable", {
       method: "POST",
       body: await createUserData(),
     });
-
-    const jsonResponse = await response.json();
-    const { error } = jsonResponse;
-    return error ? { message: error } : jsonResponse;
+    return await response.json();
   } catch (error) {
     console.log(error);
-    return { message: error };
   }
+  return { error: "Error getting timetable" };
 };
 
-const getFullAttendance = async (): Promise<Array<FullSubject> | Error> => {
+const getFullAttendance = async (): Promise<FullAttendanceResponse> => {
   try {
     const response = await fetch(config.imsApiUrl + "/fullattendance", {
       method: "POST",
       body: await createUserData(),
     });
-
-    const jsonResponse = await response.json();
-    const { error } = jsonResponse;
-    return error ? { message: error } : jsonResponse;
+    return await response.json();
   } catch (error) {
     console.log(error);
-    return { message: error };
   }
+  return { error: "Error getting fullattendance" };
 };
 
-const getAvailableSessions = async (): Promise<Sessions | Error> => {
+const getAvailableSessions = async (): Promise<AvailableSessionsResponse> => {
   try {
     const response = await fetch(config.imsApiUrl + "/availablesessions", {
       method: "POST",
       body: await createUserData(),
     });
-    const jsonResponse = await response.json();
-    const { error } = jsonResponse;
-    return error ? { message: error } : jsonResponse;
+    return await response.json();
   } catch (error) {
     console.log(error);
-    return { message: error };
   }
+  return { error: "Error getting available sessions" };
 };
 
-const getMarks = async (
-  session: string
-): Promise<Array<SubjectMarks> | Error> => {
+const getMarks = async (session: string): Promise<MarksResponse> => {
   try {
     const response = await fetch(config.imsApiUrl + `/marks/${session}`, {
       method: "POST",
       body: await createUserData(),
     });
 
-    const jsonResponse = await response.json();
-    const { error } = jsonResponse;
-    return error ? { message: error } : jsonResponse;
+    return await response.json();
   } catch (error) {
     console.log(error);
-    return { message: error };
   }
+  return { error: "Error getting marks" };
 };
 
 export {
-  validateUser,
+  // validateUser,
   getAttendance,
   getTimetable,
   getFullAttendance,

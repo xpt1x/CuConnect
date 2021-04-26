@@ -6,7 +6,6 @@ from .models import Post, Comment, UserProfile
 from rest_framework import viewsets
 from .serializers import PostSerializer, CommentSerializer, UserProfileSerializer
 from .uims_api.exceptions import UIMSInternalError
-from django.core import serializers
 
 
 class PostViewSet(viewsets.ModelViewSet):
@@ -93,7 +92,7 @@ def get_minimal_attendance(request):
             else:
                 return Response({"error": "Looks like this Module is inactive on UIMS"})
         else:
-            return Response(subjects)
+            return Response({"attendance": subjects})
 
 
 @api_view(http_method_names=["POST"])
@@ -109,7 +108,7 @@ def get_full_attendance(request):
         else:
             return Response({"error": "Looks like this Module is inactive on UIMS"})
     else:
-        return Response(subjects)
+        return Response({"fullattendance": subjects})
 
 
 @api_view(http_method_names=["POST"])
@@ -125,7 +124,7 @@ def get_timetable(request):
         else:
             return Response({"error": "Looks like this Module is inactive on UIMS"})
     else:
-        return Response(timetable)
+        return Response({"timetable": timetable})
 
 
 @api_view(http_method_names=["POST"])
@@ -141,7 +140,7 @@ def get_marks(request, session):
         else:
             return Response({"error": "Looks like this Module is inactive on UIMS"})
     else:
-        return Response(marks)
+        return Response({"marks": marks})
 
 
 @api_view(http_method_names=["POST"])
@@ -157,4 +156,4 @@ def get_available_sessions(request):
         else:
             return Response({"error": "Looks like this Module is inactive on UIMS"})
     else:
-        return Response(available_sessions)
+        return Response({"sessions": available_sessions})
