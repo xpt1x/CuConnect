@@ -31,7 +31,7 @@ const Marks = observer(({ navigation }: any) => {
   const fabAction = () => {
     if (refRBSheet && refRBSheet.current) return refRBSheet.current.open();
   };
-  const [error, setError] = React.useState<Error | null>(null);
+  const [error, setError] = React.useState<string>("");
   const [refreshing, setRefreshing] = React.useState<boolean>(false);
   const [update, forceUpdate] = React.useState<boolean>(false);
 
@@ -76,25 +76,23 @@ const Marks = observer(({ navigation }: any) => {
   const makeRequest = async (session: string | undefined) => {
     try {
       if (session === undefined) {
-        const response = await getAvailableSessions();
-        if ("message" in response) return;
-        MarksStore.sessions = response;
+        const { sessions, error } = await getAvailableSessions();
+        if (error) return;
+        if (sessions) MarksStore.setSessions(sessions);
       }
-      const marksResponse = await getMarks(
+      const { marks, error } = await getMarks(
         session ? session : MarksStore.currentSession
       );
       setRefreshing(false);
       if (refRBSheet && refRBSheet.current) refRBSheet.current.close();
-      if ("message" in marksResponse) {
-        const error = marksResponse as Error;
-        console.log(`Error from Marks Component: ${JSON.stringify(error)}`);
+      if (error) {
         if (!mountedRef.current) return;
         setError(error);
-      } else {
+      } else if (marks) {
         if (!mountedRef.current) return;
-        MarksStore.setMarks(marksResponse);
+        MarksStore.setMarks(marks);
         try {
-          await AsyncStorage.setItem("marks", JSON.stringify(marksResponse));
+          await AsyncStorage.setItem("marks", JSON.stringify(marks));
           await AsyncStorage.setItem("timestamp", JSON.stringify(Date.now()));
         } catch (e) {
           console.log(e);
@@ -172,7 +170,7 @@ const Marks = observer(({ navigation }: any) => {
             />
           ))
         ) : error ? (
-          <ErrorScreen message={error.message} />
+          <ErrorScreen message={error} />
         ) : (
           <Loader caption={"Fetching your marks"} />
         )}

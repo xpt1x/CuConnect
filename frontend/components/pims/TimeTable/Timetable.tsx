@@ -16,7 +16,7 @@ import config from "../../../config";
 export const Timetable = observer(() => {
   const TimeTableStore = useContext(TimeTableStoreContext);
 
-  const [error, setError] = React.useState<Error | null>(null);
+  const [error, setError] = React.useState<string>("");
   const [refreshing, setRefreshing] = React.useState<boolean>(false);
   const [update, forceUpdate] = React.useState<boolean>(false);
 
@@ -45,22 +45,17 @@ export const Timetable = observer(() => {
   };
 
   async function makeRequest() {
-    const response = await getTimetable().catch((error) => {
-      console.log(error);
-      return { message: error };
-    });
+    const { timetable, error } = await getTimetable();
     setRefreshing(false);
-    if ("message" in response) {
-      const error = response as Error;
-      console.log(`Error from Timetable Component: ${JSON.stringify(error)}`);
+    if (error) {
       if (!mountedRef.current) return;
       setError(error);
-    } else {
+    } else if (timetable) {
       if (!mountedRef.current) return;
 
-      TimeTableStore.setTimetable(response);
+      TimeTableStore.setTimetable(timetable);
       try {
-        await AsyncStorage.setItem("timetable", JSON.stringify(response));
+        await AsyncStorage.setItem("timetable", JSON.stringify(timetable));
         await AsyncStorage.setItem("timestamp", JSON.stringify(Date.now()));
       } catch (e) {
         console.log(e);
@@ -114,7 +109,7 @@ export const Timetable = observer(() => {
               <LectureCard lecture={null} holiday={true} />
             )
           ) : error ? (
-            <ErrorScreen message={error.message} />
+            <ErrorScreen message={error} />
           ) : (
             <Loader caption={"Fetching your timetable"} />
           )}

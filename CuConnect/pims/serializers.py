@@ -2,7 +2,24 @@ from rest_framework import serializers
 from .models import Post, Comment, UserProfile
 
 
-class PostSerializer(serializers.HyperlinkedModelSerializer):
+class UserProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserProfile
+        fields = ["user_id", "display_name", "picture", "rep", "posts"]
+
+
+class CommentSerializer(serializers.ModelSerializer):
+    author = UserProfileSerializer(many=False, read_only=True)
+
+    class Meta:
+        model = Comment
+        fields = ["id", "msg", "author"]
+
+
+class PostSerializer(serializers.ModelSerializer):
+    comments = CommentSerializer(many=True, read_only=True)
+    author = UserProfileSerializer(read_only=True)
+
     class Meta:
         model = Post
         fields = [
@@ -12,18 +29,6 @@ class PostSerializer(serializers.HyperlinkedModelSerializer):
             "author",
             "likes",
             "image",
-            "timestamp",
             "comments",
+            "timestamp",
         ]
-
-
-class CommentSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = Comment
-        fields = ["id", "url", "msg", "timestamp", "author", "post"]
-
-
-class UserProfileSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = UserProfile
-        fields = ["id", "url", "display_name", "user_id", "posts", "rep", "picture"]

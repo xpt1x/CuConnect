@@ -10,9 +10,8 @@ import {
   Caption,
 } from "react-native-paper";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { validateUser } from "../../ApiLayer/Api";
+import { getFullName } from "../../ApiLayer/Api";
 import { signOut } from "./utils";
-
 export default function LoginPims({ navigation, route }: any) {
   const [uid, setUid] = React.useState("");
   const [password, setPassword] = React.useState("");
@@ -26,28 +25,55 @@ export default function LoginPims({ navigation, route }: any) {
     setVisible(true);
   };
 
-  const recordCreds = async () => {
+  // const setUserName = async (uid: string, password: string) => {
+  //   try {
+  //     const response = await getFullName(uid, password);
+  //     // in order to use full name for future
+  //     if (response.full_name) {
+  //       try {
+  //         await AsyncStorage.setItem("full_name", response.full_name);
+  //         console.log("Setting full name");
+  //       } catch (e) {
+  //         console.log(e);
+  //       }
+  //     }
+
+  //     if (response.exists && response.full_name) {
+  //       navigation.replace("Home");
+  //     } else {
+  //       navigation.replace("Sign Up", { fullName: response.full_name });
+  //     }
+  //   } catch (e) {
+  //     console.log(e);
+  //     console.log("Error setting user");
+  //   }
+  // };
+
+  const recordCreds = async (uid: string, password: string) => {
+    try {
+      AsyncStorage.setItem("uid", uid);
+      AsyncStorage.setItem("password", password);
+    } catch (e) {
+      console.log("Error setting creds RecordCreds(LoginPims)");
+    }
+  };
+
+  const validate = async () => {
     setValidating(true);
     try {
-      const response = await validateUser(uid, password);
-      if (response === "OK") {
-        try {
-          await AsyncStorage.setItem("uid", uid);
-          await AsyncStorage.setItem("password", password);
-          console.log(`Creds stored! Uid:${uid} Password:${password}`);
-        } catch (e) {
-          console.log(e);
-        }
-
-        navigation.replace("Home");
+      const { exists, full_name, error } = await getFullName(uid, password);
+      setValidating(false);
+      if (error) {
+        showMessage(error);
       } else {
-        // show API error RESPONSE
-        showMessage(response);
+        if (full_name) await recordCreds(uid, password);
+        return exists && full_name
+          ? navigation.replace("Home")
+          : navigation.replace("Sign Up", { fullName: full_name });
       }
     } catch (e) {
-      console.log("Something went wrong in recordCreds(LoginPims)");
+      console.log("Something went wrong in checkingUser (LoginPims)");
     }
-    setValidating(false);
   };
 
   const checkCredsInStorage = async () => {
@@ -55,8 +81,8 @@ export default function LoginPims({ navigation, route }: any) {
       const uid = await AsyncStorage.getItem("uid");
       const password = await AsyncStorage.getItem("password");
       if (uid !== null && password !== null) {
-        const response = await validateUser(uid, password);
-        if (response === "OK") return navigation.replace("Home");
+        const { full_name } = await getFullName(uid, password);
+        if (full_name) return navigation.replace("Home");
         else {
           // API return invalid, remove local creds, show sign in screen
           setCredsFound(false);
@@ -119,7 +145,7 @@ export default function LoginPims({ navigation, route }: any) {
             loading={validating ? true : false}
             mode="contained"
             disabled={uid.length < 1}
-            onPress={validating ? undefined : recordCreds}
+            onPress={validating ? undefined : validate}
           >
             Login
           </Button>

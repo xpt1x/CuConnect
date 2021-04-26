@@ -38,13 +38,13 @@ class Comment(models.Model):
 
 
 class UserProfile(models.Model):
-    user_id = models.CharField(max_length=10, blank=False, null=False)
+    user_id = models.CharField(max_length=10, blank=False, null=False, primary_key=True)
     display_name = models.CharField(max_length=32, blank=False, null=False)
     picture = models.ImageField(upload_to=upload_profile_image, blank=True, null=True)
     rep = models.FloatField(default=0.0, blank=False, null=False)
 
-    def __str__(self):
-        return self.display_name
+    # def __str__(self):
+    #     return self.display_name
 
 
 @receiver(post_save, sender=Post)
@@ -55,14 +55,15 @@ def increase_user_rep_on_post_create(
         instance.author.rep += config.NEW_POST_REP
         instance.author.save()
 
+
 @receiver(pre_save, sender=Post)
 def change_user_rep_on_like(sender, instance: Post, **kwargs):
-    if instance.id is None: # new object will be created
-        pass 
+    if instance.id is None:  # new object will be created
+        pass
     else:
         previous = Post.objects.get(id=instance.id)
-        if previous.likes != instance.likes: # field will be updated
+        if previous.likes != instance.likes:  # field will be updated
             # sign can be 1 or -1
             sign = instance.likes - previous.likes
-            instance.author.rep += sign * config.NEW_LIKE_REPs 
+            instance.author.rep += sign * config.NEW_LIKE_REPs
             instance.author.save()

@@ -45,6 +45,11 @@ export default class MarksStore {
     this.marks = marks ? marks.sort(compareNames) : null;
   }
 
+  @action.bound
+  setSessions(sessions: Sessions | null) {
+    this.sessions = sessions ? sessions : {};
+  }
+
   constructor() {
     this.sessionLabel = "Sessions";
     makeAutoObservable(this);

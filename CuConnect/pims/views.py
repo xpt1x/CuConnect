@@ -1,3 +1,4 @@
+from requests.api import post
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .helper import create_uims_session
@@ -22,8 +23,16 @@ class UserProfileViewSet(viewsets.ModelViewSet):
     serializer_class = UserProfileSerializer
 
 
+@api_view(["GET"])
+def get_user_posts(req, uid):
+    posts = Post.objects.filter(author=uid)
+    return Response(
+        {"posts": PostSerializer(posts, many=True, context={"request": req}).data}
+    )
+
+
 @api_view(http_method_names=["POST"])
-def checkUser(req):
+def check_user(req):
     user_exists = (
         True
         if UserProfile.objects.filter(user_id=req.POST.get("uid")).exists()
@@ -83,7 +92,7 @@ def get_minimal_attendance(request):
             else:
                 return Response({"error": "Looks like this Module is inactive on UIMS"})
         else:
-            return Response(subjects)
+            return Response({"attendance": subjects})
 
 
 @api_view(http_method_names=["POST"])
@@ -99,7 +108,7 @@ def get_full_attendance(request):
         else:
             return Response({"error": "Looks like this Module is inactive on UIMS"})
     else:
-        return Response(subjects)
+        return Response({"fullattendance": subjects})
 
 
 @api_view(http_method_names=["POST"])
@@ -115,7 +124,7 @@ def get_timetable(request):
         else:
             return Response({"error": "Looks like this Module is inactive on UIMS"})
     else:
-        return Response(timetable)
+        return Response({"timetable": timetable})
 
 
 @api_view(http_method_names=["POST"])
@@ -131,7 +140,7 @@ def get_marks(request, session):
         else:
             return Response({"error": "Looks like this Module is inactive on UIMS"})
     else:
-        return Response(marks)
+        return Response({"marks": marks})
 
 
 @api_view(http_method_names=["POST"])
@@ -147,4 +156,4 @@ def get_available_sessions(request):
         else:
             return Response({"error": "Looks like this Module is inactive on UIMS"})
     else:
-        return Response(available_sessions)
+        return Response({"sessions": available_sessions})
