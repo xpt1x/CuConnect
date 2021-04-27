@@ -17,15 +17,12 @@ export default function SignUp({ route, navigation }: any) {
   const [validating, setValidating] = React.useState<boolean>(false);
 
   const checkName = () => {
-    const wordCannotBeUsed = userName
-      .split(" ")
-      .filter((ele: string) => {
-        if (!fullName.includes(ele)) return ele;
-      })
-      .toString();
-    console.log(wordCannotBeUsed);
-    if (wordCannotBeUsed.length == 0) console.log("true");
-    else setVisible(true);
+    if (userName.toLowerCase().split(" ").filter((ele:string) => { if (fullName.toLowerCase().split(" ").indexOf(ele) == -1) return ele;}).length == 0) {
+      console.log(true)
+    } else {
+      console.log(false)
+      setVisible(true);
+    }
   };
   // const [fullName, setFullName] = React.useState<string>("Loading...");
 
