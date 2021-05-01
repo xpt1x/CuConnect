@@ -1,26 +1,39 @@
 import React from "react";
 import { SafeAreaView, View, Text } from "react-native";
-import {
-  Colors,
-  Button,
-  TextInput,
-  Snackbar,
-  ProgressBar,
-  Headline,
-  Caption,
-} from "react-native-paper";
+import { Colors, Button, TextInput, Snackbar } from "react-native-paper";
+import { registerUser } from "../../ApiLayer/Api";
 
 export default function SignUp({ route, navigation }: any) {
   const { fullName }: any = route.params;
   const [visible, setVisible] = React.useState<boolean>(false);
   const [userName, setUserName] = React.useState(fullName);
   const [validating, setValidating] = React.useState<boolean>(false);
+  const [message, setMessage] = React.useState<string>();
 
-  const checkName = () => {
-    if (userName.toLowerCase().split(" ").filter((ele:string) => { if (fullName.toLowerCase().split(" ").indexOf(ele) == -1) return ele;}).length == 0) {
-      console.log(true)
+  const checkName = async () => {
+    if (
+      userName
+        .toLowerCase()
+        .split(" ")
+        .filter((ele: string) => {
+          if (fullName.toLowerCase().split(" ").indexOf(ele) == -1) return ele;
+        }).length == 0
+    ) {
+      console.log(true);
+      setValidating(true);
+      const { error, success } = await registerUser(userName);
+      setValidating(false);
+      if (error) {
+        setVisible(true);
+        setMessage(error);
+      } else if (success) {
+        navigation.navigate("Home");
+      }
     } else {
-      console.log(false)
+      console.log(false);
+      setMessage(
+        "UserName you entered doesn't contain combination of your full name"
+      );
       setVisible(true);
     }
   };
@@ -69,7 +82,7 @@ export default function SignUp({ route, navigation }: any) {
         loading={validating ? true : false}
         mode="contained"
         disabled={userName.length < 1}
-        onPress={checkName}
+        onPress={validating ? undefined : checkName}
       >
         Sign Up
       </Button>
@@ -90,7 +103,7 @@ export default function SignUp({ route, navigation }: any) {
           },
         }}
       >
-        Invalid User Name. Please select words from allowed selection of words.
+        {message}
       </Snackbar>
     </SafeAreaView>
   );

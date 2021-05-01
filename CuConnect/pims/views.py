@@ -35,7 +35,7 @@ def get_user_posts(req, uid):
 def check_user(req):
     user_exists = (
         True
-        if UserProfile.objects.filter(user_id=req.POST.get("uid")).exists()
+        if UserProfile.objects.filter(user_id=req.POST.get("uid").upper()).exists()
         else False
     )
     status, obj = create_uims_session(req)
@@ -68,10 +68,10 @@ def register_user(req):
                 return Response(
                     {"error": f"Words in display name not in {full_name.upper()}"}
                 )
-        if UserProfile.objects.filter(user_id=req.POST.get("uid")).exists():
+        if UserProfile.objects.filter(user_id=req.POST.get("uid").upper()).exists():
             return Response({"error": "UID already registered"})
         user = UserProfile(
-            user_id=req.POST.get("uid"),
+            user_id=req.POST.get("uid").upper(),
             display_name=(req.POST.get("display_name").lower().capitalize()),
         )
         user.save()
