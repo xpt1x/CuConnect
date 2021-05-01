@@ -25,30 +25,6 @@ export default function LoginPims({ navigation, route }: any) {
     setVisible(true);
   };
 
-  // const setUserName = async (uid: string, password: string) => {
-  //   try {
-  //     const response = await getFullName(uid, password);
-  //     // in order to use full name for future
-  //     if (response.full_name) {
-  //       try {
-  //         await AsyncStorage.setItem("full_name", response.full_name);
-  //         console.log("Setting full name");
-  //       } catch (e) {
-  //         console.log(e);
-  //       }
-  //     }
-
-  //     if (response.exists && response.full_name) {
-  //       navigation.replace("Home");
-  //     } else {
-  //       navigation.replace("Sign Up", { fullName: response.full_name });
-  //     }
-  //   } catch (e) {
-  //     console.log(e);
-  //     console.log("Error setting user");
-  //   }
-  // };
-
   const recordCreds = async (uid: string, password: string) => {
     try {
       AsyncStorage.setItem("uid", uid);
@@ -81,9 +57,12 @@ export default function LoginPims({ navigation, route }: any) {
       const uid = await AsyncStorage.getItem("uid");
       const password = await AsyncStorage.getItem("password");
       if (uid !== null && password !== null) {
-        const { full_name } = await getFullName(uid, password);
-        if (full_name) return navigation.replace("Home");
-        else {
+        const { full_name, exists } = await getFullName(uid, password);
+        if (full_name && exists) return navigation.replace("Home");
+        else if (full_name && !exists) {
+          // Send to new user flow
+          return navigation.replace("Sign Up", { fullName: full_name });
+        } else {
           // API return invalid, remove local creds, show sign in screen
           setCredsFound(false);
           await signOut();

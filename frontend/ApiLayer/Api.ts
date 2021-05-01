@@ -102,14 +102,8 @@ const getFullName = async (
 //   return {error: "Can't validate (Internal Failure)"}
 // };
 
-const registerUser = async (
-  uid: string,
-  password: string,
-  full_name: string
-): Promise<RegisterResponse> => {
-  const user = new FormData();
-  user.append("uid", uid);
-  user.append("password", password);
+const registerUser = async (full_name: string): Promise<RegisterResponse> => {
+  const user = await createUserData();
   user.append("display_name", full_name);
 
   try {

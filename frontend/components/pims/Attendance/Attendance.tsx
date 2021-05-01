@@ -52,7 +52,6 @@ const Attendance = observer(({ navigation }: Props) => {
   const makeRequest = async () => {
     const { attendance, error } = await getAttendance();
     setRefreshing(false);
-    console.log(attendance);
     if (error) {
       if (!mountedRef.current) return;
       setError(error);
