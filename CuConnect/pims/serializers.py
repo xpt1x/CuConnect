@@ -18,13 +18,12 @@ class CommentSerializer(serializers.ModelSerializer):
 
 class PostSerializer(serializers.ModelSerializer):
     comments = CommentSerializer(many=True, read_only=True)
-    author = UserProfileSerializer(read_only=True)
+    author = UserProfileSerializer()
 
     class Meta:
         model = Post
         fields = [
             "id",
-            "url",
             "title",
             "author",
             "likes",
