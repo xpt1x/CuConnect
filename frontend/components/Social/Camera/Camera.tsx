@@ -18,7 +18,6 @@ const PostSelector = ({
 }: any) => {
   return (
     <SafeAreaView style={styles.container}>
-      {/* <View style={styles.buttonContainer}> */}
       <IconButton
         icon={flashIcon}
         color={Colors.grey100}
@@ -35,7 +34,6 @@ const PostSelector = ({
           );
         }}
       />
-      {/* </View> */}
       <Camera
         style={styles.camera}
         flashMode={flashMode}
@@ -170,7 +168,9 @@ const styles = StyleSheet.create({
     width: 60,
     height: 60,
     position: "absolute",
+    marginTop: 20,
     zIndex: 100,
+    right: 0,
   },
   rotateCameraButton: {
     width: 60,

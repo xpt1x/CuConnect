@@ -43,8 +43,8 @@ class UserProfile(models.Model):
     picture = models.ImageField(upload_to=upload_profile_image, blank=True, null=True)
     rep = models.FloatField(default=0.0, blank=False, null=False)
 
-    # def __str__(self):
-    #     return self.display_name
+    def __str__(self):
+        return self.display_name
 
 
 @receiver(post_save, sender=Post)

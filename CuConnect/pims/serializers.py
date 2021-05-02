@@ -5,20 +5,34 @@ from .models import Post, Comment, UserProfile
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserProfile
-        fields = ["user_id", "display_name", "picture", "rep", "posts"]
+        fields = [
+            "user_id",
+            "display_name",
+            "picture",
+            "rep",
+        ]
 
 
 class CommentSerializer(serializers.ModelSerializer):
-    author = UserProfileSerializer(many=False, read_only=True)
+    author_data = serializers.SerializerMethodField()
+
+    def get_author_data(self, data):
+        serializer = UserProfileSerializer(data.author)
+        return serializer.data
 
     class Meta:
         model = Comment
-        fields = ["id", "msg", "author"]
+        fields = ["id", "msg", "author", "author_data", "post"]
 
 
 class PostSerializer(serializers.ModelSerializer):
+
+    author_data = serializers.SerializerMethodField()
     comments = CommentSerializer(many=True, read_only=True)
-    author = UserProfileSerializer()
+
+    def get_author_data(self, data):
+        serializer = UserProfileSerializer(data.author)
+        return serializer.data
 
     class Meta:
         model = Post
@@ -26,6 +40,7 @@ class PostSerializer(serializers.ModelSerializer):
             "id",
             "title",
             "author",
+            "author_data",
             "likes",
             "image",
             "comments",

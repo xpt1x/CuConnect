@@ -12,11 +12,13 @@ import {
 interface SocialCardProps {
   tripleDotAction: () => void;
 }
-
+// interface Props {
+//   navigation: NavigationStackProp;
+// }
 function getRandom(min: number, max: number): number {
   return Math.floor(Math.random() * (max - min) + min);
 }
-
+//navigation for comments to be done
 export default function SocialCard({ tripleDotAction }: SocialCardProps) {
   const LeftContent = (props: { size: number }) => (
     <Avatar.Icon {...props} icon="account" />
@@ -86,7 +88,9 @@ export default function SocialCard({ tripleDotAction }: SocialCardProps) {
           color={"#757676"}
           style={styles.button}
           icon={"comment"}
-          onPress={() => {}}
+          onPress={() => {
+            // navigation.push("Comments")
+          }}
         />
       </Card.Actions>
     </Card>

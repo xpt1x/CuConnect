@@ -15,6 +15,7 @@ import SettingsMenu from "../Social/Profile/SettingsMenu";
 import Camera from "../Social/Camera/Camera";
 import { useNavigation } from "@react-navigation/core";
 import SignUp from "../Authentication/SignUp";
+import CommentList from "../Social/SocialFeed/CommentList";
 
 const Stack = createStackNavigator();
 const navigatorProps: StackNavigationProp = {
@@ -113,6 +114,11 @@ export default function StackNav() {
           headerShown: false,
           gestureDirection: "horizontal-inverted",
         }}
+      />
+      <Stack.Screen
+        name="Comments"
+        component={CommentList}
+        options={{ headerShown: false }}
       />
     </Stack.Navigator>
   );
