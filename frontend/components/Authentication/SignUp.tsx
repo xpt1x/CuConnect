@@ -63,7 +63,6 @@ export default function SignUp({ route, navigation }: any) {
     >
       <TextInput
         style={{ marginVertical: 6 }}
-        selectionColor={Colors.green200}
         label="Select from these words."
         disabled={true}
         value={fullName}

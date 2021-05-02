@@ -102,7 +102,6 @@ export default function LoginPims({ navigation, route }: any) {
         <>
           <TextInput
             style={{ marginVertical: 6 }}
-            selectionColor={Colors.green200}
             mode={"outlined"}
             label="UID"
             value={uid}
@@ -110,7 +109,6 @@ export default function LoginPims({ navigation, route }: any) {
           />
           <TextInput
             style={{ marginVertical: 6 }}
-            selectionColor={Colors.green200}
             mode={"outlined"}
             label="Password"
             value={password}
