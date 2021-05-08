@@ -351,7 +351,6 @@ class SessionUIMS:
 
             timing = data[0].replace(" ", "")
             data = data[1:]
-            print(data)
             for i in range(len(data)):
                 timetable[ttlist[i]][timing] = self._parse_timetable_subject(
                     data[i], course_codes
