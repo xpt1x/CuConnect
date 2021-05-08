@@ -186,7 +186,7 @@ const getMarks = async (session: string): Promise<MarksResponse> => {
 };
 
 interface PostResponse {
-  posts?: ReadOnlyArray<Post>;
+  posts?: ReadonlyArray<Post>;
   error?: string;
 }
 
@@ -196,7 +196,6 @@ const getPosts = async (): Promise<PostResponse> => {
     return { posts: await response.json() };
   } catch (error) {
     console.log(error);
-    return { error };
   }
   return { error: "Error getting posts" };
 };
@@ -210,4 +209,5 @@ export {
   getAvailableSessions,
   registerUser,
   getFullName,
+  getPosts
 };
