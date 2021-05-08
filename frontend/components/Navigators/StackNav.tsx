@@ -118,7 +118,10 @@ export default function StackNav() {
       <Stack.Screen
         name="Comments"
         component={CommentList}
-        options={{ headerShown: false }}
+        options={{
+          headerShown: true,
+          gestureDirection: "horizontal",
+        }}
       />
     </Stack.Navigator>
   );

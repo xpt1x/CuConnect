@@ -1,17 +1,13 @@
 import React from "react";
-import { StyleSheet } from "react-native";
-import {
-  Avatar,
-  Button,
-  Card,
-  Title,
-  Paragraph,
-  IconButton,
-} from "react-native-paper";
+import { StyleSheet, View } from "react-native";
+import { Avatar, Badge, Card, IconButton, Paragraph } from "react-native-paper";
+import { NavigationStackProp } from "react-navigation-stack";
 
 interface SocialCardProps {
   tripleDotAction: () => void;
+  navigation: NavigationStackProp;
 }
+
 // interface Props {
 //   navigation: NavigationStackProp;
 // }
@@ -19,9 +15,32 @@ function getRandom(min: number, max: number): number {
   return Math.floor(Math.random() * (max - min) + min);
 }
 //navigation for comments to be done
-export default function SocialCard({ tripleDotAction }: SocialCardProps) {
+export default function SocialCard({
+  tripleDotAction,
+  navigation,
+}: SocialCardProps) {
+  const [liked, setLiked] = React.useState(false);
+  const [imgUri, setImgUri] = React.useState(
+    `https://picsum.photos/${getRandom(4, 10) * 100}/${getRandom(3, 10) * 100}`
+  );
+  const toggleLike = () => {
+    setLiked(!liked);
+  };
   const LeftContent = (props: { size: number }) => (
-    <Avatar.Icon {...props} icon="account" />
+    <View style={{ position: "relative" }}>
+      <Avatar.Icon {...props} icon="account" />
+      <IconButton
+        icon="fire"
+        size={25}
+        color={"#f27d0c"}
+        style={{
+          position: "absolute",
+          top: "25%",
+          left: "25%",
+          opacity: liked ? 1 : 0,
+        }}
+      />
+    </View>
   );
   const RightContent = (props: { size: number }) => (
     <IconButton
@@ -33,15 +52,6 @@ export default function SocialCard({ tripleDotAction }: SocialCardProps) {
       style={{ marginRight: 10 }}
     />
   );
-
-  const [liked, setLiked] = React.useState(false);
-
-  const [imgUri, setImgUri] = React.useState(
-    `https://picsum.photos/${getRandom(4, 10) * 100}/${getRandom(3, 10) * 100}`
-  );
-  const toggleLike = () => {
-    setLiked(!liked);
-  };
 
   let lastTap: number | null = null;
   const handleDoubleTap = () => {
@@ -61,12 +71,7 @@ export default function SocialCard({ tripleDotAction }: SocialCardProps) {
       }}
     >
       {/* content : date and time and caption */}
-      <Card.Title
-        title="Vtrix"
-        subtitle="Google Placement programm @ block 6 on 25th of september"
-        left={LeftContent}
-        right={RightContent}
-      />
+      <Card.Title title="Vtrix" left={LeftContent} right={RightContent} />
 
       <Card.Cover
         resizeMode="center"
@@ -74,7 +79,8 @@ export default function SocialCard({ tripleDotAction }: SocialCardProps) {
         // style={{ height: imgDimensions.height, width: "100%" }}
         source={{ uri: imgUri }}
       />
-      <Card.Actions>
+
+      {/* <Card.Actions>
         <IconButton
           color={liked ? "#f27d0c" : "#757676"}
           style={styles.button}
@@ -89,10 +95,17 @@ export default function SocialCard({ tripleDotAction }: SocialCardProps) {
           style={styles.button}
           icon={"comment"}
           onPress={() => {
-            // navigation.push("Comments")
+            navigation.push("Comments");
           }}
         />
-      </Card.Actions>
+      </Card.Actions> */}
+      <Card.Content>
+        <Paragraph
+          style={{ fontSize: 13, marginTop: 13, textAlign: "justify" }}
+        >
+          Google Placement program @ block 6 on 25th of september
+        </Paragraph>
+      </Card.Content>
     </Card>
   );
 }
@@ -102,6 +115,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#000",
   },
   button: {
-    width: 50,
+    width: 35,
   },
 });

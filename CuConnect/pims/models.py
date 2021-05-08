@@ -13,7 +13,7 @@ def upload_profile_image(self, filename, **kwargs):
 
 
 class Post(models.Model):
-    title = models.CharField(max_length=128, blank=False, null=False)
+    title = models.CharField(max_length=128, blank=True, null=True)
     author = models.ForeignKey(
         "UserProfile", on_delete=models.CASCADE, related_name="posts"
     )
