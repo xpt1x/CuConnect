@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, Animated, ImageBackground } from "react-native";
 import { Avatar, Badge, Card, IconButton, Paragraph } from "react-native-paper";
 import { NavigationStackProp } from "react-navigation-stack";
 
@@ -23,23 +23,65 @@ export default function SocialCard({
   const [imgUri, setImgUri] = React.useState(
     `https://picsum.photos/${getRandom(4, 10) * 100}/${getRandom(3, 10) * 100}`
   );
+  const fireBadgeAnimation = React.useRef(new Animated.Value(0)).current;
+  const fireOverlayAnimation = React.useRef(new Animated.Value(0)).current;
+
+  const fireBadgeFadeIn = () => {
+    Animated.timing(fireBadgeAnimation, {
+      toValue: 1,
+      duration: 150,
+      useNativeDriver: true,
+    }).start();
+  };
+
+  const fireBadgeFadeOut = () => {
+    Animated.timing(fireBadgeAnimation, {
+      toValue: 0,
+      duration: 200,
+      useNativeDriver: true,
+    }).start();
+  };
+
+  const fireOverlayFadeInOut = () => {
+    Animated.sequence([
+      Animated.timing(fireOverlayAnimation, {
+        toValue: 1,
+        duration: 200,
+        useNativeDriver: true,
+      }),
+      Animated.delay(310),
+      Animated.timing(fireOverlayAnimation, {
+        toValue: 0,
+        duration: 200,
+        useNativeDriver: true,
+      }),
+    ]).start();
+  };
   const toggleLike = () => {
     setLiked(!liked);
   };
+
+  //Display fire logo useEffect
+  React.useEffect(() => {
+    if (liked) {
+      fireBadgeFadeIn();
+      fireOverlayFadeInOut();
+    } else fireBadgeFadeOut();
+  }, [liked]);
+
   const LeftContent = (props: { size: number }) => (
     <View style={{ position: "relative" }}>
       <Avatar.Icon {...props} icon="account" />
-      <IconButton
-        icon="fire"
-        size={25}
-        color={"#f27d0c"}
+      <Animated.View
         style={{
           position: "absolute",
           top: "25%",
           left: "25%",
-          opacity: liked ? 1 : 0,
+          opacity: fireBadgeAnimation,
         }}
-      />
+      >
+        <IconButton icon="fire" size={25} color={"#f27d0c"} />
+      </Animated.View>
     </View>
   );
   const RightContent = (props: { size: number }) => (
@@ -52,7 +94,6 @@ export default function SocialCard({
       style={{ marginRight: 10 }}
     />
   );
-
   let lastTap: number | null = null;
   const handleDoubleTap = () => {
     const now = Date.now();
@@ -73,12 +114,31 @@ export default function SocialCard({
       {/* content : date and time and caption */}
       <Card.Title title="Vtrix" left={LeftContent} right={RightContent} />
 
-      <Card.Cover
-        resizeMode="center"
-        style={{ height: 450, width: "100%" }}
-        // style={{ height: imgDimensions.height, width: "100%" }}
-        source={{ uri: imgUri }}
-      />
+      <View style={{ position: "relative" }}>
+        <Card.Cover
+          resizeMode="center"
+          style={{ height: 450, width: "100%" }}
+          source={{ uri: imgUri }}
+        />
+        <Animated.View
+          style={{
+            width: "100%",
+            height: "100%",
+            position: "absolute",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+            opacity: fireOverlayAnimation,
+          }}
+        >
+          <IconButton
+            icon="fire"
+            size={150}
+            color={"rgba(242, 125, 12, 0.9)"}
+          />
+        </Animated.View>
+      </View>
 
       {/* <Card.Actions>
         <IconButton
