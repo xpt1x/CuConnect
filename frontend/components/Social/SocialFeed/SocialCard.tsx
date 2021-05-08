@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, View, Animated, ImageBackground } from "react-native";
-import { Avatar, Badge, Card, IconButton, Paragraph } from "react-native-paper";
+import { Avatar, Card, IconButton, Paragraph } from "react-native-paper";
 import { NavigationStackProp } from "react-navigation-stack";
 
 interface SocialCardProps {
@@ -21,7 +21,9 @@ export default function SocialCard({
 }: SocialCardProps) {
   const [liked, setLiked] = React.useState(false);
   const [imgUri, setImgUri] = React.useState(
-    `https://picsum.photos/${getRandom(4, 10) * 100}/${getRandom(3, 10) * 100}`
+    `https://picsum.photos/${getRandom(11, 20) * 100}/${
+      getRandom(13, 20) * 100
+    }`
   );
   const fireBadgeAnimation = React.useRef(new Animated.Value(0)).current;
   const fireOverlayAnimation = React.useRef(new Animated.Value(0)).current;
@@ -116,7 +118,7 @@ export default function SocialCard({
 
       <View style={{ position: "relative" }}>
         <Card.Cover
-          resizeMode="center"
+          resizeMode="contain"
           style={{ height: 450, width: "100%" }}
           source={{ uri: imgUri }}
         />
