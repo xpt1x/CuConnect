@@ -3,7 +3,9 @@ Flask_Cors
 Django
 beautifulsoup4
 djangorestframework
+Pillow
 
 #heroku
 gunicorn
+whitenoise
 django-heroku
