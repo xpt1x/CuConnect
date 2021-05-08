@@ -13,7 +13,7 @@ def upload_profile_image(self, filename, **kwargs):
 
 
 class Post(models.Model):
-    title = models.CharField(max_length=128, blank=False, null=False)
+    title = models.CharField(max_length=128, blank=True, null=True)
     author = models.ForeignKey(
         "UserProfile", on_delete=models.CASCADE, related_name="posts"
     )
@@ -43,8 +43,8 @@ class UserProfile(models.Model):
     picture = models.ImageField(upload_to=upload_profile_image, blank=True, null=True)
     rep = models.FloatField(default=0.0, blank=False, null=False)
 
-    # def __str__(self):
-    #     return self.display_name
+    def __str__(self):
+        return self.display_name
 
 
 @receiver(post_save, sender=Post)

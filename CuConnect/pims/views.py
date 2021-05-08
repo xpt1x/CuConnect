@@ -9,7 +9,7 @@ from .uims_api.exceptions import UIMSInternalError
 
 
 class PostViewSet(viewsets.ModelViewSet):
-    queryset = Post.objects.order_by("-likes")
+    queryset = Post.objects.filter().order_by("-timestamp", "-likes")
     serializer_class = PostSerializer
 
 

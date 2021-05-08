@@ -27,7 +27,7 @@ export default function SignUp({ route, navigation }: any) {
         setVisible(true);
         setMessage(error);
       } else if (success) {
-        navigation.navigate("Home");
+        navigation.replace("Home");
       }
     } else {
       console.log(false);

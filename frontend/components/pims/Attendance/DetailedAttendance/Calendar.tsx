@@ -1,6 +1,6 @@
 import React from "react";
-import { StyleSheet, ScrollView } from "react-native";
-import { Surface, Title, Text, Colors } from "react-native-paper";
+import { StyleSheet, ScrollView, View } from "react-native";
+import { Surface, Title, Text, Colors, ProgressBar } from "react-native-paper";
 import { FullSubject } from "../../../../types/Subject";
 
 interface calendarProps {
@@ -14,23 +14,31 @@ function parseDate(date: string): ReadonlyArray<string> {
 
 export default function Calendar({ subject }: calendarProps) {
   const [month, setMonth] = React.useState("January, 2021");
-  const { FullAttendanceReport } = subject;
   return (
     <>
-      <ScrollView horizontal={true} style={styles.calender}>
-        {FullAttendanceReport.map((entry, idx) => {
-          const color =
-            entry.AttendanceCode === "P" ? styles.green : styles.red;
-          const [date, month] = parseDate(entry.AttDate);
-          return (
-            <Surface style={[styles.surface, color]} key={idx}>
-              <Title>{date}</Title>
-              <Text>{month}</Text>
-            </Surface>
-          );
-        })}
-      </ScrollView>
-      {/* <Title style={styles.title}>{month}</Title> */}
+      {subject && subject.FullAttendanceReport ? (
+        <ScrollView horizontal={true} style={styles.calender}>
+          {subject.FullAttendanceReport.map((entry, idx) => {
+            const color =
+              entry.AttendanceCode === "P" ? styles.green : styles.red;
+            const [date, month] = parseDate(entry.AttDate);
+            return (
+              <Surface style={[styles.surface, color]} key={idx}>
+                <Title>{date}</Title>
+                <Text>{month}</Text>
+              </Surface>
+            );
+          })}
+        </ScrollView>
+      ) : (
+        <View style={styles.calendarLoader}>
+          <ProgressBar
+            indeterminate={true}
+            color={Colors.blue400}
+            style={styles.linearLoader}
+          />
+        </View>
+      )}
     </>
   );
 }
@@ -68,5 +76,15 @@ const styles = StyleSheet.create({
     paddingBottom: 15,
     width: "111%",
     paddingTop: 15,
+  },
+  calendarLoader: {
+    height: 86,
+    width: "100%",
+    display: "flex",
+    justifyContent: "center",
+  },
+  linearLoader: {
+    width: "40%",
+    alignSelf: "center",
   },
 });

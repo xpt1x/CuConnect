@@ -4,6 +4,7 @@ import { Error } from "../types/Error";
 import { SubjectMarks, Sessions } from "../types/MarksTypes";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import config from "../config";
+import { Post } from "../types/PostTypes";
 
 const createUserData = async () => {
   const user = new FormData();
@@ -184,6 +185,21 @@ const getMarks = async (session: string): Promise<MarksResponse> => {
   return { error: "Error getting marks" };
 };
 
+interface PostResponse {
+  posts?: ReadonlyArray<Post>;
+  error?: string;
+}
+
+const getPosts = async (): Promise<PostResponse> => {
+  try {
+    const response = await fetch(config.imsApiUrl + "/posts");
+    return { posts: await response.json() };
+  } catch (error) {
+    console.log(error);
+  }
+  return { error: "Error getting posts" };
+};
+
 export {
   // validateUser,
   getAttendance,
@@ -193,4 +209,5 @@ export {
   getAvailableSessions,
   registerUser,
   getFullName,
+  getPosts
 };

@@ -1,15 +1,9 @@
 import React, { useState, useEffect } from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  SafeAreaView,
-  Platform,
-  Image,
-} from "react-native";
+import { StyleSheet, Text, View, SafeAreaView, Platform } from "react-native";
 import { Camera } from "expo-camera";
 import { IconButton, Colors } from "react-native-paper";
 import * as ImagePicker from "expo-image-picker";
+import ImagePreview from "./ImagePreview";
 
 const PostSelector = ({
   type,
@@ -24,6 +18,22 @@ const PostSelector = ({
 }: any) => {
   return (
     <SafeAreaView style={styles.container}>
+      <IconButton
+        icon={flashIcon}
+        color={Colors.grey100}
+        size={30}
+        style={styles.flashCameraButton}
+        onPress={() => {
+          setFlashMode(
+            flashMode === Camera.Constants.FlashMode.off
+              ? Camera.Constants.FlashMode.torch
+              : Camera.Constants.FlashMode.off
+          );
+          setflashIcon(
+            flashIcon === "flash-outline" ? "flash" : "flash-outline"
+          );
+        }}
+      />
       <Camera
         style={styles.camera}
         flashMode={flashMode}
@@ -33,22 +43,7 @@ const PostSelector = ({
           setCamera(ref);
         }}
       />
-      {/* <IconButton
-      icon={flashIcon}
-      color={Colors.grey100}
-      size={30}
-      style={styles.rotateCameraButton}
-      onPress={() => {
-        setFlashMode(
-          flashMode === Camera.Constants.FlashMode.off
-            ? Camera.Constants.FlashMode.torch
-            : Camera.Constants.FlashMode.off
-        );
-        setflashIcon(
-          flashIcon === "flash-outline" ? "flash" : "flash-outline"
-        );
-      }}
-    /> */}
+
       <View style={styles.buttonContainer}>
         <IconButton
           icon="image-plus"
@@ -78,33 +73,6 @@ const PostSelector = ({
         />
       </View>
     </SafeAreaView>
-  );
-};
-
-const ImagePreview = ({ uri, setUri }: any) => {
-  function closeAction() {
-    setUri(undefined);
-  }
-  return (
-    <View style={styles.imagePreviewContainer}>
-      <IconButton
-        icon={"chevron-left"}
-        size={25}
-        onPress={closeAction}
-        style={styles.imagePreviewBack}
-      />
-      <Image
-        source={{ uri: uri }}
-        style={styles.imagePreview}
-        resizeMode={"contain"}
-      />
-      <IconButton
-        icon={"send"}
-        size={40}
-        onPress={closeAction}
-        style={styles.imagePreviewSend}
-      />
-    </View>
   );
 };
 
@@ -195,6 +163,14 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     width: 69,
     height: 69,
+  },
+  flashCameraButton: {
+    width: 60,
+    height: 60,
+    position: "absolute",
+    marginTop: 20,
+    zIndex: 100,
+    right: 0,
   },
   rotateCameraButton: {
     width: 60,

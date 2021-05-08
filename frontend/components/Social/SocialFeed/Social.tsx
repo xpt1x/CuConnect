@@ -73,10 +73,22 @@ export default function Social({ navigation }: Props) {
               </Button>
             </RBSheet>
 
-            <SocialCard tripleDotAction={tripleDotAction} />
-            <SocialCard tripleDotAction={tripleDotAction} />
-            <SocialCard tripleDotAction={tripleDotAction} />
-            <SocialCard tripleDotAction={tripleDotAction} />
+            <SocialCard
+              tripleDotAction={tripleDotAction}
+              navigation={navigation}
+            />
+            <SocialCard
+              tripleDotAction={tripleDotAction}
+              navigation={navigation}
+            />
+            <SocialCard
+              tripleDotAction={tripleDotAction}
+              navigation={navigation}
+            />
+            <SocialCard
+              tripleDotAction={tripleDotAction}
+              navigation={navigation}
+            />
           </ScrollView>
         </View>
       </SafeAreaView>
