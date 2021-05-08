@@ -1,11 +1,13 @@
 import React from "react";
-import { StyleSheet, View, Animated, ImageBackground } from "react-native";
+import { StyleSheet, View, Animated, Image } from "react-native";
 import { Avatar, Card, IconButton, Paragraph } from "react-native-paper";
 import { NavigationStackProp } from "react-navigation-stack";
+import { Post } from "../../../types/PostTypes";
 
 interface SocialCardProps {
   tripleDotAction: () => void;
   navigation: NavigationStackProp;
+  post: Post;
 }
 
 // interface Props {
@@ -18,6 +20,7 @@ function getRandom(min: number, max: number): number {
 export default function SocialCard({
   tripleDotAction,
   navigation,
+  post,
 }: SocialCardProps) {
   const [liked, setLiked] = React.useState(false);
   const [imgUri, setImgUri] = React.useState(
@@ -114,13 +117,18 @@ export default function SocialCard({
       }}
     >
       {/* content : date and time and caption */}
-      <Card.Title title="Vtrix" left={LeftContent} right={RightContent} />
+      <Card.Title
+        title={post.author_data.display_name}
+        subtitle={post.likes}
+        left={LeftContent}
+        right={RightContent}
+      />
 
       <View style={{ position: "relative" }}>
         <Card.Cover
           resizeMode="contain"
-          style={{ height: 450, width: "100%" }}
-          source={{ uri: imgUri }}
+          style={{ width: "100%", height: 450 }}
+          source={{ uri: post.image }}
         />
         <Animated.View
           style={{
@@ -165,7 +173,7 @@ export default function SocialCard({
         <Paragraph
           style={{ fontSize: 13, marginTop: 13, textAlign: "justify" }}
         >
-          Google Placement program @ block 6 on 25th of september
+          {post.title}
         </Paragraph>
       </Card.Content>
     </Card>
