@@ -6,6 +6,7 @@ import {
   StyleSheet,
   ScrollView,
   RefreshControl,
+  FlatList,
 } from "react-native";
 import { Appbar, Button, Snackbar } from "react-native-paper";
 import SocialCard from "./SocialCard";
@@ -15,6 +16,8 @@ import RBSheet from "react-native-raw-bottom-sheet";
 import { NavigationStackProp } from "react-navigation-stack";
 import { getPosts } from "../../../ApiLayer/Api";
 import { Post } from "../../../types/PostTypes";
+
+
 
 interface Props {
   navigation: NavigationStackProp;
@@ -58,6 +61,12 @@ export default function Social({ navigation }: Props) {
     setRefreshing(true);
     forceUpdate(!update);
   };
+  const renderSocialCard = ({item} : any) => {
+    return (
+      <SocialCard tripleDotAction={tripleDotAction} navigation={navigation } post={item}/>
+    )
+  }
+
 
   if (!fontsLoaded) {
     return <AppLoading />;
@@ -73,55 +82,54 @@ export default function Social({ navigation }: Props) {
               onPress={goToProfile}
             />
           </Appbar.Header>
-          <ScrollView
-            style={styles.container}
-            refreshControl={
-              <RefreshControl refreshing={refreshing} onRefresh={onRefreshFn} />
-            }
+          <RBSheet
+            height={140}
+            ref={refRBSheet}
+            closeOnDragDown={true}
+            closeOnPressMask={true}
+            closeOnPressBack={true}
+            customStyles={{
+              wrapper: {
+                backgroundColor: "transparent",
+              },
+              container: {
+                backgroundColor: "#1c1c1c",
+              },
+              draggableIcon: {
+                backgroundColor: "#757676",
+              },
+            }}
           >
-            <RBSheet
-              height={140}
-              ref={refRBSheet}
-              closeOnDragDown={true}
-              closeOnPressMask={true}
-              closeOnPressBack={true}
-              customStyles={{
-                wrapper: {
-                  backgroundColor: "transparent",
-                },
-                container: {
-                  backgroundColor: "#1c1c1c",
-                },
-                draggableIcon: {
-                  backgroundColor: "#757676",
-                },
-              }}
+            <Button mode="text" onPress={() => console.log("Pressed")}>
+              View Profile
+            </Button>
+            <Button
+              color="#fa1e0e"
+              mode="text"
+              onPress={() => console.log("Pressed")}
+              icon="flag"
             >
-              <Button mode="text" onPress={() => console.log("Pressed")}>
-                View Profile
-              </Button>
-              <Button
-                color="#fa1e0e"
-                mode="text"
-                onPress={() => console.log("Pressed")}
-                icon="flag"
-              >
-                Report User
-              </Button>
-            </RBSheet>
-            <View style={{ marginBottom: 90 }}>
-              {posts
-                ? posts.map((post, idx) => (
-                    <SocialCard
-                      key={idx}
-                      post={post}
-                      tripleDotAction={tripleDotAction}
-                      navigation={navigation}
-                    />
-                  ))
-                : null}
-            </View>
-          </ScrollView>
+              Report User
+            </Button>
+          </RBSheet>
+
+          <View style={{ marginBottom: 90 }}>
+            {posts?(
+              <FlatList
+              style={styles.container}
+              data={posts}
+              renderItem={renderSocialCard}
+              keyExtractor={(item: Post) => item.id.toString()}
+              initialNumToRender={10}
+              refreshControl={
+                <RefreshControl
+                  refreshing={refreshing}
+                  onRefresh={onRefreshFn}
+                />
+              }
+            />
+            ): null}
+          </View>
         </View>
       </SafeAreaView>
     );

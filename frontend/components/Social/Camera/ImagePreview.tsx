@@ -1,4 +1,3 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import React from "react";
 import {
   StyleSheet,
@@ -11,10 +10,12 @@ import {
 import { IconButton, TextInput } from "react-native-paper";
 import { savePost } from "../../../ApiLayer/Api";
 import readCreds from "../../../utils/readCreds";
+import { useNavigation } from '@react-navigation/native';
 
 export default function ImagePreview({ uri, setUri }: any) {
   const [caption, setCaption] = React.useState("");
-
+  const [sendButtonDisabled, setSendButtonDisabled] = React.useState(false)
+  const navigation = useNavigation();
   function showAlert() {
     Alert.alert(
       "Hold on!",
@@ -49,6 +50,7 @@ export default function ImagePreview({ uri, setUri }: any) {
   }
 
   async function sendAction() {
+    setSendButtonDisabled(true)
     const { creds } = await readCreds();
     if (creds) {
       let localUri = uri;
@@ -58,11 +60,17 @@ export default function ImagePreview({ uri, setUri }: any) {
       let match = /\.(\w+)$/.exec(filename);
       let type = match ? `image/${match[1]}` : `image`;
 
-      await savePost(
+      const response = await savePost(
         creds.uid,
         { uri: localUri, type: type, name: filename },
         caption
       );
+      if(response){
+        navigation.replace("Home")
+      }
+      else{
+        setSendButtonDisabled(false)
+      }
     }
   }
 
@@ -88,6 +96,7 @@ export default function ImagePreview({ uri, setUri }: any) {
           onChangeText={(caption) => setCaption(caption)}
         />
         <IconButton
+          disabled={sendButtonDisabled}
           icon={"send"}
           size={32}
           onPress={sendAction}

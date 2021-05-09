@@ -1,19 +1,24 @@
 import React from "react";
-import { View } from "react-native";
+import { StyleProp, View, ViewStyle } from "react-native";
 import { Caption, Headline, ProgressBar } from "react-native-paper";
 
 interface LoaderProps {
+  style?: StyleProp<ViewStyle>;
   heading?: string;
   caption?: string;
 }
 
-export default function Loader({ heading, caption }: LoaderProps) {
+export default function Loader({ heading, caption, style }: LoaderProps) {
   return (
     <View
-      style={{
-        padding: 12,
-        marginTop: "80%",
-      }}
+      style={
+        style
+          ? style
+          : {
+              padding: 12,
+              marginTop: "80%",
+            }
+      }
     >
       <Headline>{heading || "Loading..."}</Headline>
       <Caption>{caption}</Caption>

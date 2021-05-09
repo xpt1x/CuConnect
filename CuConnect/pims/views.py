@@ -25,7 +25,7 @@ class UserProfileViewSet(viewsets.ModelViewSet):
 
 @api_view(["GET"])
 def get_user_posts(req, uid):
-    posts = Post.objects.filter(author=uid)
+    posts = Post.objects.filter(author=uid).order_by("-timestamp")
     return Response(
         {"posts": PostSerializer(posts, many=True, context={"request": req}).data}
     )

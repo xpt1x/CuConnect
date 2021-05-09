@@ -1,10 +1,10 @@
 import React from "react";
-import { StyleSheet, View, Animated, Image,Dimensions } from "react-native";
+import { StyleSheet, View, Animated, Image, Dimensions } from "react-native";
 import { Avatar, Card, IconButton, Paragraph } from "react-native-paper";
 import { NavigationStackProp } from "react-navigation-stack";
 import { Post } from "../../../types/PostTypes";
 
-// import { PinchGestureHandler } from 'react-native-gesture-handler';
+import { PinchGestureHandler, State, PinchGestureHandlerGestureEvent, PinchGestureHandlerStateChangeEvent} from "react-native-gesture-handler";
 
 interface SocialCardProps {
   tripleDotAction: () => void;
@@ -63,26 +63,27 @@ export default function SocialCard({
     setLiked(!liked);
   };
 
-  const getImageHeight = ()=>{
-    const windowWidth = Dimensions.get('window').width;
-    const windowHeight = Dimensions.get('window').height;
+  const getImageHeight = () => {
+    const windowWidth = Dimensions.get("window").width;
+    const windowHeight = Dimensions.get("window").height;
 
-    Image.getSize(post.image , (width , height)=>{
-      (width/height < 4/5) ?(
-        setImageHeight(450)
-
-      ):((windowWidth*(height/width) <120)?
-      120
-        :setImageHeight(windowWidth*(height/width))
-
-    )
-    } , (error)=>{
-      console.log(error);
-    })
-  }   
+    Image.getSize(
+      post.image,
+      (width, height) => {
+        width / height < 4 / 5
+          ? setImageHeight(450)
+          : windowWidth * (height / width) < 120
+          ? 120
+          : setImageHeight(windowWidth * (height / width));
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  };
   //Display fire logo useEffect
 
-  React.useEffect(()=>{
+  React.useEffect(() => {
     getImageHeight();
   });
 
@@ -118,7 +119,12 @@ export default function SocialCard({
       style={{ marginRight: 10 }}
     />
   );
+
   let lastTap: number | null = null;
+  let _scale = new Animated.Value(1);
+  let _translateX = new Animated.Value(0);
+  let _translateY = new Animated.Value(0);
+
   const handleDoubleTap = () => {
     const now = Date.now();
     const DOUBLE_PRESS_DELAY = 300;
@@ -128,6 +134,31 @@ export default function SocialCard({
       lastTap = now;
     }
   };
+
+  const onPinchEvent = (event: PinchGestureHandlerGestureEvent) => {
+    const windowWidth = Dimensions.get("window").width;
+    _scale.setValue(event.nativeEvent.scale)
+    _translateX.setValue(event.nativeEvent.focalX - (windowWidth/2))
+    _translateY.setValue(event.nativeEvent.focalY - (imageHeight/2))
+  };
+  const onPinchStateChange = (event: PinchGestureHandlerStateChangeEvent) => {
+    //end
+    if (event.nativeEvent.oldState === State.ACTIVE) {
+      Animated.spring(_scale, {
+        toValue: 1,
+        useNativeDriver: true,
+      }).start();
+      Animated.spring(_translateX, {
+        toValue: 0,
+        useNativeDriver: true,
+      }).start();
+      Animated.spring(_translateY, {
+        toValue: 0,
+        useNativeDriver: true,
+      }).start();
+    }
+  };
+
   return (
     <Card
       style={styles.card}
@@ -142,35 +173,47 @@ export default function SocialCard({
         left={LeftContent}
         right={RightContent}
       />
-      {/* <PinchGestureHandler onGestureEvent = {() => {console.log("gesture activated")}} > */}
-      <View style={{ position: "relative" }}>
-        <Card.Cover
+      <PinchGestureHandler
+        onGestureEvent={onPinchEvent}
+        onHandlerStateChange={onPinchStateChange}
+      >
+        <View style={{ position: "relative" }} collapsable={false}>
+          {/* <Card.Cover
           resizeMode="cover"
           style={{ height:imageHeight , width: "100%" }}
           // style={{ aspectRatio: imageWidth/imageHeight }}
           source={{ uri: post.image }}
-        />
-
-        <Animated.View
-          style={{
-            width: "100%",
-            height: "100%",
-            position: "absolute",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            backgroundColor: "rgba(0, 0, 0, 0.5)",
-            opacity: fireOverlayAnimation,
-          }}
-        >
-          <IconButton
-            icon="fire"
-            size={150}
-            color={"rgba(242, 125, 12, 0.9)"}
+        /> */}
+          <Animated.Image
+            resizeMode="repeat"
+            style={{
+              height: imageHeight,
+              width: "100%",
+              transform: [{ perspective: 5000 }, { scale: _scale }, { translateX: _translateX  }, {translateY: _translateY}],
+            }}
+            source={{ uri: post.image }}
           />
-        </Animated.View>
-      </View>
-      {/* </PinchGestureHandler> */}
+
+          <Animated.View
+            style={{
+              width: "100%",
+              height: "100%",
+              position: "absolute",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              backgroundColor: "rgba(0, 0, 0, 0.5)",
+              opacity: fireOverlayAnimation,
+            }}
+          >
+            <IconButton
+              icon="fire"
+              size={150}
+              color={"rgba(242, 125, 12, 0.9)"}
+            />
+          </Animated.View>
+        </View>
+      </PinchGestureHandler>
 
       {/* <Card.Actions>
         <IconButton
