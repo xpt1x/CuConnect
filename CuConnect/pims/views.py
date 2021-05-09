@@ -72,7 +72,7 @@ def register_user(req):
             return Response({"error": "UID already registered"})
         user = UserProfile(
             user_id=req.POST.get("uid").upper(),
-            display_name=(req.POST.get("display_name").lower().capitalize()),
+            display_name=(req.POST.get("display_name").lower().title()),
         )
         user.save()
         return Response({"success": "User created successfully!"})

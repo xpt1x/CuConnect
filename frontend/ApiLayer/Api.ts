@@ -1,22 +1,16 @@
 import { TimetableType } from "../types/TimetableTypes";
 import { FullSubject, Subject } from "../types/Subject";
-import { Error } from "../types/Error";
 import { SubjectMarks, Sessions } from "../types/MarksTypes";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import config from "../config";
 import { Post } from "../types/PostTypes";
+import readCreds from "../utils/readCreds";
 
 const createUserData = async () => {
   const user = new FormData();
-  try {
-    const uid = await AsyncStorage.getItem("uid");
-    const password = await AsyncStorage.getItem("password");
-    if (uid !== null && password !== null) {
-      user.append("uid", uid);
-      user.append("password", password);
-    }
-  } catch (e) {
-    console.log("Failed reading creds from storage");
+  const { creds } = await readCreds();
+  if (creds) {
+    user.append("uid", creds.uid);
+    user.append("password", creds.password);
   }
   return user;
 };
@@ -196,9 +190,35 @@ const getPosts = async (): Promise<PostResponse> => {
     return { posts: await response.json() };
   } catch (error) {
     console.log(error);
-    return { error };
   }
   return { error: "Error getting posts" };
+};
+
+const savePost = async (
+  uid: string,
+  image: { uri: string; type: string; name: string },
+  title = "Test from API"
+) => {
+  const formData = new FormData();
+  formData.append("image", {
+    uri: image.uri,
+    type: image.type,
+    name: image.name,
+  });
+  formData.append("author", uid);
+  formData.append("title", title);
+  try {
+    const response = await fetch(config.imsApiUrl + `/posts/`, {
+      method: "POST",
+      body: formData,
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    const text = await response.text();
+  } catch (e) {
+    console.log(e);
+  }
 };
 
 export {
@@ -210,5 +230,6 @@ export {
   getAvailableSessions,
   registerUser,
   getFullName,
-  getPosts
+  getPosts,
+  savePost,
 };

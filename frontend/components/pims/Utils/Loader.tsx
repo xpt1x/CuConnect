@@ -1,13 +1,6 @@
 import React from "react";
 import { View } from "react-native";
-import {
-  ActivityIndicator,
-  Caption,
-  Headline,
-  ProgressBar,
-  Text,
-} from "react-native-paper";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { Caption, Headline, ProgressBar } from "react-native-paper";
 
 interface LoaderProps {
   heading?: string;

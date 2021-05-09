@@ -19,13 +19,9 @@ export default function ErrorScreen({ message }: Props) {
     <View style={styles.container}>
       <IconButton icon="close-network" color={Colors.red400} size={70} />
       <Subheading>{message}</Subheading>
-      {message !== "Waiting...." ? (
-        <>
-          <Caption>Visit UIMS to resolve the problem</Caption>
-          <Divider />
-          <Caption>Pull down to refresh</Caption>
-        </>
-      ) : null}
+      <Caption>Visit UIMS to resolve the problem</Caption>
+      <Divider />
+      <Caption>Pull down to refresh</Caption>
     </View>
   );
 }

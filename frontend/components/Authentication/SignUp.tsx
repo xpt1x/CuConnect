@@ -19,7 +19,6 @@ export default function SignUp({ route, navigation }: any) {
           if (fullName.toLowerCase().split(" ").indexOf(ele) == -1) return ele;
         }).length == 0
     ) {
-      console.log(true);
       setValidating(true);
       const { error, success } = await registerUser(userName);
       setValidating(false);
@@ -30,27 +29,12 @@ export default function SignUp({ route, navigation }: any) {
         navigation.replace("Home");
       }
     } else {
-      console.log(false);
       setMessage(
         "UserName you entered doesn't contain combination of your full name"
       );
       setVisible(true);
     }
   };
-  // const [fullName, setFullName] = React.useState<string>("Loading...");
-
-  // const getFullName = async (): Promise<string> => {
-  //   const fullName = await AsyncStorage.getItem("full_name");
-  //   return fullName ? fullName : "Loading...";
-  // };
-
-  // const setFULLName = async () => {
-  //   setFullName(await getFullName());
-  // };
-
-  // React.useEffect(() => {
-  //   setFULLName();
-  // }, []);
 
   return (
     <SafeAreaView

@@ -1,8 +1,10 @@
 import React from "react";
-import { StyleSheet, View, Animated, Image } from "react-native";
+import { StyleSheet, View, Animated, Image,Dimensions } from "react-native";
 import { Avatar, Card, IconButton, Paragraph } from "react-native-paper";
 import { NavigationStackProp } from "react-navigation-stack";
 import { Post } from "../../../types/PostTypes";
+
+// import { PinchGestureHandler } from 'react-native-gesture-handler';
 
 interface SocialCardProps {
   tripleDotAction: () => void;
@@ -13,9 +15,7 @@ interface SocialCardProps {
 // interface Props {
 //   navigation: NavigationStackProp;
 // }
-function getRandom(min: number, max: number): number {
-  return Math.floor(Math.random() * (max - min) + min);
-}
+
 //navigation for comments to be done
 export default function SocialCard({
   tripleDotAction,
@@ -23,11 +23,8 @@ export default function SocialCard({
   post,
 }: SocialCardProps) {
   const [liked, setLiked] = React.useState(false);
-  const [imgUri, setImgUri] = React.useState(
-    `https://picsum.photos/${getRandom(11, 20) * 100}/${
-      getRandom(13, 20) * 100
-    }`
-  );
+  const [imageHeight, setImageHeight] = React.useState(250);
+
   const fireBadgeAnimation = React.useRef(new Animated.Value(0)).current;
   const fireOverlayAnimation = React.useRef(new Animated.Value(0)).current;
 
@@ -54,7 +51,7 @@ export default function SocialCard({
         duration: 200,
         useNativeDriver: true,
       }),
-      Animated.delay(310),
+      Animated.delay(280),
       Animated.timing(fireOverlayAnimation, {
         toValue: 0,
         duration: 200,
@@ -66,7 +63,29 @@ export default function SocialCard({
     setLiked(!liked);
   };
 
+  const getImageHeight = ()=>{
+    const windowWidth = Dimensions.get('window').width;
+    const windowHeight = Dimensions.get('window').height;
+
+    Image.getSize(post.image , (width , height)=>{
+      (width/height < 4/5) ?(
+        setImageHeight(450)
+
+      ):((windowWidth*(height/width) <120)?
+      120
+        :setImageHeight(windowWidth*(height/width))
+
+    )
+    } , (error)=>{
+      console.log(error);
+    })
+  }   
   //Display fire logo useEffect
+
+  React.useEffect(()=>{
+    getImageHeight();
+  });
+
   React.useEffect(() => {
     if (liked) {
       fireBadgeFadeIn();
@@ -123,13 +142,15 @@ export default function SocialCard({
         left={LeftContent}
         right={RightContent}
       />
-
+      {/* <PinchGestureHandler onGestureEvent = {() => {console.log("gesture activated")}} > */}
       <View style={{ position: "relative" }}>
         <Card.Cover
-          resizeMode="contain"
-          style={{ width: "100%", height: 450 }}
+          resizeMode="cover"
+          style={{ height:imageHeight , width: "100%" }}
+          // style={{ aspectRatio: imageWidth/imageHeight }}
           source={{ uri: post.image }}
         />
+
         <Animated.View
           style={{
             width: "100%",
@@ -149,6 +170,7 @@ export default function SocialCard({
           />
         </Animated.View>
       </View>
+      {/* </PinchGestureHandler> */}
 
       {/* <Card.Actions>
         <IconButton

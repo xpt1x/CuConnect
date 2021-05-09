@@ -12,6 +12,7 @@ import {
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { getFullName } from "../../ApiLayer/Api";
 import { signOut } from "./utils";
+import readCreds from "../../utils/readCreds";
 export default function LoginPims({ navigation, route }: any) {
   const [uid, setUid] = React.useState("");
   const [password, setPassword] = React.useState("");
@@ -53,29 +54,21 @@ export default function LoginPims({ navigation, route }: any) {
   };
 
   const checkCredsInStorage = async () => {
-    try {
-      const uid = await AsyncStorage.getItem("uid");
-      const password = await AsyncStorage.getItem("password");
-      if (uid !== null && password !== null) {
-        const { full_name, exists } = await getFullName(uid, password);
-        if (full_name && exists) return navigation.replace("Home");
-        else if (full_name && !exists) {
-          // Send to new user flow
-          return navigation.replace("Sign Up", { fullName: full_name });
-        } else {
-          // API return invalid, remove local creds, show sign in screen
-          setCredsFound(false);
-          await signOut();
-          showMessage(
-            "Looks like your password is changed, please SignIn again"
-          );
-        }
+    const {creds} = await readCreds();
+    if (creds) {
+      const { full_name, exists } = await getFullName(creds.uid, creds.password);
+      if (full_name && exists) return navigation.replace("Home");
+      else if (full_name && !exists) {
+        // Send to new user flow
+        return navigation.replace("Sign Up", { fullName: full_name });
       } else {
+        // API return invalid, remove local creds, show sign in screen
         setCredsFound(false);
+        await signOut();
+        showMessage("Looks like your password is changed, please SignIn again");
       }
-    } catch (e) {
+    } else {
       setCredsFound(false);
-      console.log(e);
     }
   };
 

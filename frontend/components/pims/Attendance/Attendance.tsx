@@ -21,7 +21,6 @@ const Attendance = observer(({ navigation }: Props) => {
   const [refreshing, setRefreshing] = React.useState<boolean>(false);
   const [update, forceUpdate] = React.useState<boolean>(false);
 
-  const mountedRef = React.useRef(true);
 
   const checkLocalAttendance = async () => {
     try {
@@ -36,7 +35,7 @@ const Attendance = observer(({ navigation }: Props) => {
         Date.now() - parseInt(timestamp) <= config.cacheMinute * 1000 * 60
       ) {
         // set attendance from storage
-        if (!mountedRef.current) return;
+        setRefreshing(false);
         attendanceStore.setAttendance(JSON.parse(attendance));
         attendanceStore.setFullAttendance(JSON.parse(fullAttendance));
         console.log("Attendance,full set from AsyncStorage");
@@ -53,11 +52,9 @@ const Attendance = observer(({ navigation }: Props) => {
     const { attendance, error } = await getAttendance();
     setRefreshing(false);
     if (error) {
-      if (!mountedRef.current) return;
       setError(error);
     } else if (attendance) {
       // set attendance in store, storage
-      if (!mountedRef.current) return;
       attendanceStore.setAttendance(attendance);
       try {
         await AsyncStorage.setItem("attendance", JSON.stringify(attendance));
@@ -71,10 +68,8 @@ const Attendance = observer(({ navigation }: Props) => {
   const makeFullAttendanceRequest = async () => {
     const { fullattendance, error } = await getFullAttendance();
     if (error) {
-      if (!mountedRef.current) return;
       setError(error);
     } else if (fullattendance) {
-      if (!mountedRef.current) return;
       attendanceStore.setFullAttendance(fullattendance);
       try {
         await AsyncStorage.setItem(
@@ -90,15 +85,6 @@ const Attendance = observer(({ navigation }: Props) => {
 
   React.useEffect(() => {
     checkLocalAttendance();
-    return () => {
-      mountedRef.current = false;
-    };
-  }, []);
-
-  React.useEffect(() => {
-    // user wants to make a new network request
-    makeRequest();
-    makeFullAttendanceRequest();
   }, [update]);
 
   const onRefreshFn = () => {
