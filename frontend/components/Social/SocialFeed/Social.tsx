@@ -6,6 +6,8 @@ import { useFonts, Pacifico_400Regular } from "@expo-google-fonts/pacifico";
 import AppLoading from "expo-app-loading";
 import RBSheet from "react-native-raw-bottom-sheet";
 import { NavigationStackProp } from "react-navigation-stack";
+import { getPosts } from "../../../ApiLayer/Api";
+import { Post } from "../../../types/PostTypes";
 
 interface Props {
   navigation: NavigationStackProp;
@@ -26,6 +28,16 @@ export default function Social({ navigation }: Props) {
   const goToProfile = () => {
     navigation.push("User Profile");
   };
+
+  const [posts, setPosts] = React.useState<ReadonlyArray<Post>>([]);
+
+  React.useEffect(() => {
+    getPosts().then((response) => {
+      if (response.posts) {
+        setPosts(response.posts);
+      }
+    });
+  }, []);
 
   if (!fontsLoaded) {
     return <AppLoading />;
@@ -72,23 +84,16 @@ export default function Social({ navigation }: Props) {
                 Report User
               </Button>
             </RBSheet>
-
-            <SocialCard
-              tripleDotAction={tripleDotAction}
-              navigation={navigation}
-            />
-            <SocialCard
-              tripleDotAction={tripleDotAction}
-              navigation={navigation}
-            />
-            <SocialCard
-              tripleDotAction={tripleDotAction}
-              navigation={navigation}
-            />
-            <SocialCard
-              tripleDotAction={tripleDotAction}
-              navigation={navigation}
-            />
+            {posts
+              ? posts.map((post, idx) => (
+                  <SocialCard
+                    key={idx}
+                    post={post}
+                    tripleDotAction={tripleDotAction}
+                    navigation={navigation}
+                  />
+                ))
+              : null}
           </ScrollView>
         </View>
       </SafeAreaView>
