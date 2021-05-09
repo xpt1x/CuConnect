@@ -1,5 +1,5 @@
 import React from "react";
-import { SafeAreaView } from "react-native";
+import { View } from "react-native";
 import {
   Colors,
   Button,
@@ -8,6 +8,7 @@ import {
   ProgressBar,
   Headline,
   Caption,
+  Avatar
 } from "react-native-paper";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { getFullName } from "../../ApiLayer/Api";
@@ -77,12 +78,13 @@ export default function LoginPims({ navigation, route }: any) {
   }, []);
 
   return (
-    <SafeAreaView
+    <View
       style={{
         flex: 1,
         flexDirection: "column",
         justifyContent: "center",
         padding: 12,
+        
       }}
     >
       {credsFound ? (
@@ -93,7 +95,11 @@ export default function LoginPims({ navigation, route }: any) {
         </>
       ) : (
         <>
+        
+          <Avatar.Icon size={50} icon="shield-account" style={{alignSelf:"center" , marginBottom: 24}}/>
+
           <TextInput
+            textAlign
             style={{ marginVertical: 6 }}
             mode={"outlined"}
             label="UID"
@@ -101,6 +107,7 @@ export default function LoginPims({ navigation, route }: any) {
             onChangeText={(uid) => setUid(uid)}
           />
           <TextInput
+            textAlign
             style={{ marginVertical: 6 }}
             mode={"outlined"}
             label="Password"
@@ -135,6 +142,6 @@ export default function LoginPims({ navigation, route }: any) {
       >
         {message}
       </Snackbar>
-    </SafeAreaView>
+    </View>
   );
 }

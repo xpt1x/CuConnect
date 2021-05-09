@@ -194,11 +194,36 @@ const getPosts = async (): Promise<PostResponse> => {
   return { error: "Error getting posts" };
 };
 
+interface ProfileResponse {
+  profile?: {
+    user_id: string;
+    display_name: string;
+    picture: string | null;
+    rep: number;
+  };
+  error?: string;
+}
+
+const getProfile = async (user: string): Promise<ProfileResponse> => {
+  try {
+    const response = await fetch(config.imsApiUrl + "/profiles/" + user);
+    return { profile: await response.json() };
+  } catch (e) {
+    console.log(e);
+  }
+  return { error: `Error getting profile of user ${user}` };
+};
+
+const getUserPosts = async (user: string): Promise<PostResponse> => {
+  const response = await fetch(config.imsApiUrl + "/get_user_posts/" + user);
+  return await response.json();
+};
+
 const savePost = async (
   uid: string,
   image: { uri: string; type: string; name: string },
-  title = "Test from API"
-) => {
+  title = ""
+): Promise<boolean> => {
   const formData = new FormData();
   formData.append("image", {
     uri: image.uri,
@@ -215,10 +240,11 @@ const savePost = async (
         "Content-Type": "multipart/form-data",
       },
     });
-    const text = await response.text();
+    return response.status === 201 ? true : false;
   } catch (e) {
     console.log(e);
   }
+  return false;
 };
 
 export {
@@ -230,6 +256,8 @@ export {
   getAvailableSessions,
   registerUser,
   getFullName,
+  getProfile,
   getPosts,
+  getUserPosts,
   savePost,
 };
