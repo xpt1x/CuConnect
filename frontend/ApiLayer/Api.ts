@@ -1,22 +1,16 @@
 import { TimetableType } from "../types/TimetableTypes";
 import { FullSubject, Subject } from "../types/Subject";
-import { Error } from "../types/Error";
 import { SubjectMarks, Sessions } from "../types/MarksTypes";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import config from "../config";
 import { Post } from "../types/PostTypes";
+import readCreds from "../utils/readCreds";
 
 const createUserData = async () => {
   const user = new FormData();
-  try {
-    const uid = await AsyncStorage.getItem("uid");
-    const password = await AsyncStorage.getItem("password");
-    if (uid !== null && password !== null) {
-      user.append("uid", uid);
-      user.append("password", password);
-    }
-  } catch (e) {
-    console.log("Failed reading creds from storage");
+  const { creds } = await readCreds();
+  if (creds) {
+    user.append("uid", creds.uid);
+    user.append("password", creds.password);
   }
   return user;
 };

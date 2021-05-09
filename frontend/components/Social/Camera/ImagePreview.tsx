@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import { IconButton, TextInput } from "react-native-paper";
 import { savePost } from "../../../ApiLayer/Api";
+import readCreds from "../../../utils/readCreds";
 
 export default function ImagePreview({ uri, setUri }: any) {
   const [caption, setCaption] = React.useState("");
@@ -48,9 +49,8 @@ export default function ImagePreview({ uri, setUri }: any) {
   }
 
   async function sendAction() {
-    try {
-      const uid = await AsyncStorage.getItem("uid");
-      if (!uid) return;
+    const { creds } = await readCreds();
+    if (creds) {
       let localUri = uri;
       let filename = localUri.split("/").pop();
 
@@ -58,9 +58,11 @@ export default function ImagePreview({ uri, setUri }: any) {
       let match = /\.(\w+)$/.exec(filename);
       let type = match ? `image/${match[1]}` : `image`;
 
-      await savePost(uid.toUpperCase(), { uri: localUri, type: type, name : filename }, caption);
-    } catch (e) {
-      console.log(e);
+      await savePost(
+        creds.uid,
+        { uri: localUri, type: type, name: filename },
+        caption
+      );
     }
   }
 
@@ -79,7 +81,8 @@ export default function ImagePreview({ uri, setUri }: any) {
       />
       <View style={styles.captionAndSend}>
         <TextInput
-          style={{ width: "100%", zIndex: 20 }}
+          textAlign
+          style={styles.textInput}
           value={caption}
           multiline={true}
           onChangeText={(caption) => setCaption(caption)}
@@ -126,4 +129,5 @@ const styles = StyleSheet.create({
     marginRight: 16,
     transform: [{ rotateZ: "-36deg" }],
   },
+  textInput: { width: "100%", zIndex: 20 },
 });
