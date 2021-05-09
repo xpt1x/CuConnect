@@ -196,9 +196,31 @@ const getPosts = async (): Promise<PostResponse> => {
     return { posts: await response.json() };
   } catch (error) {
     console.log(error);
-    return { error };
   }
   return { error: "Error getting posts" };
+};
+
+const savePost = async (
+  uid: string,
+  image: { uri: string; type: string; name: string },
+  title = ""
+) => {
+  const formData = new FormData();
+  formData.append("image", image.uri);
+  formData.append("author", uid);
+  formData.append("title", title);
+  try {
+    const response = await fetch(config.imsApiUrl + `/posts`, {
+      method: "POST",
+      body: formData,
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    console.log(response.status);
+  } catch (e) {
+    console.log(e);
+  }
 };
 
 export {
@@ -210,5 +232,6 @@ export {
   getAvailableSessions,
   registerUser,
   getFullName,
-  getPosts
+  getPosts,
+  savePost,
 };

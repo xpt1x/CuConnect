@@ -1,12 +1,69 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import React from "react";
-import { StyleSheet, View, SafeAreaView, Image } from "react-native";
+import {
+  StyleSheet,
+  View,
+  SafeAreaView,
+  Image,
+  Alert,
+  BackHandler,
+} from "react-native";
 import { IconButton, TextInput } from "react-native-paper";
+import { savePost } from "../../../ApiLayer/Api";
 
 export default function ImagePreview({ uri, setUri }: any) {
   const [caption, setCaption] = React.useState("");
-  function closeAction() {
-    setUri(undefined);
+
+  function showAlert() {
+    Alert.alert(
+      "Hold on!",
+      "Are you sure you want to go back? All your changes will be lost",
+      [
+        {
+          text: "Cancel",
+          onPress: () => null,
+          style: "cancel",
+        },
+        { text: "Discard", onPress: () => setUri(undefined) },
+      ]
+    );
   }
+
+  React.useEffect(() => {
+    const backAction = () => {
+      showAlert();
+      return true;
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backAction
+    );
+
+    return () => backHandler.remove();
+  }, []);
+
+  function closeAction() {
+    showAlert();
+  }
+
+  async function sendAction() {
+    try {
+      const uid = await AsyncStorage.getItem("uid");
+      if (!uid) return;
+      let localUri = uri;
+      let filename = localUri.split("/").pop();
+
+      // Infer the type of the image
+      let match = /\.(\w+)$/.exec(filename);
+      let type = match ? `image/${match[1]}` : `image`;
+
+      await savePost(uid, { uri: localUri, type: type, name : filename }, caption);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <IconButton
@@ -30,7 +87,7 @@ export default function ImagePreview({ uri, setUri }: any) {
         <IconButton
           icon={"send"}
           size={32}
-          onPress={closeAction}
+          onPress={sendAction}
           style={styles.send}
         />
       </View>

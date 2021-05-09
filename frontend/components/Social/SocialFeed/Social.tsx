@@ -1,6 +1,13 @@
 import React from "react";
-import { SafeAreaView, View, Text, StyleSheet, ScrollView } from "react-native";
-import { Appbar, Button } from "react-native-paper";
+import {
+  SafeAreaView,
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  RefreshControl,
+} from "react-native";
+import { Appbar, Button, Snackbar } from "react-native-paper";
 import SocialCard from "./SocialCard";
 import { useFonts, Pacifico_400Regular } from "@expo-google-fonts/pacifico";
 import AppLoading from "expo-app-loading";
@@ -30,14 +37,27 @@ export default function Social({ navigation }: Props) {
   };
 
   const [posts, setPosts] = React.useState<ReadonlyArray<Post>>([]);
+  const [message, setMessage] = React.useState<string>("");
+  const [refreshing, setRefreshing] = React.useState<boolean>(false);
+  const [update, forceUpdate] = React.useState<boolean>(false);
 
   React.useEffect(() => {
     getPosts().then((response) => {
+      setRefreshing(false);
+
       if (response.posts) {
         setPosts(response.posts);
+      } else if (response.error) {
+        console.log(response.error);
+        setMessage(response.error);
       }
     });
-  }, []);
+  }, [update]);
+
+  const onRefreshFn = () => {
+    setRefreshing(true);
+    forceUpdate(!update);
+  };
 
   if (!fontsLoaded) {
     return <AppLoading />;
@@ -53,7 +73,12 @@ export default function Social({ navigation }: Props) {
               onPress={goToProfile}
             />
           </Appbar.Header>
-          <ScrollView style={styles.container}>
+          <ScrollView
+            style={styles.container}
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefreshFn} />
+            }
+          >
             <RBSheet
               height={140}
               ref={refRBSheet}
@@ -84,16 +109,18 @@ export default function Social({ navigation }: Props) {
                 Report User
               </Button>
             </RBSheet>
-            {posts
-              ? posts.map((post, idx) => (
-                  <SocialCard
-                    key={idx}
-                    post={post}
-                    tripleDotAction={tripleDotAction}
-                    navigation={navigation}
-                  />
-                ))
-              : null}
+            <View style={{ marginBottom: 90 }}>
+              {posts
+                ? posts.map((post, idx) => (
+                    <SocialCard
+                      key={idx}
+                      post={post}
+                      tripleDotAction={tripleDotAction}
+                      navigation={navigation}
+                    />
+                  ))
+                : null}
+            </View>
           </ScrollView>
         </View>
       </SafeAreaView>

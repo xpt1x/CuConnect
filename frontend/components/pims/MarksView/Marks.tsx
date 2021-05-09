@@ -35,8 +35,6 @@ const Marks = observer(({ navigation }: any) => {
   const [refreshing, setRefreshing] = React.useState<boolean>(false);
   const [update, forceUpdate] = React.useState<boolean>(false);
 
-  const mountedRef = React.useRef(true);
-
   const changeSession = (session: Session) => {
     setRefreshing(true);
     switch (session) {
@@ -61,8 +59,8 @@ const Marks = observer(({ navigation }: any) => {
         timestamp &&
         Date.now() - parseInt(timestamp) <= config.cacheMinute * 1000 * 60
       ) {
+        setRefreshing(false);
         // set attendance from storage
-        if (!mountedRef.current) return;
         MarksStore.setMarks(JSON.parse(marks));
         console.log("Marks set from AsyncStorage");
       } else {
@@ -86,10 +84,8 @@ const Marks = observer(({ navigation }: any) => {
       setRefreshing(false);
       if (refRBSheet && refRBSheet.current) refRBSheet.current.close();
       if (error) {
-        if (!mountedRef.current) return;
         setError(error);
       } else if (marks) {
-        if (!mountedRef.current) return;
         MarksStore.setMarks(marks);
         try {
           await AsyncStorage.setItem("marks", JSON.stringify(marks));
@@ -105,13 +101,6 @@ const Marks = observer(({ navigation }: any) => {
 
   React.useEffect(() => {
     checkLocalMarks();
-    return () => {
-      mountedRef.current = false;
-    };
-  }, []);
-
-  React.useEffect(() => {
-    makeRequest(undefined);
   }, [update]);
 
   const onRefreshFn = () => {

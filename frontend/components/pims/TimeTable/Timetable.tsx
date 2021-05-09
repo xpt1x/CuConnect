@@ -20,8 +20,6 @@ export const Timetable = observer(() => {
   const [refreshing, setRefreshing] = React.useState<boolean>(false);
   const [update, forceUpdate] = React.useState<boolean>(false);
 
-  const mountedRef = React.useRef(true);
-
   const checkLocalTimetable = async () => {
     try {
       const timetable = await AsyncStorage.getItem("timetable");
@@ -33,7 +31,7 @@ export const Timetable = observer(() => {
         Date.now() - parseInt(timestamp) <= config.cacheMinute * 1000 * 60
       ) {
         // set attendance from storage
-        if (!mountedRef.current) return;
+        setRefreshing(false);
         TimeTableStore.setTimetable(JSON.parse(timetable));
         console.log("TT set from AsyncStorage");
       } else {
@@ -48,10 +46,8 @@ export const Timetable = observer(() => {
     const { timetable, error } = await getTimetable();
     setRefreshing(false);
     if (error) {
-      if (!mountedRef.current) return;
       setError(error);
     } else if (timetable) {
-      if (!mountedRef.current) return;
 
       TimeTableStore.setTimetable(timetable);
       try {
@@ -65,13 +61,6 @@ export const Timetable = observer(() => {
 
   React.useEffect(() => {
     checkLocalTimetable();
-    return () => {
-      mountedRef.current = false;
-    };
-  }, []);
-
-  React.useEffect(() => {
-    makeRequest();
   }, [update]);
 
   const onRefreshFn = () => {

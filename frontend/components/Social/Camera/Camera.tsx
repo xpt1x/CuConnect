@@ -115,6 +115,7 @@ export default function SocialCamera() {
         quality: 1,
       });
       if (!result.cancelled) {
+        console.log(result);
         setImage(result.uri);
       }
     }
