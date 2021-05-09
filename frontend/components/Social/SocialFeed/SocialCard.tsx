@@ -4,6 +4,8 @@ import { Avatar, Card, IconButton, Paragraph } from "react-native-paper";
 import { NavigationStackProp } from "react-navigation-stack";
 import { Post } from "../../../types/PostTypes";
 
+// import { PinchGestureHandler } from 'react-native-gesture-handler';
+
 interface SocialCardProps {
   tripleDotAction: () => void;
   navigation: NavigationStackProp;
@@ -77,7 +79,7 @@ export default function SocialCard({
     } , (error)=>{
       console.log(error);
     })
-  }
+  }   
   //Display fire logo useEffect
 
   React.useEffect(()=>{
@@ -140,7 +142,7 @@ export default function SocialCard({
         left={LeftContent}
         right={RightContent}
       />
-
+      {/* <PinchGestureHandler onGestureEvent = {() => {console.log("gesture activated")}} > */}
       <View style={{ position: "relative" }}>
         <Card.Cover
           resizeMode="cover"
@@ -168,6 +170,7 @@ export default function SocialCard({
           />
         </Animated.View>
       </View>
+      {/* </PinchGestureHandler> */}
 
       {/* <Card.Actions>
         <IconButton

@@ -58,7 +58,7 @@ export default function ImagePreview({ uri, setUri }: any) {
       let match = /\.(\w+)$/.exec(filename);
       let type = match ? `image/${match[1]}` : `image`;
 
-      await savePost(uid, { uri: localUri, type: type, name : filename }, caption);
+      await savePost(uid.toUpperCase(), { uri: localUri, type: type, name : filename }, caption);
     } catch (e) {
       console.log(e);
     }

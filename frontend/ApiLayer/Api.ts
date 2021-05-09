@@ -203,21 +203,25 @@ const getPosts = async (): Promise<PostResponse> => {
 const savePost = async (
   uid: string,
   image: { uri: string; type: string; name: string },
-  title = ""
+  title = "Test from API"
 ) => {
   const formData = new FormData();
-  formData.append("image", image.uri);
+  formData.append("image", {
+    uri: image.uri,
+    type: image.type,
+    name: image.name,
+  });
   formData.append("author", uid);
   formData.append("title", title);
   try {
-    const response = await fetch(config.imsApiUrl + `/posts`, {
+    const response = await fetch(config.imsApiUrl + `/posts/`, {
       method: "POST",
       body: formData,
       headers: {
         "Content-Type": "multipart/form-data",
       },
     });
-    console.log(response.status);
+    const text = await response.text();
   } catch (e) {
     console.log(e);
   }
