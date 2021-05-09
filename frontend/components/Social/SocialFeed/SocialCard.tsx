@@ -185,7 +185,7 @@ export default function SocialCard({
           source={{ uri: post.image }}
         /> */}
           <Animated.Image
-            resizeMode="repeat"
+            resizeMode="cover"
             style={{
               height: imageHeight,
               width: "100%",
