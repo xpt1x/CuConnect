@@ -73,7 +73,7 @@ export default function Social({ navigation }: Props) {
   } else
     return (
       <SafeAreaView>
-        <View>
+        <View >
           <Appbar.Header style={styles.header}>
             <Appbar.Action icon="plus-circle-outline" onPress={openCamera} />
             <Appbar.Content titleStyle={styles.appbar} title={" Social "} />
@@ -113,7 +113,7 @@ export default function Social({ navigation }: Props) {
             </Button>
           </RBSheet>
 
-          <View style={{ marginBottom: 90 }}>
+          <View style={{ marginBottom: 170 }}>
             {posts?(
               <FlatList
               style={styles.container}

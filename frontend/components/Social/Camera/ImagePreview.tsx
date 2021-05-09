@@ -7,7 +7,7 @@ import {
   Alert,
   BackHandler,
 } from "react-native";
-import { IconButton, TextInput } from "react-native-paper";
+import { Button, IconButton, TextInput } from "react-native-paper";
 import { savePost } from "../../../ApiLayer/Api";
 import readCreds from "../../../utils/readCreds";
 import { useNavigation } from '@react-navigation/native';
@@ -66,7 +66,7 @@ export default function ImagePreview({ uri, setUri }: any) {
         caption
       );
       if(response){
-        navigation.replace("Home")
+        navigation.popToTop()
       }
       else{
         setSendButtonDisabled(false)

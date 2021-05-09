@@ -17,13 +17,6 @@ interface UserProfileProps {
 }
 
 export default function UserProfile({ navigation }: UserProfileProps) {
-  let images = [];
-  for (let i = 0; i < 9; i++) {
-    let link = `https://picsum.photos/${getRandom(10, 20) * 100}/${
-      getRandom(10, 20) * 100
-    }`;
-    images.push(link);
-  }
 
   const [user, setUser] = React.useState<{
     display_name: string;
@@ -48,9 +41,9 @@ export default function UserProfile({ navigation }: UserProfileProps) {
   };
 
   const fetchUserPosts = async () => {
-    const {creds} = await readCreds();
-    if(!creds) return;
-    const { posts } = await getUserPosts(creds.uid);
+    // dont fetch with when uid == "" it will result in error
+    if(user.uid === "") return;
+    const { posts } = await getUserPosts(user.uid);
     if (posts) {
       setPosts(posts);
     }
@@ -59,7 +52,7 @@ export default function UserProfile({ navigation }: UserProfileProps) {
   React.useEffect(() => {
     getUserData();
     fetchUserPosts();
-  }, []);
+  }, [user]);
 
   return (
     <ScrollView>
@@ -72,7 +65,7 @@ export default function UserProfile({ navigation }: UserProfileProps) {
         <View style={styles.dataElement}>
           <Text style={styles.dataText}>Posts</Text>
           <Divider style={styles.divider} />
-          <Text style={styles.dataNumbers}>11</Text>
+          <Text style={styles.dataNumbers}>{posts.length}</Text>
         </View>
         <View style={styles.dataElement}>
           <Chip mode={"outlined"}>{user.rep}</Chip>
@@ -84,16 +77,6 @@ export default function UserProfile({ navigation }: UserProfileProps) {
         </View>
       </View>
       <View style={styles.imagesContainer}>
-        {/* {images.map((link, idx) => {
-              return (
-                <Image
-                  source={{ uri: link }}
-                  style={styles.image}
-                  key={idx}
-                  resizeMode={"cover"}
-                />
-              );
-            })} */}
         {posts.length === 0 ? (
           <Loader
             style={{ marginTop: "10%", width: "100%", padding: 12 }}

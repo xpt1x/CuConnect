@@ -29,19 +29,24 @@ export default function SocialCard({
   const fireOverlayAnimation = React.useRef(new Animated.Value(0)).current;
 
   const fireBadgeFadeIn = () => {
-    Animated.timing(fireBadgeAnimation, {
-      toValue: 1,
-      duration: 150,
-      useNativeDriver: true,
-    }).start();
+    Animated.sequence([
+      Animated.delay(550),
+      Animated.timing(fireBadgeAnimation, {
+        toValue: 1,
+        duration: 150,
+        useNativeDriver: true,
+      })
+    ]).start()
+    
   };
 
   const fireBadgeFadeOut = () => {
+    
     Animated.timing(fireBadgeAnimation, {
       toValue: 0,
       duration: 200,
       useNativeDriver: true,
-    }).start();
+    }).start()
   };
 
   const fireOverlayFadeInOut = () => {
