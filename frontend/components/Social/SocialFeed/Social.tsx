@@ -2,28 +2,20 @@ import React from "react";
 import {
   SafeAreaView,
   View,
-  Text,
   StyleSheet,
-  ScrollView,
   RefreshControl,
   FlatList,
 } from "react-native";
-import { Appbar, Button, Snackbar } from "react-native-paper";
+import { Appbar, Button, Caption, Headline } from "react-native-paper";
 import SocialCard from "./SocialCard";
 import { useFonts, Pacifico_400Regular } from "@expo-google-fonts/pacifico";
 import AppLoading from "expo-app-loading";
 import RBSheet from "react-native-raw-bottom-sheet";
-import { NavigationStackProp } from "react-navigation-stack";
 import { getPosts } from "../../../ApiLayer/Api";
 import { Post } from "../../../types/PostTypes";
+import { ScrollView } from "react-native-gesture-handler";
 
-
-
-interface Props {
-  navigation: NavigationStackProp;
-}
-
-export default function Social({ navigation }: Props) {
+export default function Social({ navigation, route }: any) {
   const refRBSheet = React.useRef<RBSheet>() as React.MutableRefObject<RBSheet>;
   const tripleDotAction = () => {
     if (refRBSheet && refRBSheet.current) return refRBSheet.current.open();
@@ -61,19 +53,26 @@ export default function Social({ navigation }: Props) {
     setRefreshing(true);
     forceUpdate(!update);
   };
-  const renderSocialCard = ({item} : any) => {
+  const renderSocialCard = ({ item }: any) => {
     return (
-      <SocialCard tripleDotAction={tripleDotAction} navigation={navigation } post={item}/>
-    )
-  }
+      <SocialCard
+        tripleDotAction={tripleDotAction}
+        navigation={navigation}
+        post={item}
+      />
+    );
+  };
 
+  const handlePress = () => {
+    navigation.navigate("Camera");
+  };
 
   if (!fontsLoaded) {
     return <AppLoading />;
   } else
     return (
       <SafeAreaView>
-        <View >
+        <View>
           <Appbar.Header style={styles.header}>
             <Appbar.Action icon="plus-circle-outline" onPress={openCamera} />
             <Appbar.Content titleStyle={styles.appbar} title={" Social "} />
@@ -114,21 +113,36 @@ export default function Social({ navigation }: Props) {
           </RBSheet>
 
           <View style={{ marginBottom: 170 }}>
-            {posts?(
+            {posts.length > 0 ? (
               <FlatList
-              style={styles.container}
-              data={posts}
-              renderItem={renderSocialCard}
-              keyExtractor={(item: Post) => item.id.toString()}
-              initialNumToRender={10}
-              refreshControl={
-                <RefreshControl
-                  refreshing={refreshing}
-                  onRefresh={onRefreshFn}
-                />
-              }
-            />
-            ): null}
+                style={styles.container}
+                data={posts}
+                renderItem={renderSocialCard}
+                keyExtractor={(item: Post) => item.id.toString()}
+                initialNumToRender={10}
+                refreshControl={
+                  <RefreshControl
+                    refreshing={refreshing}
+                    onRefresh={onRefreshFn}
+                  />
+                }
+              />
+            ) : (
+              <ScrollView
+                refreshControl={
+                  <RefreshControl
+                    refreshing={refreshing}
+                    onRefresh={onRefreshFn}
+                  />
+                }
+              >
+                <View style={styles.noPostView}>
+                  <Headline>No post found</Headline>
+                  <Caption>Pull down to refresh</Caption>
+                  <Button onPress={handlePress}>Create Post</Button>
+                </View>
+              </ScrollView>
+            )}
           </View>
         </View>
       </SafeAreaView>
@@ -146,5 +160,9 @@ const styles = StyleSheet.create({
   },
   header: {
     backgroundColor: "#000",
+  },
+  noPostView: {
+    marginTop: "50%",
+    alignItems: "center",
   },
 });

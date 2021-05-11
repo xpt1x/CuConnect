@@ -7,14 +7,15 @@ import {
   Alert,
   BackHandler,
 } from "react-native";
-import { Button, IconButton, TextInput } from "react-native-paper";
+import { IconButton, TextInput } from "react-native-paper";
 import { savePost } from "../../../ApiLayer/Api";
 import readCreds from "../../../utils/readCreds";
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation } from "@react-navigation/native";
 
 export default function ImagePreview({ uri, setUri }: any) {
   const [caption, setCaption] = React.useState("");
-  const [sendButtonDisabled, setSendButtonDisabled] = React.useState(false)
+  const [sendButtonDisabled, setSendButtonDisabled] =
+    React.useState<boolean>(false);
   const navigation = useNavigation();
   function showAlert() {
     Alert.alert(
@@ -50,7 +51,7 @@ export default function ImagePreview({ uri, setUri }: any) {
   }
 
   async function sendAction() {
-    setSendButtonDisabled(true)
+    setSendButtonDisabled(true);
     const { creds } = await readCreds();
     if (creds) {
       let localUri = uri;
@@ -65,11 +66,10 @@ export default function ImagePreview({ uri, setUri }: any) {
         { uri: localUri, type: type, name: filename },
         caption
       );
-      if(response){
-        navigation.popToTop()
-      }
-      else{
-        setSendButtonDisabled(false)
+      if (response) {
+        navigation.replace("Home", {status: "Post created!"});
+      } else {
+        setSendButtonDisabled(false);
       }
     }
   }

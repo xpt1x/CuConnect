@@ -12,16 +12,18 @@ import React from "react";
 
 interface Props {
   message: string;
+  captionPrimary?: string;
+  captionSecondary?: string;
 }
 
-export default function ErrorScreen({ message }: Props) {
+export default function ErrorScreen({ message, captionPrimary, captionSecondary }: Props) {
   return (
     <View style={styles.container}>
       <IconButton icon="close-network" color={Colors.red400} size={70} />
       <Subheading>{message}</Subheading>
-      <Caption>Visit UIMS to resolve the problem</Caption>
+      <Caption>{captionPrimary || "Visit UIMS to resolve the problem"}</Caption>
       <Divider />
-      <Caption>Pull down to refresh</Caption>
+      <Caption>{captionSecondary || "Pull down to refresh"}</Caption>
     </View>
   );
 }

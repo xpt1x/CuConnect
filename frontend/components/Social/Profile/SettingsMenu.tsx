@@ -25,9 +25,9 @@ export default function SettingsMenu({ navigation }: any) {
   };
   return (
     <ScrollView>
-      <List.Item title="Edit Profile" onPress={() => {}} />
-      <List.Item title="About" onPress={() => {}} />
-      <List.Item title="Contribute" onPress={() => {}} />
+      <List.Item title="Edit Profile" disabled={true} onPress={() => {}} />
+      <List.Item title="About" disabled={true} onPress={() => {}} />
+      <List.Item title="Contribute" disabled={true} onPress={() => {}} />
       <List.Item title="Sign Out" onPress={clearData} />
     </ScrollView>
   );
