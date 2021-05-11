@@ -8,4 +8,3 @@ Pillow
 #heroku
 gunicorn
 whitenoise
-django-heroku
