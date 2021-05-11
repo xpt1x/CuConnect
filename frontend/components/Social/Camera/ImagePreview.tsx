@@ -67,7 +67,7 @@ export default function ImagePreview({ uri, setUri }: any) {
         caption
       );
       if (response) {
-        navigation.replace("Home", {status: "Post created!"});
+        navigation.popToTop();
       } else {
         setSendButtonDisabled(false);
       }

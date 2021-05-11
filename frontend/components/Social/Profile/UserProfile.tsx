@@ -24,7 +24,7 @@ export default function UserProfile({ navigation }: UserProfileProps) {
     rep: number;
   }>({ display_name: "", uid: "", rep: 0.0 });
 
-  const [posts, setPosts] = React.useState<ReadonlyArray<Post>>([]);
+  const [userPosts, setUserPosts] = React.useState<{fetched: boolean, posts: ReadonlyArray<Post>}>({fetched: false, posts: []});
 
   const getUserData = async () => {
     const { creds } = await readCreds();
@@ -45,7 +45,7 @@ export default function UserProfile({ navigation }: UserProfileProps) {
     if(user.uid === "") return;
     const { posts } = await getUserPosts(user.uid);
     if (posts) {
-      setPosts(posts);
+      setUserPosts({fetched: true, posts})
     }
   };
 
@@ -57,7 +57,7 @@ export default function UserProfile({ navigation }: UserProfileProps) {
   return (
     <ScrollView>
       <View style={styles.nameAndPhoto}>
-        <Avatar.Image size={125} source={profilePic} />
+        <Avatar.Icon size={125} icon={"account"}  />
         <Text style={styles.userName}>{user.display_name}</Text>
         <Text style={styles.uid}>{user.uid}</Text>
       </View>
@@ -65,26 +65,27 @@ export default function UserProfile({ navigation }: UserProfileProps) {
         <View style={styles.dataElement}>
           <Text style={styles.dataText}>Posts</Text>
           <Divider style={styles.divider} />
-          <Text style={styles.dataNumbers}>{posts.length}</Text>
+          <Text style={styles.dataNumbers}>{userPosts.fetched ? userPosts.posts.length : "..."}</Text>
         </View>
         <View style={styles.dataElement}>
-          <Chip mode={"outlined"}>{user.rep}</Chip>
+          <Chip mode={"outlined"}>{user.rep || "..."}</Chip>
         </View>
         <View style={styles.dataElement}>
           <Text style={styles.dataText}>Likes</Text>
           <Divider style={styles.divider} />
-          <Text style={styles.dataNumbers}>23</Text>
+          {/* FAKE DATA */}
+          <Text style={styles.dataNumbers}>{Math.floor(user.rep * 0.5) || "..."}</Text>
         </View>
       </View>
       <View style={styles.imagesContainer}>
-        {posts.length === 0 ? (
+        {!userPosts.fetched ? (
           <Loader
             style={{ marginTop: "10%", width: "100%", padding: 12 }}
             heading={"Loading posts..."}
             caption={"Fetching your posts"}
           />
         ) : (
-          posts.map((post) => (
+          userPosts.posts.map((post) => (
             <Image
               source={{ uri: post.image }}
               style={styles.image}

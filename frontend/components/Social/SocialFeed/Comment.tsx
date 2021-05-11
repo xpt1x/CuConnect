@@ -1,16 +1,29 @@
 import React from "react";
-import { Avatar, Card, Title, Paragraph } from "react-native-paper";
+import { Avatar, Card, Title, Paragraph , Colors, Text } from "react-native-paper";
+import {CommentType} from "../../../types/PostTypes";
 
-export default function Comment() {
+interface CommentProp {
+  comment : CommentType,
+  post_id : Number
+}
+
+export default function Comment({
+  comment,
+  post_id
+} : CommentProp) {
   const LeftContent = (props: { size: number }) => (
-    <Avatar.Icon {...props} icon="folder" />
+    <Avatar.Icon {...props} size={36} icon="account" />
   );
   return (
-    <Card>
-      <Card.Title title="Card Title" left={LeftContent} />
-      <Card.Content>
-        <Paragraph>Card content</Paragraph>
-      </Card.Content>
+    <Card style={{ backgroundColor: "black" }}>
+      <Card.Title
+        titleStyle={{ fontSize: 14 , color: Colors.blueGrey200 }}
+        subtitleNumberOfLines={10}
+        subtitleStyle={{color : Colors.grey200}}
+        title={comment.author_data.display_name}
+        left={LeftContent}
+        subtitle={comment.msg}
+      />
     </Card>
   );
 }

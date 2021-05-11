@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, View, SafeAreaView, Platform } from "react-native";
 import { Camera } from "expo-camera";
-import { IconButton, Colors } from "react-native-paper";
+import { IconButton, Colors, ActivityIndicator } from "react-native-paper";
 import * as ImagePicker from "expo-image-picker";
 import ImagePreview from "./ImagePreview";
 
@@ -15,6 +15,7 @@ const PostSelector = ({
   flashIcon,
   setflashIcon,
   setFlashMode,
+  cameraLoading,
 }: any) => {
   return (
     <SafeAreaView style={styles.container}>
@@ -51,13 +52,17 @@ const PostSelector = ({
           size={30}
           onPress={pickImage}
         />
-        <IconButton
-          icon="circle"
-          color={Colors.grey200}
-          size={55}
-          style={styles.captureButton}
-          onPress={takePicture}
-        />
+        {cameraLoading ? (
+          <ActivityIndicator size={50} />
+        ) : (
+          <IconButton
+            icon="circle"
+            color={Colors.grey200}
+            size={55}
+            style={styles.captureButton}
+            onPress={takePicture}
+          />
+        )}
         <IconButton
           icon="cached"
           color={Colors.grey100}
@@ -77,35 +82,35 @@ const PostSelector = ({
 };
 
 export default function SocialCamera() {
-  const [hasCameraPermission, setHasCameraPermission] = useState<
-    boolean | null
-  >(null);
-  const [hasLibraryPermission, setHasLibraryPermission] = useState<
-    boolean | null
-  >(null);
+  const [hasCameraPermission, setHasCameraPermission] =
+    useState<boolean | null>(null);
+  const [hasLibraryPermission, setHasLibraryPermission] =
+    useState<boolean | null>(null);
   const [type, setType] = useState(Camera.Constants.Type.back);
   const [flashMode, setFlashMode] = useState(Camera.Constants.FlashMode.off);
   const [flashIcon, setflashIcon] = useState("flash-outline");
   const [image, setImage] = useState<string | undefined>(undefined);
 
   const [camera, setCamera] = React.useState<Camera | null>(null);
+  const [cameraLoading, setCameraLoading] = React.useState(false);
 
   useEffect(() => {
     (async () => {
       const { status } = await Camera.requestPermissionsAsync();
       setHasCameraPermission(status === "granted");
       if (Platform.OS !== "web") {
-        const {
-          status,
-        } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+        const { status } =
+          await ImagePicker.requestMediaLibraryPermissionsAsync();
         setHasLibraryPermission(status === "granted");
       }
     })();
   }, []);
 
   const takePicture = async () => {
+    setCameraLoading(true);
     const img = await camera?.takePictureAsync();
     setImage(img?.uri);
+    setCameraLoading(false);
   };
 
   const pickImage = async () => {
@@ -136,6 +141,7 @@ export default function SocialCamera() {
     flashIcon,
     setflashIcon,
     setFlashMode,
+    cameraLoading,
   };
 
   if (image) {

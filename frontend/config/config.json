@@ -1,4 +1,4 @@
 {
-  "imsApiUrl": "https://cuconnect-back.herokuapp.com/pims",
+  "imsApiUrl": "http://34.87.166.237:8000/pims",
   "cacheMinute": 5
 }

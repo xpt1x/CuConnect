@@ -206,7 +206,7 @@ interface ProfileResponse {
 
 const getProfile = async (user: string): Promise<ProfileResponse> => {
   try {
-    const response = await fetch(config.imsApiUrl + "/profiles/" + user);
+    const response = await fetch(`${config.imsApiUrl}/profiles/${user}/`);
     return { profile: await response.json() };
   } catch (e) {
     console.log(e);
@@ -215,7 +215,7 @@ const getProfile = async (user: string): Promise<ProfileResponse> => {
 };
 
 const getUserPosts = async (user: string): Promise<PostResponse> => {
-  const response = await fetch(config.imsApiUrl + "/get_user_posts/" + user);
+  const response = await fetch(`${config.imsApiUrl}/get_user_posts/${user}/`);
   return await response.json();
 };
 

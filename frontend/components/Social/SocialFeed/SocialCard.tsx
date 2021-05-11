@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, View, Animated, Image, Dimensions } from "react-native";
-import { Avatar, Card, IconButton, Paragraph } from "react-native-paper";
+import { Avatar, Card, IconButton, Paragraph} from "react-native-paper";
 import { NavigationStackProp } from "react-navigation-stack";
 import { Post } from "../../../types/PostTypes";
 
@@ -75,8 +75,8 @@ export default function SocialCard({
     Image.getSize(
       post.image,
       (width, height) => {
-        width / height < 4 / 5
-          ? setImageHeight(450)
+        width / height < 4 / 3
+          ? setImageHeight(540)
           : windowWidth * (height / width) < 120
           ? 120
           : setImageHeight(windowWidth * (height / width));
@@ -101,7 +101,7 @@ export default function SocialCard({
 
   const LeftContent = (props: { size: number }) => (
     <View style={{ position: "relative" }}>
-      <Avatar.Icon {...props} icon="account" />
+      <Avatar.Icon {...props}  size={40} icon="account" />
       <Animated.View
         style={{
           position: "absolute",
@@ -173,6 +173,7 @@ export default function SocialCard({
     >
       {/* content : date and time and caption */}
       <Card.Title
+        titleStyle={{fontSize: 20}}
         title={post.author_data.display_name}
         subtitle={post.likes}
         left={LeftContent}
@@ -183,12 +184,7 @@ export default function SocialCard({
         onHandlerStateChange={onPinchStateChange}
       >
         <View style={{ position: "relative" }} collapsable={false}>
-          {/* <Card.Cover
-          resizeMode="cover"
-          style={{ height:imageHeight , width: "100%" }}
-          // style={{ aspectRatio: imageWidth/imageHeight }}
-          source={{ uri: post.image }}
-        /> */}
+          
           <Animated.Image
             resizeMode="cover"
             style={{
@@ -220,32 +216,28 @@ export default function SocialCard({
         </View>
       </PinchGestureHandler>
 
-      {/* <Card.Actions>
-        <IconButton
-          color={liked ? "#f27d0c" : "#757676"}
-          style={styles.button}
-          icon={"fire"}
-          size={30}
-          onPress={() => {
-            toggleLike();
-          }}
-        />
+      <Card.Actions>
+      
         <IconButton
           color={"#757676"}
           style={styles.button}
           icon={"comment"}
           onPress={() => {
-            navigation.push("Comments");
+            navigation.navigate("Comments", {
+              comments: post.comments,
+              post_id: post.id
+            });
           }}
         />
-      </Card.Actions> */}
+      </Card.Actions>
+     { post.title ? (
       <Card.Content>
         <Paragraph
-          style={{ fontSize: 13, marginTop: 13, textAlign: "justify" }}
+          style={{ fontSize: 13, marginBottom:2 , textAlign: "justify" }}
         >
           {post.title}
         </Paragraph>
-      </Card.Content>
+      </Card.Content>) : null}
     </Card>
   );
 }
@@ -256,5 +248,6 @@ const styles = StyleSheet.create({
   },
   button: {
     width: 35,
+    zIndex : -1
   },
 });
