@@ -1,4 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
+
 import AttendanceStore from "../../mobx/stores/AttendanceStore";
 import MarksStore from "../../mobx/stores/MarksStore";
 import TimeTableStore from "../../mobx/stores/TimeTableStore";
@@ -7,7 +8,7 @@ const signOut = async (
   attendanceStore?: AttendanceStore,
   timetableStore?: TimeTableStore,
   marksStore?: MarksStore
-) => {
+): Promise<void> => {
   try {
     if (attendanceStore) {
       attendanceStore.setAttendance(null);
@@ -22,7 +23,7 @@ const signOut = async (
       console.error("Error clearing app data.");
     }
   } catch (e) {
-    console.log(e);
+    console.warn(e);
   }
 };
 

@@ -1,12 +1,12 @@
 import React from "react";
-import { StyleSheet, View, ScrollView, Image } from "react-native";
-import { Text, Avatar, Divider, Chip, Colors } from "react-native-paper";
-import profilePic from "../../../devAssets/avatar.png";
+import { Image,ScrollView, StyleSheet, Text,View } from "react-native";
+import { Avatar, Chip, Colors,Divider } from "react-native-paper";
 import { NavigationStackProp } from "react-navigation-stack";
-import readCreds from "../../../utils/readCreds";
+
 import { getProfile, getUserPosts } from "../../../ApiLayer/Api";
-import Loader from "../../pims/Utils/Loader";
 import { Post } from "../../../types/PostTypes";
+import readCreds from "../../../utils/readCreds";
+import Loader from "../../pims/Utils/Loader";
 
 function getRandom(min: number, max: number): number {
   return Math.floor(Math.random() * (max - min) + min);
@@ -16,7 +16,7 @@ interface UserProfileProps {
   navigation: NavigationStackProp;
 }
 
-export default function UserProfile({ navigation }: UserProfileProps) {
+export default function UserProfile({ navigation }: UserProfileProps): React.ReactElement {
 
   const [user, setUser] = React.useState<{
     display_name: string;
@@ -26,7 +26,7 @@ export default function UserProfile({ navigation }: UserProfileProps) {
 
   const [userPosts, setUserPosts] = React.useState<{fetched: boolean, posts: ReadonlyArray<Post>}>({fetched: false, posts: []});
 
-  const getUserData = async () => {
+  const getUserData = async () : Promise<void> => {
     const { creds } = await readCreds();
     if (creds) {
       const { profile } = await getProfile(creds.uid);
@@ -40,7 +40,7 @@ export default function UserProfile({ navigation }: UserProfileProps) {
     }
   };
 
-  const fetchUserPosts = async () => {
+  const fetchUserPosts = async () : Promise<void> => {
     // dont fetch with when uid == "" it will result in error
     if(user.uid === "") return;
     const { posts } = await getUserPosts(user.uid);

@@ -6,7 +6,3 @@ export interface AttendanceSubject{
     [key: string] : string|number|FullAttendanceEntry;
 }
 
-
-export interface Attendance{
-    
-}

@@ -1,7 +1,8 @@
 import React from "react";
-import { Card, Avatar, Text } from "react-native-paper";
 import { StyleSheet } from "react-native";
+import { Avatar,Card } from "react-native-paper";
 import { NavigationStackProp } from "react-navigation-stack";
+
 import { ElementMarks } from "../../../types/ElementMarks";
 
 interface Props {
@@ -23,8 +24,8 @@ const emojiType = (elementMarks: ReadonlyArray<ElementMarks>): string => {
   return "emoticon-sad";
 };
 
-export default function MarksCard({ name, subCode, marks, navigation }: Props) {
-  const cardPress = (headerName: string) => {
+export default function MarksCard({ name, subCode, marks, navigation }: Props) : React.ReactElement {
+  const cardPress = (headerName: string): void => {
     navigation.push("Detailed Marks", {
       subjectCode: headerName,
       marks: marks,

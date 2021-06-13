@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View, SafeAreaView, Platform } from "react-native";
 import { Camera } from "expo-camera";
-import { IconButton, Colors, ActivityIndicator } from "react-native-paper";
 import * as ImagePicker from "expo-image-picker";
+import React, { useEffect, useState } from "react";
+import { Platform, SafeAreaView, StyleSheet, Text, View } from "react-native";
+import { ActivityIndicator, Colors, IconButton } from "react-native-paper";
+
 import ImagePreview from "./ImagePreview";
 
 const PostSelector = ({
@@ -16,7 +17,7 @@ const PostSelector = ({
   setflashIcon,
   setFlashMode,
   cameraLoading,
-}: any) => {
+}: any): React.ReactElement => {
   return (
     <SafeAreaView style={styles.container}>
       <IconButton
@@ -81,11 +82,13 @@ const PostSelector = ({
   );
 };
 
-export default function SocialCamera() {
-  const [hasCameraPermission, setHasCameraPermission] =
-    useState<boolean | null>(null);
-  const [hasLibraryPermission, setHasLibraryPermission] =
-    useState<boolean | null>(null);
+export default function SocialCamera(): React.ReactElement {
+  const [hasCameraPermission, setHasCameraPermission] = useState<
+    boolean | null
+  >(null);
+  const [hasLibraryPermission, setHasLibraryPermission] = useState<
+    boolean | null
+  >(null);
   const [type, setType] = useState(Camera.Constants.Type.back);
   const [flashMode, setFlashMode] = useState(Camera.Constants.FlashMode.off);
   const [flashIcon, setflashIcon] = useState("flash-outline");
@@ -106,16 +109,16 @@ export default function SocialCamera() {
     })();
   }, []);
 
-  const takePicture = async () => {
+  const takePicture = async (): Promise<void> => {
     setCameraLoading(true);
     const img = await camera?.takePictureAsync();
     setImage(img?.uri);
     setCameraLoading(false);
   };
 
-  const pickImage = async () => {
+  const pickImage = async () : Promise<void>=> {
     if (hasLibraryPermission) {
-      let result = await ImagePicker.launchImageLibraryAsync({
+      const result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
         quality: 1,
       });

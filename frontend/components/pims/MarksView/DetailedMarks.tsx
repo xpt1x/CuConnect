@@ -1,9 +1,9 @@
 import React from "react";
-import { Surface, DataTable } from "react-native-paper";
-import { Text, StyleSheet, ScrollView } from "react-native";
-import { ElementMarks } from "../../../types/ElementMarks";
+import { ScrollView,StyleSheet, Text } from "react-native";
+import { DataTable,Surface } from "react-native-paper";
 
-const infoRow = (elementMarks: ElementMarks, idx: number) => {
+import { ElementMarks } from "../../../types/ElementMarks";
+const infoRow = (elementMarks: ElementMarks, idx: number): React.ReactElement => {
   return (
     <DataTable.Row key={idx}>
       <DataTable.Cell>{elementMarks.element}</DataTable.Cell>
@@ -19,7 +19,11 @@ interface RouteParam {
   marks: ReadonlyArray<ElementMarks>;
 }
 
-export default function DetailedMarks({ route }: any) {
+interface Props {
+  route: Record<string, RouteParam>
+}
+
+export default function DetailedMarks({ route }: Props) : React.ReactElement {
   const { marks, name }: RouteParam = route.params;
   return (
     <>

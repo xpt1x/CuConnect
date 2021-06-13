@@ -1,33 +1,37 @@
+import { Pacifico_400Regular,useFonts } from "@expo-google-fonts/pacifico";
+import { ParamListBase, useNavigation } from "@react-navigation/core";
+import { StackNavigationProp } from "@react-navigation/stack";
+import AppLoading from "expo-app-loading";
 import React from "react";
 import {
-  SafeAreaView,
-  View,
-  StyleSheet,
-  RefreshControl,
   FlatList,
+  RefreshControl,
+  SafeAreaView,
+  StyleSheet,
+  View,
 } from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
 import { Appbar, Button, Caption, Headline } from "react-native-paper";
-import SocialCard from "./SocialCard";
-import { useFonts, Pacifico_400Regular } from "@expo-google-fonts/pacifico";
-import AppLoading from "expo-app-loading";
 import RBSheet from "react-native-raw-bottom-sheet";
+
 import { getPosts } from "../../../ApiLayer/Api";
 import { Post } from "../../../types/PostTypes";
-import { ScrollView } from "react-native-gesture-handler";
+import SocialCard from "./SocialCard";
 
-export default function Social({ navigation, route }: any) {
+export default function Social(): React.ReactElement {
   const refRBSheet = React.useRef<RBSheet>() as React.MutableRefObject<RBSheet>;
-  const tripleDotAction = () => {
+  const navigation = useNavigation<StackNavigationProp<ParamListBase>>()
+  const tripleDotAction = (): void => {
     if (refRBSheet && refRBSheet.current) return refRBSheet.current.open();
   };
-  function openCamera() {
+  function openCamera(): void {
     navigation.navigate("Camera");
   }
-  let [fontsLoaded] = useFonts({
+  const [fontsLoaded] = useFonts({
     Pacifico_400Regular,
   });
 
-  const goToProfile = () => {
+  const goToProfile = (): void => {
     navigation.push("User Profile");
   };
 
@@ -43,17 +47,17 @@ export default function Social({ navigation, route }: any) {
       if (response.posts) {
         setPosts(response.posts);
       } else if (response.error) {
-        console.log(response.error);
+        console.warn(response.error);
         setMessage(response.error);
       }
     });
   }, [update]);
 
-  const onRefreshFn = () => {
+  const onRefreshFn = (): void => {
     setRefreshing(true);
     forceUpdate(!update);
   };
-  const renderSocialCard = ({ item }: any) => {
+  const renderSocialCard = ({ item }: {item: Post}): React.ReactElement => {
     return (
       <SocialCard
         tripleDotAction={tripleDotAction}
@@ -63,7 +67,7 @@ export default function Social({ navigation, route }: any) {
     );
   };
 
-  const handlePress = () => {
+  const handlePress = (): void => {
     navigation.navigate("Camera");
   };
 
@@ -99,13 +103,13 @@ export default function Social({ navigation, route }: any) {
               },
             }}
           >
-            <Button mode="text" onPress={() => console.log("Pressed")}>
+            <Button mode="text" onPress={() => console.warn("Pressed")}>
               View Profile
             </Button>
             <Button
               color="#fa1e0e"
               mode="text"
-              onPress={() => console.log("Pressed")}
+              onPress={() => console.warn("Pressed")}
               icon="flag"
             >
               Report User

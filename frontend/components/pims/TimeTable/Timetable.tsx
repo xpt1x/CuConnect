@@ -1,17 +1,16 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { observer } from "mobx-react-lite";
 import React, { useContext } from "react";
-import { StyleSheet, ScrollView, View, RefreshControl } from "react-native";
+import { RefreshControl,ScrollView, StyleSheet, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+
+import { getTimetable } from "../../../ApiLayer/Api";
+import config from "../../../config";
+import { TimeTableStoreContext } from "../../../mobx/contexts";
+import Loader from "../Utils/Loader";
+import ErrorScreen from "./../Utils/ErrorScreen";
 import DaySelector from "./DaySelector";
 import LectureCard from "./LectureCard";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { observer } from "mobx-react-lite";
-import { TimeTableStoreContext } from "../../../mobx/contexts";
-import { getTimetable } from "../../../ApiLayer/Api";
-import { Lecture } from "../../../types/TimetableTypes";
-import { Error } from "../../../types/Error";
-import ErrorScreen from "./../Utils/ErrorScreen";
-import Loader from "../Utils/Loader";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import config from "../../../config";
 
 export const Timetable = observer(() => {
   const TimeTableStore = useContext(TimeTableStoreContext);
@@ -20,7 +19,7 @@ export const Timetable = observer(() => {
   const [refreshing, setRefreshing] = React.useState<boolean>(false);
   const [update, forceUpdate] = React.useState<boolean>(false);
 
-  const checkLocalTimetable = async () => {
+  const checkLocalTimetable = async (): Promise<void> => {
     try {
       const timetable = await AsyncStorage.getItem("timetable");
       const timestamp = await AsyncStorage.getItem("timestamp");
@@ -33,16 +32,15 @@ export const Timetable = observer(() => {
         // set attendance from storage
         setRefreshing(false);
         TimeTableStore.setTimetable(JSON.parse(timetable));
-        console.log("TT set from AsyncStorage");
       } else {
         makeRequest();
       }
     } catch (e) {
-      console.log(e);
+      console.warn(e);
     }
   };
 
-  async function makeRequest() {
+  async function makeRequest(): Promise<void> {
     const { timetable, error } = await getTimetable();
     setRefreshing(false);
     if (error) {
@@ -54,7 +52,7 @@ export const Timetable = observer(() => {
         await AsyncStorage.setItem("timetable", JSON.stringify(timetable));
         await AsyncStorage.setItem("timestamp", JSON.stringify(Date.now()));
       } catch (e) {
-        console.log(e);
+        console.warn(e);
       }
     }
   }
@@ -63,7 +61,7 @@ export const Timetable = observer(() => {
     checkLocalTimetable();
   }, [update]);
 
-  const onRefreshFn = () => {
+  const onRefreshFn = (): void => {
     TimeTableStore.setTimetable(null);
     setRefreshing(true);
     forceUpdate(!update);
@@ -79,7 +77,7 @@ export const Timetable = observer(() => {
         >
           {TimeTableStore.timetable ? (
             TimeTableStore.currentDayLectures ? (
-              TimeTableStore.currentDayLectures.map((lectureTime, idx, arr) => {
+              TimeTableStore.currentDayLectures.map((lectureTime, idx) => {
                 return (
                   <LectureCard
                     key={idx}

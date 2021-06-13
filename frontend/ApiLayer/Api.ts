@@ -1,11 +1,11 @@
-import { TimetableType } from "../types/TimetableTypes";
-import { FullSubject, Subject } from "../types/Subject";
-import { SubjectMarks, Sessions } from "../types/MarksTypes";
 import config from "../config";
+import { Sessions,SubjectMarks } from "../types/MarksTypes";
 import { Post } from "../types/PostTypes";
+import { FullSubject, Subject } from "../types/Subject";
+import { TimetableType } from "../types/TimetableTypes";
 import readCreds from "../utils/readCreds";
 
-const createUserData = async () => {
+const createUserData = async (): Promise<FormData> => {
   const user = new FormData();
   const { creds } = await readCreds();
   if (creds) {
@@ -71,7 +71,7 @@ const getFullName = async (
     });
     return await response.json();
   } catch (error) {
-    console.log(error);
+    console.warn(error);
   }
   return {
     exists: false,
@@ -92,7 +92,7 @@ const getFullName = async (
 //     });
 //     return await response.json();
 //   } catch (error) {
-//     console.log(error);
+//     console.warn(error);
 //   }
 //   return {error: "Can't validate (Internal Failure)"}
 // };
@@ -108,7 +108,7 @@ const registerUser = async (full_name: string): Promise<RegisterResponse> => {
     });
     return await response.json();
   } catch (error) {
-    console.log(error);
+    console.warn(error);
   }
   return { error: "Error registering user (Internal Failure)" };
 };
@@ -121,7 +121,7 @@ const getAttendance = async (): Promise<AttendanceResponse> => {
     });
     return await response.json();
   } catch (error) {
-    console.log(error);
+    console.warn(error);
   }
   return { error: "Error getting attendace" };
 };
@@ -134,7 +134,7 @@ const getTimetable = async (): Promise<TimeTableResponse> => {
     });
     return await response.json();
   } catch (error) {
-    console.log(error);
+    console.warn(error);
   }
   return { error: "Error getting timetable" };
 };
@@ -147,7 +147,7 @@ const getFullAttendance = async (): Promise<FullAttendanceResponse> => {
     });
     return await response.json();
   } catch (error) {
-    console.log(error);
+    console.warn(error);
   }
   return { error: "Error getting fullattendance" };
 };
@@ -160,7 +160,7 @@ const getAvailableSessions = async (): Promise<AvailableSessionsResponse> => {
     });
     return await response.json();
   } catch (error) {
-    console.log(error);
+    console.warn(error);
   }
   return { error: "Error getting available sessions" };
 };
@@ -174,7 +174,7 @@ const getMarks = async (session: string): Promise<MarksResponse> => {
 
     return await response.json();
   } catch (error) {
-    console.log(error);
+    console.warn(error);
   }
   return { error: "Error getting marks" };
 };
@@ -189,7 +189,7 @@ const getPosts = async (): Promise<PostResponse> => {
     const response = await fetch(config.imsApiUrl + "/posts");
     return { posts: await response.json() };
   } catch (error) {
-    console.log(error);
+    console.warn(error);
   }
   return { error: "Error getting posts" };
 };
@@ -209,7 +209,7 @@ const getProfile = async (user: string): Promise<ProfileResponse> => {
     const response = await fetch(`${config.imsApiUrl}/profiles/${user}`);
     return { profile: await response.json() };
   } catch (e) {
-    console.log(e);
+    console.warn(e);
   }
   return { error: `Error getting profile of user ${user}` };
 };
@@ -242,7 +242,7 @@ const savePost = async (
     });
     return response.status === 201 ? true : false;
   } catch (e) {
-    console.log(e);
+    console.warn(e);
   }
   return false;
 };

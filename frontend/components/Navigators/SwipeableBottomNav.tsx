@@ -1,7 +1,8 @@
-import React from "react";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
-import { SCREENS as screens } from "../../constants/Screens";
+import React from "react";
 import { StyleSheet } from "react-native";
+
+import { SCREENS as screens } from "../../constants/Screens";
 
 const styles = StyleSheet.create({
   tabStyle: {
@@ -10,7 +11,7 @@ const styles = StyleSheet.create({
   },
 });
 const BottomNav = createMaterialTopTabNavigator();
-export function SwipeableBottomNav() {
+export function SwipeableBottomNav(): React.ReactElement {
   return (
     <BottomNav.Navigator
       initialRouteName="Social"

@@ -1,26 +1,25 @@
-import React from "react";
-import {
-  ProgressBar,
-  Colors,
-  Surface,
-  DataTable,
-  Chip,
-  Text,
-} from "react-native-paper";
-import { StyleSheet, ScrollView, View } from "react-native";
-import { AnimatedCircularProgress } from "react-native-circular-progress";
-import Calendar from "./Calendar";
-import { Subject, FullSubject } from "../../../../types/Subject";
 import { observer } from "mobx-react-lite";
+import React from "react";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { AnimatedCircularProgress } from "react-native-circular-progress";
+import {
+  Chip,
+  Colors,
+  DataTable,
+  ProgressBar,
+  Surface,
+} from "react-native-paper";
+
 import { AttendanceStoreContext } from "../../../../mobx/contexts";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Subject } from "../../../../types/Subject";
+import Calendar from "./Calendar";
 
 interface RouteParam {
   subject: Subject;
   index: number;
 }
 
-let infoRow = (text: string, value: string | number) => {
+const infoRow = (text: string, value: string | number): React.ReactElement => {
   return (
     <DataTable.Row>
       <DataTable.Cell>{text.toUpperCase()}</DataTable.Cell>
@@ -29,12 +28,12 @@ let infoRow = (text: string, value: string | number) => {
   );
 };
 
-function calculateLectures(subject: Subject, req: number) {
-  let att = parseInt(subject.Total_Attd);
-  let del = parseInt(subject.Total_Delv.toString());
+function calculateLectures(subject: Subject, req: number): string {
+  const att = parseInt(subject.Total_Attd);
+  const del = parseInt(subject.Total_Delv.toString());
   if (del === 0 || att / del >= req / 100) return "NA";
   else {
-    let lecs = (req * del - 100 * att) / (100 - req);
+    const lecs = (req * del - 100 * att) / (100 - req);
     return `${Math.ceil(lecs)} lecture(s) more`;
   }
 }

@@ -1,19 +1,20 @@
+import "react-native-gesture-handler";
+
+import {
+  DarkTheme as NavigationDarkTheme,
+  NavigationContainer,
+} from "@react-navigation/native";
+import { StatusBar } from "expo-status-bar";
 import React from "react";
-import { SafeAreaProvider } from "react-native-safe-area-context";
 import { StyleSheet, View } from "react-native";
 import {
-  Provider as PaperProvider,
-  DarkTheme as PaperDarkTheme,
   configureFonts,
+  DarkTheme as PaperDarkTheme,
+  Provider as PaperProvider,
 } from "react-native-paper";
-import { StatusBar } from "expo-status-bar";
-import Main from "./components/Main";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
-import "react-native-gesture-handler";
-import {
-  NavigationContainer,
-  DarkTheme as NavigationDarkTheme,
-} from "@react-navigation/native";
+import Main from "./components/Main";
 import { fontConfig } from "./constants/Fonts";
 
 const CombinedDarkTheme = {
@@ -25,7 +26,7 @@ const CombinedDarkTheme = {
   },
   fonts: configureFonts(fontConfig),
 };
-function App() {
+function App():React.ReactElement {
   return (
     <View style={styles.container}>
       <StatusBar style="light" />
@@ -34,7 +35,7 @@ function App() {
   );
 }
 
-export default () => (
+export default function AppWrapper () : React.ReactElement { return(
   <SafeAreaProvider>
     <PaperProvider theme={CombinedDarkTheme}>
       <NavigationContainer theme={CombinedDarkTheme}>
@@ -42,7 +43,7 @@ export default () => (
       </NavigationContainer>
     </PaperProvider>
   </SafeAreaProvider>
-);
+);}
 
 const styles = StyleSheet.create({
   container: {

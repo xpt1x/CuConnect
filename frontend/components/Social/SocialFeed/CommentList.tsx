@@ -1,9 +1,26 @@
+import { RouteProp } from "@react-navigation/core";
 import React from "react";
-import { StyleSheet, ScrollView, SafeAreaView, Text, View } from "react-native";
-import Comment from "./Comment";
+import { SafeAreaView, ScrollView, StyleSheet, Text, View } from "react-native";
 import { IconButton, TextInput } from "react-native-paper";
 
-export default function CommentList({ route }: any) {
+import { CommentType } from "../../../types/PostTypes";
+import Comment from "./Comment";
+
+interface CommentListProps {
+  route: RouteProp<
+    {
+      params: {
+        comments: ReadonlyArray<CommentType>;
+        post_id: number;
+      };
+    },
+    "params"
+  >;
+}
+
+export default function CommentList({
+  route,
+}: CommentListProps): React.ReactElement {
   // const {comments} = route.params;
   const [newComment, setNewComment] = React.useState("");
   // console.log(route.params.comments);
@@ -12,7 +29,11 @@ export default function CommentList({ route }: any) {
       <ScrollView style={{ flex: 1, height: "87%" }}>
         {route.params && route.params.comments
           ? route.params.comments.map((comment: any) => (
-              <Comment comment={comment} post_id={route.params.post_id} />
+              <Comment
+                comment={comment}
+                post_id={route.params.post_id}
+                key={comment.id}
+              />
             ))
           : null}
       </ScrollView>

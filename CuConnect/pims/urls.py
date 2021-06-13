@@ -1,18 +1,10 @@
 from django.urls import path, include
 from . import views
-from rest_framework import routers
-from .views import (
-    PostViewSet,
-    CommentViewSet,
-    UserProfileViewSet,
-    get_marks,
-    get_user_posts,
-)
 
-router = routers.DefaultRouter()
-router.register("posts", PostViewSet)
-router.register("comments", CommentViewSet)
-router.register("profiles", UserProfileViewSet)
+# router = routers.DefaultRouter()
+# router.register("posts", PostViewSet)
+# router.register("comments", CommentViewSet)
+# router.register("profiles", UserProfileViewSet)
 
 urlpatterns = [
     path("validate", views.validate),
@@ -24,5 +16,5 @@ urlpatterns = [
     path("timetable", views.get_timetable),
     path("marks/<str:session>", views.get_marks),
     path("availablesessions", views.get_available_sessions),
-    path("", include(router.urls)),
+    # path("", include(router.urls)),
 ]

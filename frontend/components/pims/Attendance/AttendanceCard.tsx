@@ -1,8 +1,9 @@
 import React, { FunctionComponent } from "react";
-import { StyleSheet } from "react-native";
-import { Card, ProgressBar, Colors, Text } from "react-native-paper";
-import { NavigationStackProp } from "react-navigation-stack";
+import { StyleSheet, Text } from "react-native";
 import { AnimatedCircularProgress } from "react-native-circular-progress";
+import { Card, Colors, ProgressBar } from "react-native-paper";
+import { NavigationStackProp } from "react-navigation-stack";
+
 import { Subject } from "../../../types/Subject";
 
 interface Props {
@@ -12,15 +13,15 @@ interface Props {
 export default function AttendanceCard({
   subjectAttendance,
   navigation,
-}: Props) {
-  const cardPress = (subject: Subject) => {
+}: Props): React.ReactElement {
+  const cardPress = (subject: Subject): void => {
     if (subject.Total_Delv === 0) return;
     navigation.push("Detailed Attendance", {
       subject: subject,
     });
   };
 
-  function setColor(percentage: number) {
+  function setColor(percentage: number): string {
     if (percentage >= 90) return Colors.green500;
     if (percentage >= 75) return Colors.lightGreen600;
     else return Colors.red500;

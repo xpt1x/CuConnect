@@ -1,20 +1,22 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { ParamListBase, useNavigation } from "@react-navigation/core";
 import React from "react";
 import { View } from "react-native";
 import {
-  Colors,
+  Avatar,
   Button,
-  TextInput,
-  Snackbar,
-  ProgressBar,
-  Headline,
   Caption,
-  Avatar
-} from "react-native-paper";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+  Headline,
+  ProgressBar,
+  Snackbar,
+  TextInput} from "react-native-paper";
+import { StackNavigationProp } from "react-navigation-stack/lib/typescript/src/vendor/types";
+
 import { getFullName } from "../../ApiLayer/Api";
-import { signOut } from "./utils";
 import readCreds from "../../utils/readCreds";
-export default function LoginPims({ navigation, route }: any) {
+import { signOut } from "./utils";
+
+export default function LoginPims(): React.ReactElement {
   const [uid, setUid] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [visible, setVisible] = React.useState<boolean>(false);
@@ -22,21 +24,23 @@ export default function LoginPims({ navigation, route }: any) {
   const [credsFound, setCredsFound] = React.useState<boolean>(true);
   const [message, setMessage] = React.useState<string>("");
 
-  const showMessage = (message: string) => {
+  const navigation = useNavigation<StackNavigationProp<ParamListBase>>();
+
+  const showMessage = (message: string):void => {
     setMessage(message);
     setVisible(true);
   };
 
-  const recordCreds = async (uid: string, password: string) => {
+  const recordCreds = async (uid: string, password: string):Promise<void> => {
     try {
       AsyncStorage.setItem("uid", uid);
       AsyncStorage.setItem("password", password);
     } catch (e) {
-      console.log("Error setting creds RecordCreds(LoginPims)");
+      console.warn("Error setting creds RecordCreds(LoginPims)");
     }
   };
 
-  const validate = async () => {
+  const validate = async ():  Promise<void> => {
     setValidating(true);
     try {
       const { exists, full_name, error } = await getFullName(uid, password);
@@ -50,11 +54,11 @@ export default function LoginPims({ navigation, route }: any) {
           : navigation.replace("Sign Up", { fullName: full_name });
       }
     } catch (e) {
-      console.log("Something went wrong in checkingUser (LoginPims)");
+      console.warn("Something went wrong in checkingUser (LoginPims)");
     }
   };
 
-  const checkCredsInStorage = async () => {
+  const checkCredsInStorage = async () : Promise<void> => {
     const {creds} = await readCreds();
     if (creds) {
       const { full_name, exists } = await getFullName(creds.uid, creds.password);

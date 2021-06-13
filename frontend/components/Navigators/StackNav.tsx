@@ -1,21 +1,22 @@
+import { useNavigation } from "@react-navigation/core";
+import {
+  CardStyleInterpolators,
+  createStackNavigator,
+} from "@react-navigation/stack";
 import React from "react";
+import { IconButton } from "react-native-paper";
+import { Text } from "react-native-paper";
+import { StackNavigationProp } from "react-navigation-stack/lib/typescript/src/vendor/types";
+
+import LoginPims from "../Authentication/LoginPims";
+import SignUp from "../Authentication/SignUp";
 import DetailedAttendance from "../pims/Attendance/DetailedAttendance/DetailedAttendance";
 import DetailedMarks from "../pims/MarksView/DetailedMarks";
-import { IconButton } from "react-native-paper";
-import { StackNavigationProp } from "react-navigation-stack/lib/typescript/src/vendor/types";
-import {
-  createStackNavigator,
-  CardStyleInterpolators,
-} from "@react-navigation/stack";
-import { Text } from "react-native-paper";
-import { SwipeableBottomNav } from "./SwipeableBottomNav";
-import UserProfile from "../Social/Profile/UserProfile";
-import LoginPims from "../Authentication/LoginPims";
-import SettingsMenu from "../Social/Profile/SettingsMenu";
 import Camera from "../Social/Camera/Camera";
-import { useNavigation } from "@react-navigation/core";
-import SignUp from "../Authentication/SignUp";
+import SettingsMenu from "../Social/Profile/SettingsMenu";
+import UserProfile from "../Social/Profile/UserProfile";
 import CommentList from "../Social/SocialFeed/CommentList";
+import { SwipeableBottomNav } from "./SwipeableBottomNav";
 
 const Stack = createStackNavigator();
 const navigatorProps: StackNavigationProp = {
@@ -30,7 +31,7 @@ const navigatorProps: StackNavigationProp = {
       backgroundColor: "#000000",
       borderBottomWidth: 0.3,
     },
-    headerBackImage: () => <IconButton icon="chevron-left" size={30} />,
+    headerBackImage: function hbi () {return (<IconButton icon="chevron-left" size={30} />)},
     cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
     gestureEnabled: true,
     gestureDirection: "horizontal",
@@ -40,11 +41,11 @@ const navigatorProps: StackNavigationProp = {
   },
 };
 
-function DetailedMarksRightAccessory(code: string) {
-  return <Text style={{ padding: 24 }}>{code}</Text>;
+function DetailedMarksRightAccessory(code: string, props : any) : React.ReactElement {
+  return <Text style={{ padding: 24 }} {...props}>{code}</Text>;
 }
 
-function UserProfileRightAccessory() {
+function UserProfileRightAccessory(): React.ReactElement {
   const navigation = useNavigation();
   return (
     <IconButton
@@ -57,7 +58,7 @@ function UserProfileRightAccessory() {
   );
 }
 
-export default function StackNav() {
+export default function StackNav() : React.ReactElement {
   return (
     <Stack.Navigator {...navigatorProps}>
       <Stack.Screen
@@ -72,9 +73,9 @@ export default function StackNav() {
         component={DetailedMarks}
         options={({ route }: any) => ({
           title: "",
-          headerRight: () =>
+          headerRight: (props) =>
             DetailedMarksRightAccessory(
-              route.params ? route.params.subjectCode : route.name
+              route.params ? route.params.subjectCode : route.name, props
             ),
         })}
       />

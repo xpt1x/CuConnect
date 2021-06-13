@@ -1,41 +1,42 @@
-import React from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { MARKS } from "../../../placeholder/marks";
-import {
-  StyleSheet,
-  ScrollView,
-  View,
-  Text,
-  RefreshControl,
-} from "react-native";
-import MarksCard from "./MarksCard";
-import { FAB, Button } from "react-native-paper";
-import RBSheet from "react-native-raw-bottom-sheet";
-import { getAvailableSessions, getMarks } from "../../../ApiLayer/Api";
-import { Error } from "../../../types/Error";
-import { observer } from "mobx-react-lite";
-import { MarksStoreContext } from "../../../mobx/contexts";
-import ErrorScreen from "./../Utils/ErrorScreen";
-import Loader from "../Utils/Loader";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { ParamListBase, useNavigation } from "@react-navigation/core";
+import { observer } from "mobx-react-lite";
+import React from "react";
+import {
+  RefreshControl,
+  ScrollView,
+  StyleSheet,
+} from "react-native";
+import { Button,FAB } from "react-native-paper";
+import RBSheet from "react-native-raw-bottom-sheet";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { StackNavigationProp } from "react-navigation-stack/lib/typescript/src/vendor/types";
+
+import { getAvailableSessions, getMarks } from "../../../ApiLayer/Api";
 import config from "../../../config";
+import { MarksStoreContext } from "../../../mobx/contexts";
+import Loader from "../Utils/Loader";
+import ErrorScreen from "./../Utils/ErrorScreen";
+import MarksCard from "./MarksCard";
 
 enum Session {
   Previous,
   Current,
 }
 
-const Marks = observer(({ navigation }: any) => {
+const Marks = observer(() => {
   const MarksStore = React.useContext(MarksStoreContext);
   const refRBSheet = React.useRef<RBSheet>() as React.MutableRefObject<RBSheet>;
-  const fabAction = () => {
+  const fabAction = (): void => {
     if (refRBSheet && refRBSheet.current) return refRBSheet.current.open();
   };
   const [error, setError] = React.useState<string>("");
   const [refreshing, setRefreshing] = React.useState<boolean>(false);
   const [update, forceUpdate] = React.useState<boolean>(false);
 
-  const changeSession = (session: Session) => {
+  const navigation = useNavigation<StackNavigationProp<ParamListBase>>();
+
+  const changeSession = (session: Session): void => {
     setRefreshing(true);
     switch (session) {
       case Session.Current:
@@ -49,7 +50,7 @@ const Marks = observer(({ navigation }: any) => {
     }
   };
 
-  const checkLocalMarks = async () => {
+  const checkLocalMarks = async (): Promise<void> => {
     try {
       const marks = await AsyncStorage.getItem("marks");
       const timestamp = await AsyncStorage.getItem("timestamp");
@@ -62,16 +63,15 @@ const Marks = observer(({ navigation }: any) => {
         setRefreshing(false);
         // set attendance from storage
         MarksStore.setMarks(JSON.parse(marks));
-        console.log("Marks set from AsyncStorage");
       } else {
         makeRequest(undefined);
       }
     } catch (e) {
-      console.log(e);
+      console.warn(e);
     }
   };
 
-  const makeRequest = async (session: string | undefined) => {
+  const makeRequest = async (session: string | undefined): Promise<void> => {
     try {
       if (session === undefined) {
         const { sessions, error } = await getAvailableSessions();
@@ -91,11 +91,11 @@ const Marks = observer(({ navigation }: any) => {
           await AsyncStorage.setItem("marks", JSON.stringify(marks));
           await AsyncStorage.setItem("timestamp", JSON.stringify(Date.now()));
         } catch (e) {
-          console.log(e);
+          console.warn(e);
         }
       }
     } catch (error) {
-      console.log(error);
+      console.warn(error);
     }
   };
 
@@ -103,7 +103,7 @@ const Marks = observer(({ navigation }: any) => {
     checkLocalMarks();
   }, [update]);
 
-  const onRefreshFn = () => {
+  const onRefreshFn = (): void => {
     MarksStore.setMarks(null);
     setRefreshing(true);
     forceUpdate(!update);
