@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View, SafeAreaView, Platform } from "react-native";
 import { Camera } from "expo-camera";
-import { IconButton, Colors } from "react-native-paper";
 import * as ImagePicker from "expo-image-picker";
+import React, { useEffect, useState } from "react";
+import { Platform, SafeAreaView, StyleSheet, View } from "react-native";
+import { ActivityIndicator, Colors, IconButton, Text } from "react-native-paper";
+
 import ImagePreview from "./ImagePreview";
 
 const PostSelector = ({
@@ -15,7 +16,8 @@ const PostSelector = ({
   flashIcon,
   setflashIcon,
   setFlashMode,
-}: any) => {
+  cameraLoading,
+}: any): React.ReactElement => {
   return (
     <SafeAreaView style={styles.container}>
       <IconButton
@@ -51,13 +53,17 @@ const PostSelector = ({
           size={30}
           onPress={pickImage}
         />
-        <IconButton
-          icon="circle"
-          color={Colors.grey200}
-          size={55}
-          style={styles.captureButton}
-          onPress={takePicture}
-        />
+        {cameraLoading ? (
+          <ActivityIndicator size={50} />
+        ) : (
+          <IconButton
+            icon="circle"
+            color={Colors.grey200}
+            size={55}
+            style={styles.captureButton}
+            onPress={takePicture}
+          />
+        )}
         <IconButton
           icon="cached"
           color={Colors.grey100}
@@ -76,7 +82,7 @@ const PostSelector = ({
   );
 };
 
-export default function SocialCamera() {
+export default function SocialCamera(): React.ReactElement {
   const [hasCameraPermission, setHasCameraPermission] = useState<
     boolean | null
   >(null);
@@ -89,28 +95,30 @@ export default function SocialCamera() {
   const [image, setImage] = useState<string | undefined>(undefined);
 
   const [camera, setCamera] = React.useState<Camera | null>(null);
+  const [cameraLoading, setCameraLoading] = React.useState(false);
 
   useEffect(() => {
     (async () => {
       const { status } = await Camera.requestPermissionsAsync();
       setHasCameraPermission(status === "granted");
       if (Platform.OS !== "web") {
-        const {
-          status,
-        } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+        const { status } =
+          await ImagePicker.requestMediaLibraryPermissionsAsync();
         setHasLibraryPermission(status === "granted");
       }
     })();
   }, []);
 
-  const takePicture = async () => {
+  const takePicture = async (): Promise<void> => {
+    setCameraLoading(true);
     const img = await camera?.takePictureAsync();
     setImage(img?.uri);
+    setCameraLoading(false);
   };
 
-  const pickImage = async () => {
+  const pickImage = async () : Promise<void>=> {
     if (hasLibraryPermission) {
-      let result = await ImagePicker.launchImageLibraryAsync({
+      const result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
         quality: 1,
       });
@@ -124,7 +132,9 @@ export default function SocialCamera() {
     return <View />;
   }
   if (hasCameraPermission === false) {
-    return <Text>No access to camera</Text>;
+    return <View>
+      <Text>No access to camera</Text>
+    </View>;
   }
   const postSelectorProps = {
     type,
@@ -136,6 +146,7 @@ export default function SocialCamera() {
     flashIcon,
     setflashIcon,
     setFlashMode,
+    cameraLoading,
   };
 
   if (image) {

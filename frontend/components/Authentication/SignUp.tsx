@@ -1,16 +1,36 @@
+import {
+  ParamListBase,
+  RouteProp,
+  useNavigation,
+} from "@react-navigation/core";
+import { StackNavigationProp } from "@react-navigation/stack";
 import React from "react";
-import { SafeAreaView, View, Text } from "react-native";
-import { Colors, Button, TextInput, Snackbar } from "react-native-paper";
+import { SafeAreaView, View } from "react-native";
+import { Button, Colors, Snackbar, Text,TextInput } from "react-native-paper";
+
 import { registerUser } from "../../ApiLayer/Api";
 
-export default function SignUp({ route, navigation }: any) {
+interface SignUpProps {
+  route: RouteProp<
+    {
+      params: {
+        fullName: string;
+      };
+    },
+    "params"
+  >;
+}
+
+export default function SignUp({ route }: SignUpProps): React.ReactElement {
   const { fullName }: any = route.params;
   const [visible, setVisible] = React.useState<boolean>(false);
   const [userName, setUserName] = React.useState(fullName);
   const [validating, setValidating] = React.useState<boolean>(false);
   const [message, setMessage] = React.useState<string>();
 
-  const checkName = async () => {
+  const navigation = useNavigation<StackNavigationProp<ParamListBase>>();
+
+  const checkName = async (): Promise<void> => {
     if (
       userName
         .toLowerCase()

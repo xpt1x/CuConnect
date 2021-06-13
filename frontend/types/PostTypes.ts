@@ -1,11 +1,11 @@
-interface AuthorData {
+export interface AuthorData {
   user_id: string;
   display_name: string;
   picture: string | null;
   rep: number;
 }
 
-interface Comment {
+export interface CommentType {
   id: number;
   msg: string;
   author: string;
@@ -20,6 +20,6 @@ export interface Post {
   author_data: AuthorData;
   likes: number;
   image: string;
-  comments: ReadonlyArray<Comment>;
+  comments: ReadonlyArray<CommentType>;
   timestamp: string;
 }

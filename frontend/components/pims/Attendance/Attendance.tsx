@@ -1,16 +1,17 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { observer } from "mobx-react-lite";
 import React from "react";
-import { StyleSheet, ScrollView, View, RefreshControl } from "react-native";
-import AttendanceCard from "./AttendanceCard";
+import { RefreshControl,ScrollView, StyleSheet, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { NavigationStackProp } from "react-navigation-stack";
+
 import { getAttendance, getFullAttendance } from "../../../ApiLayer/Api";
-import { Subject } from "../../../types/Subject";
-import Loader from "../Utils/Loader";
-import ErrorScreen from "../Utils/ErrorScreen";
-import { AttendanceStoreContext } from "../../../mobx/contexts";
-import { observer } from "mobx-react-lite";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import config from "../../../config";
+import { AttendanceStoreContext } from "../../../mobx/contexts";
+import { Subject } from "../../../types/Subject";
+import ErrorScreen from "../Utils/ErrorScreen";
+import Loader from "../Utils/Loader";
+import AttendanceCard from "./AttendanceCard";
 
 interface Props {
   navigation?: NavigationStackProp;
@@ -22,7 +23,7 @@ const Attendance = observer(({ navigation }: Props) => {
   const [update, forceUpdate] = React.useState<boolean>(false);
 
 
-  const checkLocalAttendance = async () => {
+  const checkLocalAttendance = async ():Promise<void> => {
     try {
       const attendance = await AsyncStorage.getItem("attendance");
       const fullAttendance = await AsyncStorage.getItem("fullattendance");
@@ -38,17 +39,17 @@ const Attendance = observer(({ navigation }: Props) => {
         setRefreshing(false);
         attendanceStore.setAttendance(JSON.parse(attendance));
         attendanceStore.setFullAttendance(JSON.parse(fullAttendance));
-        console.log("Attendance,full set from AsyncStorage");
+        console.warn("Attendance,full set from AsyncStorage");
       } else {
         makeRequest();
         makeFullAttendanceRequest();
       }
     } catch (e) {
-      console.log(e);
+      console.warn(e);
     }
   };
 
-  const makeRequest = async () => {
+  const makeRequest = async ():Promise<void> => {
     const { attendance, error } = await getAttendance();
     setRefreshing(false);
     if (error) {
@@ -60,12 +61,12 @@ const Attendance = observer(({ navigation }: Props) => {
         await AsyncStorage.setItem("attendance", JSON.stringify(attendance));
         await AsyncStorage.setItem("timestamp", JSON.stringify(Date.now()));
       } catch (e) {
-        console.log(e);
+        console.warn(e);
       }
     }
   };
 
-  const makeFullAttendanceRequest = async () => {
+  const makeFullAttendanceRequest = async ():Promise<void> => {
     const { fullattendance, error } = await getFullAttendance();
     if (error) {
       setError(error);
@@ -78,7 +79,7 @@ const Attendance = observer(({ navigation }: Props) => {
         );
         await AsyncStorage.setItem("timestamp", JSON.stringify(Date.now()));
       } catch (e) {
-        console.log(e);
+        console.warn(e);
       }
     }
   };
@@ -87,7 +88,7 @@ const Attendance = observer(({ navigation }: Props) => {
     checkLocalAttendance();
   }, [update]);
 
-  const onRefreshFn = () => {
+  const onRefreshFn = ():void => {
     attendanceStore.setAttendance(null);
     attendanceStore.setFullAttendance(null);
     setRefreshing(true);

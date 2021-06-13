@@ -10,15 +10,15 @@ interface ReadCreds {
 
 const readCreds = async (): Promise<ReadCreds> => {
     try {
-        var uid = await AsyncStorage.getItem("uid")
-        var password = await AsyncStorage.getItem("password");
+        let uid = await AsyncStorage.getItem("uid")
+        const password = await AsyncStorage.getItem("password");
         if(uid && password) {
             uid = uid.toUpperCase();
             return {creds: {uid, password}}
         }
     }
     catch(e) {
-        console.log(e);
+        console.warn(e);
     }
     return {error: "Error reading creds"}
 }

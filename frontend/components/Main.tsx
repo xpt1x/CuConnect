@@ -1,8 +1,4 @@
-import React from "react";
-import StackNav from "./Navigators/StackNav";
-import AppLoading from "expo-app-loading";
 import {
-  useFonts,
   Poppins_100Thin,
   Poppins_100Thin_Italic,
   Poppins_200ExtraLight,
@@ -21,10 +17,15 @@ import {
   Poppins_800ExtraBold_Italic,
   Poppins_900Black,
   Poppins_900Black_Italic,
+  useFonts,
 } from "@expo-google-fonts/poppins";
+import AppLoading from "expo-app-loading";
+import React from "react";
 
-export default function Main() {
-  let [fontsLoaded] = useFonts({
+import StackNav from "./Navigators/StackNav";
+
+export default function Main(): React.ReactElement {
+  const [fontsLoaded] = useFonts({
     Poppins_100Thin,
     Poppins_100Thin_Italic,
     Poppins_200ExtraLight,
@@ -48,9 +49,6 @@ export default function Main() {
     return <AppLoading />;
   } else {
     return (
-      // <SafeAreaView>
-      //   <Text>Hello vivek</Text>
-      // </SafeAreaView>
       <StackNav />
     );
   }

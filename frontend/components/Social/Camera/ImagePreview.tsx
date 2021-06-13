@@ -1,22 +1,33 @@
+import { ParamListBase, useNavigation } from "@react-navigation/native";
+import { StackNavigationProp } from "@react-navigation/stack";
 import React from "react";
 import {
-  StyleSheet,
-  View,
-  SafeAreaView,
-  Image,
   Alert,
   BackHandler,
+  Image,
+  SafeAreaView,
+  StyleSheet,
+  View,
 } from "react-native";
 import { IconButton, TextInput } from "react-native-paper";
+
 import { savePost } from "../../../ApiLayer/Api";
 import readCreds from "../../../utils/readCreds";
-import { useNavigation } from '@react-navigation/native';
 
-export default function ImagePreview({ uri, setUri }: any) {
+interface ImagePreviewProps {
+  uri: string;
+  setUri: React.Dispatch<React.SetStateAction<string | undefined>>;
+}
+
+export default function ImagePreview({
+  uri,
+  setUri,
+}: ImagePreviewProps): React.ReactElement {
   const [caption, setCaption] = React.useState("");
-  const [sendButtonDisabled, setSendButtonDisabled] = React.useState(false)
-  const navigation = useNavigation();
-  function showAlert() {
+  const [sendButtonDisabled, setSendButtonDisabled] =
+    React.useState<boolean>(false);
+  const navigation = useNavigation<StackNavigationProp<ParamListBase>>();
+  function showAlert(): void {
     Alert.alert(
       "Hold on!",
       "Are you sure you want to go back? All your changes will be lost",
@@ -32,7 +43,7 @@ export default function ImagePreview({ uri, setUri }: any) {
   }
 
   React.useEffect(() => {
-    const backAction = () => {
+    const backAction = (): boolean => {
       showAlert();
       return true;
     };
@@ -45,31 +56,32 @@ export default function ImagePreview({ uri, setUri }: any) {
     return () => backHandler.remove();
   }, []);
 
-  function closeAction() {
+  function closeAction(): void {
     showAlert();
   }
 
-  async function sendAction() {
-    setSendButtonDisabled(true)
+  async function sendAction(): Promise<void> {
+    setSendButtonDisabled(true);
     const { creds } = await readCreds();
     if (creds) {
-      let localUri = uri;
-      let filename = localUri.split("/").pop();
+      const localUri = uri;
+      const filename = localUri.split("/").pop();
 
       // Infer the type of the image
-      let match = /\.(\w+)$/.exec(filename);
-      let type = match ? `image/${match[1]}` : `image`;
+      if (filename) {
+        const match = /\.(\w+)$/.exec(filename);
+        const type = match ? `image/${match[1]}` : `image`;
 
-      const response = await savePost(
-        creds.uid,
-        { uri: localUri, type: type, name: filename },
-        caption
-      );
-      if(response){
-        navigation.replace("Home")
-      }
-      else{
-        setSendButtonDisabled(false)
+        const response = await savePost(
+          creds.uid,
+          { uri: localUri, type: type, name: filename },
+          caption
+        );
+        if (response) {
+          navigation.popToTop();
+        } else {
+          setSendButtonDisabled(false);
+        }
       }
     }
   }

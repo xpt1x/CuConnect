@@ -8,7 +8,7 @@ interface LoaderProps {
   caption?: string;
 }
 
-export default function Loader({ heading, caption, style }: LoaderProps) {
+export default function Loader({ heading, caption, style }: LoaderProps):React.ReactElement {
   return (
     <View
       style={

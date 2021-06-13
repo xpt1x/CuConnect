@@ -1,5 +1,6 @@
 import { action, computed, makeAutoObservable } from "mobx";
-import { Lecture, TimetableType } from "../../types/TimetableTypes";
+
+import { TimetableType } from "../../types/TimetableTypes";
 
 const DayMap = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
@@ -9,12 +10,12 @@ export default class TimeTableStore {
   timetable: TimetableType | null = null;
 
   @action.bound
-  changeCurrentDay(day: number) {
+  changeCurrentDay(day: number):void {
     this.currentDayNumber = day;
   }
 
   @action.bound
-  setTimetable(tt: TimetableType | null) {
+  setTimetable(tt: TimetableType | null):void {
     this.timetable = tt;
   }
 
@@ -25,7 +26,7 @@ export default class TimeTableStore {
 
   @computed
   get currentDayLectures(): Array<string> | null {
-    var keys;
+    let keys;
     if (this.timetable) {
       keys =
         this.timetable[DayMap[this.currentDayNumber]] !== undefined

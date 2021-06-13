@@ -1,13 +1,17 @@
-//No longer in use
-//Staged for deletion
-//Bottom Nav now in Navigators
+// No longer in use
+// Staged for deletion
+// Bottom Nav now in Navigators
+import { ParamListBase, useNavigation } from "@react-navigation/core";
+import { StackNavigationProp } from "@react-navigation/stack";
 import React from "react";
+import { ScrollView, StyleSheet,View } from "react-native";
 import { Button, Colors } from "react-native-paper";
-import { ScrollView, View, StyleSheet } from "react-native";
+
 import { SCREENS as screens } from "../constants/Screens";
 
-export default function Nav({ navigation }: any) {
-  const pressHandler = (screen: string) => {
+export default function Nav(): React.ReactElement {
+  const navigation = useNavigation<StackNavigationProp<ParamListBase>>()
+  const pressHandler = (screen: string): void => {
     navigation.navigate(screen);
   };
 

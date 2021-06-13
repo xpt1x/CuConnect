@@ -1,4 +1,7 @@
+/* eslint-env node */
+
 import { getDefaultConfig } from "@expo/metro-config";
+import path from 'path';
 
 export default (async () => {
   const {

@@ -1,6 +1,7 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet} from "react-native";
 import { Avatar, Card, Chip, Divider } from "react-native-paper";
+
 import { Lecture } from "../../../types/TimetableTypes";
 
 interface LectureCardProps {
@@ -13,7 +14,7 @@ interface ContentProps {
   obj: string | null;
 }
 
-const LeftContent = ({ obj, ...props }: ContentProps) => (
+const LeftContent = ({ obj, ...props }: ContentProps): React.ReactElement => (
   <Avatar.Icon {...props} icon={obj ? `alpha-${obj}` : "star-face"} />
 );
 
@@ -21,7 +22,7 @@ export default function LectureCard({
   lecture,
   time,
   holiday,
-}: LectureCardProps) {
+}: LectureCardProps) : React.ReactElement {
   return holiday ? (
     <Card style={styles.card}>
       <Card.Title

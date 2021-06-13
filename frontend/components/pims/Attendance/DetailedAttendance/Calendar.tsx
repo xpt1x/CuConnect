@@ -1,6 +1,7 @@
 import React from "react";
-import { StyleSheet, ScrollView, View } from "react-native";
-import { Surface, Title, Text, Colors, ProgressBar } from "react-native-paper";
+import { ScrollView, StyleSheet, View } from "react-native";
+import { Colors, ProgressBar,Surface, Text,Title } from "react-native-paper";
+
 import { FullSubject } from "../../../../types/Subject";
 
 interface calendarProps {
@@ -12,8 +13,7 @@ function parseDate(date: string): ReadonlyArray<string> {
   return [splitDate[1], splitDate[2]];
 }
 
-export default function Calendar({ subject }: calendarProps) {
-  const [month, setMonth] = React.useState("January, 2021");
+export default function Calendar({ subject }: calendarProps): React.ReactElement {
   return (
     <>
       {subject && subject.FullAttendanceReport ? (

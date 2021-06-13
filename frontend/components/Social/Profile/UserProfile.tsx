@@ -1,12 +1,12 @@
 import React from "react";
-import { StyleSheet, View, ScrollView, Image } from "react-native";
-import { Text, Avatar, Divider, Chip, Colors } from "react-native-paper";
-import profilePic from "../../../devAssets/avatar.png";
+import { Image,ScrollView, StyleSheet,View } from "react-native";
+import { Avatar, Chip, Colors,Divider, Text } from "react-native-paper";
 import { NavigationStackProp } from "react-navigation-stack";
-import readCreds from "../../../utils/readCreds";
+
 import { getProfile, getUserPosts } from "../../../ApiLayer/Api";
-import Loader from "../../pims/Utils/Loader";
 import { Post } from "../../../types/PostTypes";
+import readCreds from "../../../utils/readCreds";
+import Loader from "../../pims/Utils/Loader";
 
 function getRandom(min: number, max: number): number {
   return Math.floor(Math.random() * (max - min) + min);
@@ -16,14 +16,7 @@ interface UserProfileProps {
   navigation: NavigationStackProp;
 }
 
-export default function UserProfile({ navigation }: UserProfileProps) {
-  let images = [];
-  for (let i = 0; i < 9; i++) {
-    let link = `https://picsum.photos/${getRandom(10, 20) * 100}/${
-      getRandom(10, 20) * 100
-    }`;
-    images.push(link);
-  }
+export default function UserProfile({ navigation }: UserProfileProps): React.ReactElement {
 
   const [user, setUser] = React.useState<{
     display_name: string;
@@ -31,9 +24,9 @@ export default function UserProfile({ navigation }: UserProfileProps) {
     rep: number;
   }>({ display_name: "", uid: "", rep: 0.0 });
 
-  const [posts, setPosts] = React.useState<ReadonlyArray<Post>>([]);
+  const [userPosts, setUserPosts] = React.useState<{fetched: boolean, posts: ReadonlyArray<Post>}>({fetched: false, posts: []});
 
-  const getUserData = async () => {
+  const getUserData = async () : Promise<void> => {
     const { creds } = await readCreds();
     if (creds) {
       const { profile } = await getProfile(creds.uid);
@@ -47,24 +40,24 @@ export default function UserProfile({ navigation }: UserProfileProps) {
     }
   };
 
-  const fetchUserPosts = async () => {
-    const {creds} = await readCreds();
-    if(!creds) return;
-    const { posts } = await getUserPosts(creds.uid);
+  const fetchUserPosts = async () : Promise<void> => {
+    // dont fetch with when uid == "" it will result in error
+    if(user.uid === "") return;
+    const { posts } = await getUserPosts(user.uid);
     if (posts) {
-      setPosts(posts);
+      setUserPosts({fetched: true, posts})
     }
   };
 
   React.useEffect(() => {
     getUserData();
     fetchUserPosts();
-  }, []);
+  }, [user]);
 
   return (
     <ScrollView>
       <View style={styles.nameAndPhoto}>
-        <Avatar.Image size={125} source={profilePic} />
+        <Avatar.Icon size={125} icon={"account"}  />
         <Text style={styles.userName}>{user.display_name}</Text>
         <Text style={styles.uid}>{user.uid}</Text>
       </View>
@@ -72,36 +65,27 @@ export default function UserProfile({ navigation }: UserProfileProps) {
         <View style={styles.dataElement}>
           <Text style={styles.dataText}>Posts</Text>
           <Divider style={styles.divider} />
-          <Text style={styles.dataNumbers}>11</Text>
+          <Text style={styles.dataNumbers}>{userPosts.fetched ? userPosts.posts.length : "..."}</Text>
         </View>
         <View style={styles.dataElement}>
-          <Chip mode={"outlined"}>{user.rep}</Chip>
+          <Chip mode={"outlined"}>{user.rep || "..."}</Chip>
         </View>
         <View style={styles.dataElement}>
           <Text style={styles.dataText}>Likes</Text>
           <Divider style={styles.divider} />
-          <Text style={styles.dataNumbers}>23</Text>
+          {/* FAKE DATA */}
+          <Text style={styles.dataNumbers}>{Math.floor(user.rep * 0.5) || "..."}</Text>
         </View>
       </View>
       <View style={styles.imagesContainer}>
-        {/* {images.map((link, idx) => {
-              return (
-                <Image
-                  source={{ uri: link }}
-                  style={styles.image}
-                  key={idx}
-                  resizeMode={"cover"}
-                />
-              );
-            })} */}
-        {posts.length === 0 ? (
+        {!userPosts.fetched ? (
           <Loader
             style={{ marginTop: "10%", width: "100%", padding: 12 }}
             heading={"Loading posts..."}
             caption={"Fetching your posts"}
           />
         ) : (
-          posts.map((post) => (
+          userPosts.posts.map((post) => (
             <Image
               source={{ uri: post.image }}
               style={styles.image}

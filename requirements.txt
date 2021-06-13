@@ -4,8 +4,8 @@ Django
 beautifulsoup4
 djangorestframework
 Pillow
+django-cors-headers
 
 #heroku
 gunicorn
 whitenoise
-django-heroku

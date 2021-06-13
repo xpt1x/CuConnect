@@ -1,10 +1,10 @@
 import React from "react";
-import { StyleSheet, View, Animated, Image, Dimensions } from "react-native";
-import { Avatar, Card, IconButton, Paragraph } from "react-native-paper";
+import { Animated, Dimensions,Image, StyleSheet, View } from "react-native";
+import { PinchGestureHandler, PinchGestureHandlerGestureEvent, PinchGestureHandlerStateChangeEvent,State} from "react-native-gesture-handler";
+import { Avatar, Card, IconButton, Paragraph} from "react-native-paper";
 import { NavigationStackProp } from "react-navigation-stack";
-import { Post } from "../../../types/PostTypes";
 
-import { PinchGestureHandler, State, PinchGestureHandlerGestureEvent, PinchGestureHandlerStateChangeEvent} from "react-native-gesture-handler";
+import { Post } from "../../../types/PostTypes";
 
 interface SocialCardProps {
   tripleDotAction: () => void;
@@ -16,35 +16,40 @@ interface SocialCardProps {
 //   navigation: NavigationStackProp;
 // }
 
-//navigation for comments to be done
+// navigation for comments to be done
 export default function SocialCard({
   tripleDotAction,
   navigation,
   post,
-}: SocialCardProps) {
+}: SocialCardProps): React.ReactElement {
   const [liked, setLiked] = React.useState(false);
   const [imageHeight, setImageHeight] = React.useState(250);
 
   const fireBadgeAnimation = React.useRef(new Animated.Value(0)).current;
   const fireOverlayAnimation = React.useRef(new Animated.Value(0)).current;
 
-  const fireBadgeFadeIn = () => {
-    Animated.timing(fireBadgeAnimation, {
-      toValue: 1,
-      duration: 150,
-      useNativeDriver: true,
-    }).start();
+  const fireBadgeFadeIn = (): void => {
+    Animated.sequence([
+      Animated.delay(550),
+      Animated.timing(fireBadgeAnimation, {
+        toValue: 1,
+        duration: 150,
+        useNativeDriver: true,
+      })
+    ]).start()
+    
   };
 
-  const fireBadgeFadeOut = () => {
+  const fireBadgeFadeOut = (): void => {
+    
     Animated.timing(fireBadgeAnimation, {
       toValue: 0,
       duration: 200,
       useNativeDriver: true,
-    }).start();
+    }).start()
   };
 
-  const fireOverlayFadeInOut = () => {
+  const fireOverlayFadeInOut = (): void => {
     Animated.sequence([
       Animated.timing(fireOverlayAnimation, {
         toValue: 1,
@@ -59,29 +64,29 @@ export default function SocialCard({
       }),
     ]).start();
   };
-  const toggleLike = () => {
+  const toggleLike = (): void => {
     setLiked(!liked);
   };
 
-  const getImageHeight = () => {
+  const getImageHeight = (): void => {
     const windowWidth = Dimensions.get("window").width;
-    const windowHeight = Dimensions.get("window").height;
+    // const windowHeight = Dimensions.get("window").height;
 
     Image.getSize(
       post.image,
       (width, height) => {
-        width / height < 4 / 5
-          ? setImageHeight(450)
+        width / height < 4 / 3
+          ? setImageHeight(540)
           : windowWidth * (height / width) < 120
           ? 120
           : setImageHeight(windowWidth * (height / width));
       },
       (error) => {
-        console.log(error);
+        console.warn(error);
       }
     );
   };
-  //Display fire logo useEffect
+  // Display fire logo useEffect
 
   React.useEffect(() => {
     getImageHeight();
@@ -94,9 +99,9 @@ export default function SocialCard({
     } else fireBadgeFadeOut();
   }, [liked]);
 
-  const LeftContent = (props: { size: number }) => (
+  const LeftContent = (props: { size: number }): React.ReactElement => (
     <View style={{ position: "relative" }}>
-      <Avatar.Icon {...props} icon="account" />
+      <Avatar.Icon {...props}  size={40} icon="account" />
       <Animated.View
         style={{
           position: "absolute",
@@ -109,7 +114,7 @@ export default function SocialCard({
       </Animated.View>
     </View>
   );
-  const RightContent = (props: { size: number }) => (
+  const RightContent = (): React.ReactElement => (
     <IconButton
       color={"#757676"}
       icon="dots-vertical"
@@ -121,11 +126,11 @@ export default function SocialCard({
   );
 
   let lastTap: number | null = null;
-  let _scale = new Animated.Value(1);
-  let _translateX = new Animated.Value(0);
-  let _translateY = new Animated.Value(0);
+  const _scale = new Animated.Value(1);
+  const _translateX = new Animated.Value(0);
+  const _translateY = new Animated.Value(0);
 
-  const handleDoubleTap = () => {
+  const handleDoubleTap = (): void => {
     const now = Date.now();
     const DOUBLE_PRESS_DELAY = 300;
     if (lastTap && now - lastTap < DOUBLE_PRESS_DELAY) {
@@ -135,14 +140,14 @@ export default function SocialCard({
     }
   };
 
-  const onPinchEvent = (event: PinchGestureHandlerGestureEvent) => {
+  const onPinchEvent = (event: PinchGestureHandlerGestureEvent): void => {
     const windowWidth = Dimensions.get("window").width;
     _scale.setValue(event.nativeEvent.scale)
     _translateX.setValue(event.nativeEvent.focalX - (windowWidth/2))
     _translateY.setValue(event.nativeEvent.focalY - (imageHeight/2))
   };
-  const onPinchStateChange = (event: PinchGestureHandlerStateChangeEvent) => {
-    //end
+  const onPinchStateChange = (event: PinchGestureHandlerStateChangeEvent): void => {
+    // end
     if (event.nativeEvent.oldState === State.ACTIVE) {
       Animated.spring(_scale, {
         toValue: 1,
@@ -168,6 +173,7 @@ export default function SocialCard({
     >
       {/* content : date and time and caption */}
       <Card.Title
+        titleStyle={{fontSize: 20}}
         title={post.author_data.display_name}
         subtitle={post.likes}
         left={LeftContent}
@@ -178,12 +184,7 @@ export default function SocialCard({
         onHandlerStateChange={onPinchStateChange}
       >
         <View style={{ position: "relative" }} collapsable={false}>
-          {/* <Card.Cover
-          resizeMode="cover"
-          style={{ height:imageHeight , width: "100%" }}
-          // style={{ aspectRatio: imageWidth/imageHeight }}
-          source={{ uri: post.image }}
-        /> */}
+          
           <Animated.Image
             resizeMode="cover"
             style={{
@@ -215,32 +216,28 @@ export default function SocialCard({
         </View>
       </PinchGestureHandler>
 
-      {/* <Card.Actions>
-        <IconButton
-          color={liked ? "#f27d0c" : "#757676"}
-          style={styles.button}
-          icon={"fire"}
-          size={30}
-          onPress={() => {
-            toggleLike();
-          }}
-        />
+      <Card.Actions>
+      
         <IconButton
           color={"#757676"}
           style={styles.button}
           icon={"comment"}
           onPress={() => {
-            navigation.push("Comments");
+            navigation.navigate("Comments", {
+              comments: post.comments,
+              post_id: post.id
+            });
           }}
         />
-      </Card.Actions> */}
+      </Card.Actions>
+     { post.title ? (
       <Card.Content>
         <Paragraph
-          style={{ fontSize: 13, marginTop: 13, textAlign: "justify" }}
+          style={{ fontSize: 13, marginBottom:2 , textAlign: "justify" }}
         >
           {post.title}
         </Paragraph>
-      </Card.Content>
+      </Card.Content>) : null}
     </Card>
   );
 }
@@ -251,5 +248,6 @@ const styles = StyleSheet.create({
   },
   button: {
     width: 35,
+    zIndex : -1
   },
 });

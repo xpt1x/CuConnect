@@ -1,14 +1,15 @@
 import React, { useContext } from "react";
+import { StyleSheet } from "react-native";
 import { FAB, Portal, Provider } from "react-native-paper";
-import { StyleSheet, View } from "react-native";
 import { IconSource } from "react-native-paper/lib/typescript/components/Icon";
+
 import { TimeTableStoreContext } from "../../../mobx/contexts";
 
-export const DaySelector = (params: object) => {
+export const DaySelector = () : React.ReactElement => {
   const [state, setState] = React.useState({ open: false });
   const TimeTableStore = useContext(TimeTableStoreContext);
 
-  var weekday = [
+  const weekday = [
     "alpha-s",
     "alpha-m",
     "alpha-t",
@@ -21,8 +22,8 @@ export const DaySelector = (params: object) => {
   interface Props {
     open: boolean;
   }
-  const onStateChange = ({ open }: Props) => setState({ open });
-  const onFABPress = (idx: number) => {
+  const onStateChange = ({ open }: Props): void => setState({ open });
+  const onFABPress = (idx: number): void => {
     TimeTableStore.changeCurrentDay(idx);
     copyActions = Array.from(actions);
     copyActions[idx].style = styles.activeFAB;
@@ -31,7 +32,7 @@ export const DaySelector = (params: object) => {
   interface Actions {
     icon: IconSource;
     onPress: () => void;
-    style?: object;
+    style?: Record<string, unknown>;
   }
 
   const actions = [

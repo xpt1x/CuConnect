@@ -1,41 +1,37 @@
+import { Pacifico_400Regular,useFonts } from "@expo-google-fonts/pacifico";
+import { ParamListBase, useNavigation } from "@react-navigation/core";
+import { StackNavigationProp } from "@react-navigation/stack";
+import AppLoading from "expo-app-loading";
 import React from "react";
 import {
-  SafeAreaView,
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  RefreshControl,
   FlatList,
+  RefreshControl,
+  SafeAreaView,
+  StyleSheet,
+  View,
 } from "react-native";
-import { Appbar, Button, Snackbar } from "react-native-paper";
-import SocialCard from "./SocialCard";
-import { useFonts, Pacifico_400Regular } from "@expo-google-fonts/pacifico";
-import AppLoading from "expo-app-loading";
+import { ScrollView } from "react-native-gesture-handler";
+import { Appbar, Button, Caption, Headline } from "react-native-paper";
 import RBSheet from "react-native-raw-bottom-sheet";
-import { NavigationStackProp } from "react-navigation-stack";
+
 import { getPosts } from "../../../ApiLayer/Api";
 import { Post } from "../../../types/PostTypes";
+import SocialCard from "./SocialCard";
 
-
-
-interface Props {
-  navigation: NavigationStackProp;
-}
-
-export default function Social({ navigation }: Props) {
+export default function Social(): React.ReactElement {
   const refRBSheet = React.useRef<RBSheet>() as React.MutableRefObject<RBSheet>;
-  const tripleDotAction = () => {
+  const navigation = useNavigation<StackNavigationProp<ParamListBase>>()
+  const tripleDotAction = (): void => {
     if (refRBSheet && refRBSheet.current) return refRBSheet.current.open();
   };
-  function openCamera() {
+  function openCamera(): void {
     navigation.navigate("Camera");
   }
-  let [fontsLoaded] = useFonts({
+  const [fontsLoaded] = useFonts({
     Pacifico_400Regular,
   });
 
-  const goToProfile = () => {
+  const goToProfile = (): void => {
     navigation.push("User Profile");
   };
 
@@ -51,22 +47,29 @@ export default function Social({ navigation }: Props) {
       if (response.posts) {
         setPosts(response.posts);
       } else if (response.error) {
-        console.log(response.error);
+        console.warn(response.error);
         setMessage(response.error);
       }
     });
   }, [update]);
 
-  const onRefreshFn = () => {
+  const onRefreshFn = (): void => {
     setRefreshing(true);
     forceUpdate(!update);
   };
-  const renderSocialCard = ({item} : any) => {
+  const renderSocialCard = ({ item }: {item: Post}): React.ReactElement => {
     return (
-      <SocialCard tripleDotAction={tripleDotAction} navigation={navigation } post={item}/>
-    )
-  }
+      <SocialCard
+        tripleDotAction={tripleDotAction}
+        navigation={navigation}
+        post={item}
+      />
+    );
+  };
 
+  const handlePress = (): void => {
+    navigation.navigate("Camera");
+  };
 
   if (!fontsLoaded) {
     return <AppLoading />;
@@ -100,35 +103,50 @@ export default function Social({ navigation }: Props) {
               },
             }}
           >
-            <Button mode="text" onPress={() => console.log("Pressed")}>
+            <Button mode="text" onPress={() => console.warn("Pressed")}>
               View Profile
             </Button>
             <Button
               color="#fa1e0e"
               mode="text"
-              onPress={() => console.log("Pressed")}
+              onPress={() => console.warn("Pressed")}
               icon="flag"
             >
               Report User
             </Button>
           </RBSheet>
 
-          <View style={{ marginBottom: 90 }}>
-            {posts?(
+          <View style={{ marginBottom: 170 }}>
+            {posts.length > 0 ? (
               <FlatList
-              style={styles.container}
-              data={posts}
-              renderItem={renderSocialCard}
-              keyExtractor={(item: Post) => item.id.toString()}
-              initialNumToRender={10}
-              refreshControl={
-                <RefreshControl
-                  refreshing={refreshing}
-                  onRefresh={onRefreshFn}
-                />
-              }
-            />
-            ): null}
+                style={styles.container}
+                data={posts}
+                renderItem={renderSocialCard}
+                keyExtractor={(item: Post) => item.id.toString()}
+                initialNumToRender={10}
+                refreshControl={
+                  <RefreshControl
+                    refreshing={refreshing}
+                    onRefresh={onRefreshFn}
+                  />
+                }
+              />
+            ) : (
+              <ScrollView
+                refreshControl={
+                  <RefreshControl
+                    refreshing={refreshing}
+                    onRefresh={onRefreshFn}
+                  />
+                }
+              >
+                <View style={styles.noPostView}>
+                  <Headline>No post found</Headline>
+                  <Caption>Pull down to refresh</Caption>
+                  <Button onPress={handlePress}>Create Post</Button>
+                </View>
+              </ScrollView>
+            )}
           </View>
         </View>
       </SafeAreaView>
@@ -146,5 +164,9 @@ const styles = StyleSheet.create({
   },
   header: {
     backgroundColor: "#000",
+  },
+  noPostView: {
+    marginTop: "50%",
+    alignItems: "center",
   },
 });
