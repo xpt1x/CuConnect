@@ -1,7 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { observer } from "mobx-react-lite";
 import React from "react";
-import { RefreshControl,ScrollView, StyleSheet, View } from "react-native";
+import { RefreshControl, ScrollView, StyleSheet, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { NavigationStackProp } from "react-navigation-stack";
 
@@ -22,8 +22,7 @@ const Attendance = observer(({ navigation }: Props) => {
   const [refreshing, setRefreshing] = React.useState<boolean>(false);
   const [update, forceUpdate] = React.useState<boolean>(false);
 
-
-  const checkLocalAttendance = async ():Promise<void> => {
+  const checkLocalAttendance = async (): Promise<void> => {
     try {
       const attendance = await AsyncStorage.getItem("attendance");
       const fullAttendance = await AsyncStorage.getItem("fullattendance");
@@ -39,7 +38,6 @@ const Attendance = observer(({ navigation }: Props) => {
         setRefreshing(false);
         attendanceStore.setAttendance(JSON.parse(attendance));
         attendanceStore.setFullAttendance(JSON.parse(fullAttendance));
-        console.warn("Attendance,full set from AsyncStorage");
       } else {
         makeRequest();
         makeFullAttendanceRequest();
@@ -49,7 +47,7 @@ const Attendance = observer(({ navigation }: Props) => {
     }
   };
 
-  const makeRequest = async ():Promise<void> => {
+  const makeRequest = async (): Promise<void> => {
     const { attendance, error } = await getAttendance();
     setRefreshing(false);
     if (error) {
@@ -66,7 +64,7 @@ const Attendance = observer(({ navigation }: Props) => {
     }
   };
 
-  const makeFullAttendanceRequest = async ():Promise<void> => {
+  const makeFullAttendanceRequest = async (): Promise<void> => {
     const { fullattendance, error } = await getFullAttendance();
     if (error) {
       setError(error);
@@ -88,7 +86,7 @@ const Attendance = observer(({ navigation }: Props) => {
     checkLocalAttendance();
   }, [update]);
 
-  const onRefreshFn = ():void => {
+  const onRefreshFn = (): void => {
     attendanceStore.setAttendance(null);
     attendanceStore.setFullAttendance(null);
     setRefreshing(true);

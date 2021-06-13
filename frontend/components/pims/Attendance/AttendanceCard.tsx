@@ -27,27 +27,23 @@ export default function AttendanceCard({
     else return Colors.red500;
   }
   return (
-    <Card
-      style={
-        styles.card
-        // borderColor: setColor(subjectAttendance.Total_Perc),
-      }
-      onPress={() => cardPress(subjectAttendance)}
-    >
+    <Card style={styles.card} onPress={() => cardPress(subjectAttendance)}>
       <Card.Title
         title={subjectAttendance.Title}
         subtitle={`[${subjectAttendance.Code}]`}
         titleNumberOfLines={2}
       />
       <Card.Content>
-        <Text >Atended : {subjectAttendance.Total_Attd}</Text>
+        <Text>Atended : {subjectAttendance.Total_Attd}</Text>
         <Text>Delivered : {subjectAttendance.Total_Delv}</Text>
         <AnimatedCircularProgress
           style={styles.cardPercent}
           size={60}
           width={3}
-          fill={subjectAttendance.Total_Perc}
-          tintColor={setColor(subjectAttendance.Total_Perc)}
+          fill={parseFloat(subjectAttendance.EligibilityPercentage)}
+          tintColor={setColor(
+            parseFloat(subjectAttendance.EligibilityPercentage)
+          )}
           backgroundColor="#3d5875"
         >
           {() => (

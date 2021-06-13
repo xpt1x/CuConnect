@@ -101,7 +101,6 @@ export default function ImagePreview({
       />
       <View style={styles.captionAndSend}>
         <TextInput
-          textAlign
           style={styles.textInput}
           value={caption}
           multiline={true}

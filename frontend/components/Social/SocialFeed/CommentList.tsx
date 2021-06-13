@@ -1,7 +1,7 @@
 import { RouteProp } from "@react-navigation/core";
 import React from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
-import { IconButton, Text,TextInput } from "react-native-paper";
+import { IconButton, Text, TextInput } from "react-native-paper";
 
 import { CommentType } from "../../../types/PostTypes";
 import Comment from "./Comment";

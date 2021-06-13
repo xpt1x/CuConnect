@@ -48,8 +48,6 @@ export default function Main(): React.ReactElement {
   if (!fontsLoaded) {
     return <AppLoading />;
   } else {
-    return (
-      <StackNav />
-    );
+    return <StackNav />;
   }
 }

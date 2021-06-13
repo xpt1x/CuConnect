@@ -5,7 +5,7 @@ import { IconButton } from "react-native-paper";
 import Attendance from "../components/pims/Attendance/Attendance";
 import Marks from "../components/pims/MarksView/Marks";
 import Timetable from "../components/pims/TimeTable/Timetable";
-import Social from "../components/Social/SocialFeed/Social";
+import Social from "../components/Social/SocialFeed/ComingSoon";
 
 interface TabBarIconProps {
   color: string;
@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const socialTBI = ({ color, focused }: TabBarIconProps):React.ReactElement => {
+const socialTBI = ({ color, focused }: TabBarIconProps): React.ReactElement => {
   return (
     <IconButton
       icon={focused ? "compass" : "compass-outline"}
@@ -31,7 +31,10 @@ const socialTBI = ({ color, focused }: TabBarIconProps):React.ReactElement => {
   );
 };
 
-const attendanceTBI = ({ color, focused }: TabBarIconProps):React.ReactElement => {
+const attendanceTBI = ({
+  color,
+  focused,
+}: TabBarIconProps): React.ReactElement => {
   return (
     <IconButton
       icon={focused ? "account-group" : "account-group-outline"}
@@ -42,7 +45,10 @@ const attendanceTBI = ({ color, focused }: TabBarIconProps):React.ReactElement =
   );
 };
 
-const timetableTBI = ({ color, focused }: TabBarIconProps):React.ReactElement => {
+const timetableTBI = ({
+  color,
+  focused,
+}: TabBarIconProps): React.ReactElement => {
   return (
     <IconButton
       icon="timetable"
@@ -53,7 +59,7 @@ const timetableTBI = ({ color, focused }: TabBarIconProps):React.ReactElement =>
   );
 };
 
-const marksTBI = ({ color, focused }: TabBarIconProps):React.ReactElement => {
+const marksTBI = ({ color, focused }: TabBarIconProps): React.ReactElement => {
   return (
     <IconButton
       icon={focused ? "ballot" : "ballot-outline"}
@@ -62,22 +68,14 @@ const marksTBI = ({ color, focused }: TabBarIconProps):React.ReactElement => {
       style={styles.icons}
     />
   );
-}
+};
 
 export const SCREENS = [
-  {
-    component: Social,
-    name: "Social",
-    options: {
-      tabBarIcon: socialTBI,
-      size: iconSize,
-    },
-  },
   {
     component: Attendance,
     name: "Attendance",
     options: {
-      tabBarIcon: attendanceTBI ,
+      tabBarIcon: attendanceTBI,
       size: iconSize,
     },
   },
@@ -97,5 +95,13 @@ export const SCREENS = [
     },
 
     size: iconSize,
+  },
+  {
+    component: Social,
+    name: "Social",
+    options: {
+      tabBarIcon: socialTBI,
+      size: iconSize,
+    },
   },
 ];

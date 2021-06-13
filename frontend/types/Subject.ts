@@ -33,6 +33,6 @@ export interface Subject {
   EligibilityAttended: string;
 }
 
-export interface FullSubject extends Subject { 
+export interface FullSubject extends Subject {
   FullAttendanceReport: ReadonlyArray<FullReport>;
 }

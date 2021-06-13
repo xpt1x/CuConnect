@@ -6,7 +6,7 @@ import {
 import { StackNavigationProp } from "@react-navigation/stack";
 import React from "react";
 import { SafeAreaView, View } from "react-native";
-import { Button, Colors, Snackbar, Text,TextInput } from "react-native-paper";
+import { Button, Colors, Snackbar, Text, TextInput } from "react-native-paper";
 
 import { registerUser } from "../../ApiLayer/Api";
 

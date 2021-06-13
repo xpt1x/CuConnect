@@ -1,7 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { observer } from "mobx-react-lite";
 import React, { useContext } from "react";
-import { RefreshControl,ScrollView, StyleSheet, View } from "react-native";
+import { RefreshControl, ScrollView, StyleSheet, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { getTimetable } from "../../../ApiLayer/Api";
@@ -46,7 +46,6 @@ export const Timetable = observer(() => {
     if (error) {
       setError(error);
     } else if (timetable) {
-
       TimeTableStore.setTimetable(timetable);
       try {
         await AsyncStorage.setItem("timetable", JSON.stringify(timetable));

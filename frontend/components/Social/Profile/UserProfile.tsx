@@ -1,6 +1,6 @@
 import React from "react";
-import { Image,ScrollView, StyleSheet,View } from "react-native";
-import { Avatar, Chip, Colors,Divider, Text } from "react-native-paper";
+import { Image, ScrollView, StyleSheet, View } from "react-native";
+import { Avatar, Chip, Colors, Divider, Text } from "react-native-paper";
 import { NavigationStackProp } from "react-navigation-stack";
 
 import { getProfile, getUserPosts } from "../../../ApiLayer/Api";
@@ -16,17 +16,21 @@ interface UserProfileProps {
   navigation: NavigationStackProp;
 }
 
-export default function UserProfile({ navigation }: UserProfileProps): React.ReactElement {
-
+export default function UserProfile({
+  navigation,
+}: UserProfileProps): React.ReactElement {
   const [user, setUser] = React.useState<{
     display_name: string;
     uid: string;
     rep: number;
   }>({ display_name: "", uid: "", rep: 0.0 });
 
-  const [userPosts, setUserPosts] = React.useState<{fetched: boolean, posts: ReadonlyArray<Post>}>({fetched: false, posts: []});
+  const [userPosts, setUserPosts] = React.useState<{
+    fetched: boolean;
+    posts: ReadonlyArray<Post>;
+  }>({ fetched: false, posts: [] });
 
-  const getUserData = async () : Promise<void> => {
+  const getUserData = async (): Promise<void> => {
     const { creds } = await readCreds();
     if (creds) {
       const { profile } = await getProfile(creds.uid);
@@ -40,12 +44,12 @@ export default function UserProfile({ navigation }: UserProfileProps): React.Rea
     }
   };
 
-  const fetchUserPosts = async () : Promise<void> => {
+  const fetchUserPosts = async (): Promise<void> => {
     // dont fetch with when uid == "" it will result in error
-    if(user.uid === "") return;
+    if (user.uid === "") return;
     const { posts } = await getUserPosts(user.uid);
     if (posts) {
-      setUserPosts({fetched: true, posts})
+      setUserPosts({ fetched: true, posts });
     }
   };
 
@@ -57,7 +61,7 @@ export default function UserProfile({ navigation }: UserProfileProps): React.Rea
   return (
     <ScrollView>
       <View style={styles.nameAndPhoto}>
-        <Avatar.Icon size={125} icon={"account"}  />
+        <Avatar.Icon size={125} icon={"account"} />
         <Text style={styles.userName}>{user.display_name}</Text>
         <Text style={styles.uid}>{user.uid}</Text>
       </View>
@@ -65,7 +69,9 @@ export default function UserProfile({ navigation }: UserProfileProps): React.Rea
         <View style={styles.dataElement}>
           <Text style={styles.dataText}>Posts</Text>
           <Divider style={styles.divider} />
-          <Text style={styles.dataNumbers}>{userPosts.fetched ? userPosts.posts.length : "..."}</Text>
+          <Text style={styles.dataNumbers}>
+            {userPosts.fetched ? userPosts.posts.length : "..."}
+          </Text>
         </View>
         <View style={styles.dataElement}>
           <Chip mode={"outlined"}>{user.rep || "..."}</Chip>
@@ -74,7 +80,9 @@ export default function UserProfile({ navigation }: UserProfileProps): React.Rea
           <Text style={styles.dataText}>Likes</Text>
           <Divider style={styles.divider} />
           {/* FAKE DATA */}
-          <Text style={styles.dataNumbers}>{Math.floor(user.rep * 0.5) || "..."}</Text>
+          <Text style={styles.dataNumbers}>
+            {Math.floor(user.rep * 0.5) || "..."}
+          </Text>
         </View>
       </View>
       <View style={styles.imagesContainer}>

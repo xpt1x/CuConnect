@@ -2,7 +2,12 @@ import { Camera } from "expo-camera";
 import * as ImagePicker from "expo-image-picker";
 import React, { useEffect, useState } from "react";
 import { Platform, SafeAreaView, StyleSheet, View } from "react-native";
-import { ActivityIndicator, Colors, IconButton, Text } from "react-native-paper";
+import {
+  ActivityIndicator,
+  Colors,
+  IconButton,
+  Text,
+} from "react-native-paper";
 
 import ImagePreview from "./ImagePreview";
 
@@ -116,7 +121,7 @@ export default function SocialCamera(): React.ReactElement {
     setCameraLoading(false);
   };
 
-  const pickImage = async () : Promise<void>=> {
+  const pickImage = async (): Promise<void> => {
     if (hasLibraryPermission) {
       const result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -132,9 +137,11 @@ export default function SocialCamera(): React.ReactElement {
     return <View />;
   }
   if (hasCameraPermission === false) {
-    return <View>
-      <Text>No access to camera</Text>
-    </View>;
+    return (
+      <View>
+        <Text>No access to camera</Text>
+      </View>
+    );
   }
   const postSelectorProps = {
     type,

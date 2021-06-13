@@ -31,7 +31,9 @@ const navigatorProps: StackNavigationProp = {
       backgroundColor: "#000000",
       borderBottomWidth: 0.3,
     },
-    headerBackImage: function hbi () {return (<IconButton icon="chevron-left" size={30} />)},
+    headerBackImage: function hbi() {
+      return <IconButton icon="chevron-left" size={30} />;
+    },
     cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
     gestureEnabled: true,
     gestureDirection: "horizontal",
@@ -41,8 +43,15 @@ const navigatorProps: StackNavigationProp = {
   },
 };
 
-function DetailedMarksRightAccessory(code: string, props : any) : React.ReactElement {
-  return <Text style={{ padding: 24 }} {...props}>{code}</Text>;
+function DetailedMarksRightAccessory(
+  code: string,
+  props: any
+): React.ReactElement {
+  return (
+    <Text style={{ padding: 24 }} {...props}>
+      {code}
+    </Text>
+  );
 }
 
 function UserProfileRightAccessory(): React.ReactElement {
@@ -58,7 +67,7 @@ function UserProfileRightAccessory(): React.ReactElement {
   );
 }
 
-export default function StackNav() : React.ReactElement {
+export default function StackNav(): React.ReactElement {
   return (
     <Stack.Navigator {...navigatorProps}>
       <Stack.Screen
@@ -75,7 +84,8 @@ export default function StackNav() : React.ReactElement {
           title: "",
           headerRight: (props) =>
             DetailedMarksRightAccessory(
-              route.params ? route.params.subjectCode : route.name, props
+              route.params ? route.params.subjectCode : route.name,
+              props
             ),
         })}
       />

@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet} from "react-native";
+import { StyleSheet } from "react-native";
 import { Avatar, Card, Chip, Divider } from "react-native-paper";
 
 import { Lecture } from "../../../types/TimetableTypes";
@@ -22,7 +22,7 @@ export default function LectureCard({
   lecture,
   time,
   holiday,
-}: LectureCardProps) : React.ReactElement {
+}: LectureCardProps): React.ReactElement {
   return holiday ? (
     <Card style={styles.card}>
       <Card.Title
