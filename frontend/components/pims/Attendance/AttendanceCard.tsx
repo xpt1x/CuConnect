@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from "react";
-import { StyleSheet, Text } from "react-native";
+import { StyleSheet } from "react-native";
 import { AnimatedCircularProgress } from "react-native-circular-progress";
-import { Card, Colors, ProgressBar } from "react-native-paper";
+import { Card, Colors, ProgressBar, Text } from "react-native-paper";
 import { NavigationStackProp } from "react-navigation-stack";
 
 import { Subject } from "../../../types/Subject";
@@ -40,7 +40,7 @@ export default function AttendanceCard({
         titleNumberOfLines={2}
       />
       <Card.Content>
-        <Text>Atended : {subjectAttendance.Total_Attd}</Text>
+        <Text >Atended : {subjectAttendance.Total_Attd}</Text>
         <Text>Delivered : {subjectAttendance.Total_Delv}</Text>
         <AnimatedCircularProgress
           style={styles.cardPercent}

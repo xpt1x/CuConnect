@@ -1,5 +1,5 @@
 import React from "react";
-import { Avatar, Card, Colors, Paragraph , Text,Title } from "react-native-paper";
+import { Avatar, Card, Colors, Paragraph , Text, Title } from "react-native-paper";
 
 import {CommentType} from "../../../types/PostTypes";
 

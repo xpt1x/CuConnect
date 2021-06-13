@@ -1,7 +1,8 @@
 import { observer } from "mobx-react-lite";
 import React from "react";
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { ScrollView, StyleSheet, View } from "react-native";
 import { AnimatedCircularProgress } from "react-native-circular-progress";
+import { Text } from "react-native-paper"
 import {
   Chip,
   Colors,

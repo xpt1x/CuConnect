@@ -1,7 +1,7 @@
 import { RouteProp } from "@react-navigation/core";
 import React from "react";
-import { SafeAreaView, ScrollView, StyleSheet, Text, View } from "react-native";
-import { IconButton, TextInput } from "react-native-paper";
+import { ScrollView, StyleSheet, View } from "react-native";
+import { IconButton, Text,TextInput } from "react-native-paper";
 
 import { CommentType } from "../../../types/PostTypes";
 import Comment from "./Comment";
@@ -41,7 +41,6 @@ export default function CommentList({
         <TextInput
           mode={"outlined"}
           autoFocus={true}
-          textAlign
           style={styles.textInput}
           value={newComment}
           multiline={true}

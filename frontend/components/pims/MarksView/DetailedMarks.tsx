@@ -1,6 +1,6 @@
 import React from "react";
-import { ScrollView,StyleSheet, Text } from "react-native";
-import { DataTable,Surface } from "react-native-paper";
+import { ScrollView, StyleSheet } from "react-native";
+import { DataTable,Surface, Text } from "react-native-paper";
 
 import { ElementMarks } from "../../../types/ElementMarks";
 const infoRow = (elementMarks: ElementMarks, idx: number): React.ReactElement => {

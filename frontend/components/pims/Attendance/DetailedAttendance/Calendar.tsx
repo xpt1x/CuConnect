@@ -1,6 +1,6 @@
 import React from "react";
-import { ScrollView, StyleSheet, Text, View } from "react-native";
-import { Colors, ProgressBar,Surface, Title } from "react-native-paper";
+import { ScrollView, StyleSheet, View } from "react-native";
+import { Colors, ProgressBar,Surface, Text,Title } from "react-native-paper";
 
 import { FullSubject } from "../../../../types/Subject";
 

@@ -1,8 +1,8 @@
 import { Camera } from "expo-camera";
 import * as ImagePicker from "expo-image-picker";
 import React, { useEffect, useState } from "react";
-import { Platform, SafeAreaView, StyleSheet, Text, View } from "react-native";
-import { ActivityIndicator, Colors, IconButton } from "react-native-paper";
+import { Platform, SafeAreaView, StyleSheet, View } from "react-native";
+import { ActivityIndicator, Colors, IconButton, Text } from "react-native-paper";
 
 import ImagePreview from "./ImagePreview";
 
@@ -132,7 +132,9 @@ export default function SocialCamera(): React.ReactElement {
     return <View />;
   }
   if (hasCameraPermission === false) {
-    return <Text>No access to camera</Text>;
+    return <View>
+      <Text>No access to camera</Text>
+    </View>;
   }
   const postSelectorProps = {
     type,

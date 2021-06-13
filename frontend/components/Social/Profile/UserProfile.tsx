@@ -1,6 +1,6 @@
 import React from "react";
-import { Image,ScrollView, StyleSheet, Text,View } from "react-native";
-import { Avatar, Chip, Colors,Divider } from "react-native-paper";
+import { Image,ScrollView, StyleSheet,View } from "react-native";
+import { Avatar, Chip, Colors,Divider, Text } from "react-native-paper";
 import { NavigationStackProp } from "react-navigation-stack";
 
 import { getProfile, getUserPosts } from "../../../ApiLayer/Api";

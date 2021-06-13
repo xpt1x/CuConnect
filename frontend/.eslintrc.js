@@ -21,7 +21,7 @@ module.exports = {
     react: {
       version: "16.13.1",
     },
-  },
+  },   
   rules: {
     "no-empty": "off",
     "no-console": [

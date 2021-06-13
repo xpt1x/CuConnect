@@ -49,9 +49,6 @@ export default function Main(): React.ReactElement {
     return <AppLoading />;
   } else {
     return (
-      // <SafeAreaView>
-      //   <Text>Hello vivek</Text>
-      // </SafeAreaView>
       <StackNav />
     );
   }

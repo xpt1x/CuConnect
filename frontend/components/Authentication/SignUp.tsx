@@ -5,8 +5,8 @@ import {
 } from "@react-navigation/core";
 import { StackNavigationProp } from "@react-navigation/stack";
 import React from "react";
-import { SafeAreaView, Text, View } from "react-native";
-import { Button, Colors, Snackbar, TextInput } from "react-native-paper";
+import { SafeAreaView, View } from "react-native";
+import { Button, Colors, Snackbar, Text,TextInput } from "react-native-paper";
 
 import { registerUser } from "../../ApiLayer/Api";
 
@@ -66,14 +66,12 @@ export default function SignUp({ route }: SignUpProps): React.ReactElement {
       }}
     >
       <TextInput
-        textAlign
         style={{ marginVertical: 6 }}
         label="Select from these words."
         disabled={true}
         value={fullName}
       />
       <TextInput
-        textAlign
         style={{ marginVertical: 6 }}
         selectionColor={Colors.green200}
         mode={"outlined"}
