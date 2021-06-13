@@ -1,10 +1,11 @@
 from django.urls import path, include
 from . import views
+from rest_framework import routers
 
 # router = routers.DefaultRouter()
 # router.register("posts", PostViewSet)
 # router.register("comments", CommentViewSet)
-# router.register("profiles", UserProfileViewSet)
+# router.register("profiles", views.UserProfileViewSet)
 
 urlpatterns = [
     path("validate", views.validate),
