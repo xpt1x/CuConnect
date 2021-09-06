@@ -16,7 +16,7 @@ export default function SettingsMenu(): React.ReactElement {
   const timetableStore = React.useContext(TimeTableStoreContext);
   const marksStore = React.useContext(MarksStoreContext);
 
-  const navigation = useNavigation<StackNavigationProp<ParamListBase>>()
+  const navigation = useNavigation<StackNavigationProp<ParamListBase>>();
 
   const clearData = async (): Promise<void> => {
     try {

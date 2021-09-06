@@ -1,6 +1,6 @@
 import { action, makeAutoObservable } from "mobx";
 
-import { FullSubject,Subject } from "../../types/Subject";
+import { FullSubject, Subject } from "../../types/Subject";
 
 interface fullAttendanceObjectType {
   [key: string]: FullSubject;
@@ -18,12 +18,12 @@ export default class AttendanceStore {
   firstRequestCompleted = false;
 
   @action.bound
-  setAttendance(attendance: Array<Subject> | null):void {
+  setAttendance(attendance: Array<Subject> | null): void {
     this.attendance = attendance ? attendance.sort(compareTitles) : null;
   }
 
   @action.bound
-  setFullAttendance(attendance: Array<FullSubject> | null):void {
+  setFullAttendance(attendance: Array<FullSubject> | null): void {
     const fullAttendance: fullAttendanceObjectType = {};
     attendance?.forEach((item) => {
       fullAttendance[item.Title] = item;

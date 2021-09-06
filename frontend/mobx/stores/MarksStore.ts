@@ -1,8 +1,8 @@
-import { action, computed,makeAutoObservable } from "mobx";
+import { action, computed, makeAutoObservable } from "mobx";
 
-import { Sessions,SubjectMarks } from "../../types/MarksTypes";
+import { Sessions, SubjectMarks } from "../../types/MarksTypes";
 
-function compareNames(a: SubjectMarks, b: SubjectMarks) : number {
+function compareNames(a: SubjectMarks, b: SubjectMarks): number {
   if (a.name < b.name) return -1;
   else if (a.name > b.name) return 1;
   else return 0;
@@ -37,17 +37,17 @@ export default class MarksStore {
   }
 
   @action
-  setLabel(label: Label):void {
+  setLabel(label: Label): void {
     this.sessionLabel = label;
   }
 
   @action.bound
-  setMarks(marks: Array<SubjectMarks> | null):void {
+  setMarks(marks: Array<SubjectMarks> | null): void {
     this.marks = marks ? marks.sort(compareNames) : null;
   }
 
   @action.bound
-  setSessions(sessions: Sessions | null):void {
+  setSessions(sessions: Sessions | null): void {
     this.sessions = sessions ? sessions : {};
   }
 

@@ -1,7 +1,12 @@
 import React from "react";
-import { Animated, Dimensions,Image, StyleSheet, View } from "react-native";
-import { PinchGestureHandler, PinchGestureHandlerGestureEvent, PinchGestureHandlerStateChangeEvent,State} from "react-native-gesture-handler";
-import { Avatar, Card, IconButton, Paragraph} from "react-native-paper";
+import { Animated, Dimensions, Image, StyleSheet, View } from "react-native";
+import {
+  PinchGestureHandler,
+  PinchGestureHandlerGestureEvent,
+  PinchGestureHandlerStateChangeEvent,
+  State,
+} from "react-native-gesture-handler";
+import { Avatar, Card, IconButton, Paragraph } from "react-native-paper";
 import { NavigationStackProp } from "react-navigation-stack";
 
 import { Post } from "../../../types/PostTypes";
@@ -35,18 +40,16 @@ export default function SocialCard({
         toValue: 1,
         duration: 150,
         useNativeDriver: true,
-      })
-    ]).start()
-    
+      }),
+    ]).start();
   };
 
   const fireBadgeFadeOut = (): void => {
-    
     Animated.timing(fireBadgeAnimation, {
       toValue: 0,
       duration: 200,
       useNativeDriver: true,
-    }).start()
+    }).start();
   };
 
   const fireOverlayFadeInOut = (): void => {
@@ -101,7 +104,7 @@ export default function SocialCard({
 
   const LeftContent = (props: { size: number }): React.ReactElement => (
     <View style={{ position: "relative" }}>
-      <Avatar.Icon {...props}  size={40} icon="account" />
+      <Avatar.Icon {...props} size={40} icon="account" />
       <Animated.View
         style={{
           position: "absolute",
@@ -142,11 +145,13 @@ export default function SocialCard({
 
   const onPinchEvent = (event: PinchGestureHandlerGestureEvent): void => {
     const windowWidth = Dimensions.get("window").width;
-    _scale.setValue(event.nativeEvent.scale)
-    _translateX.setValue(event.nativeEvent.focalX - (windowWidth/2))
-    _translateY.setValue(event.nativeEvent.focalY - (imageHeight/2))
+    _scale.setValue(event.nativeEvent.scale);
+    _translateX.setValue(event.nativeEvent.focalX - windowWidth / 2);
+    _translateY.setValue(event.nativeEvent.focalY - imageHeight / 2);
   };
-  const onPinchStateChange = (event: PinchGestureHandlerStateChangeEvent): void => {
+  const onPinchStateChange = (
+    event: PinchGestureHandlerStateChangeEvent
+  ): void => {
     // end
     if (event.nativeEvent.oldState === State.ACTIVE) {
       Animated.spring(_scale, {
@@ -173,7 +178,7 @@ export default function SocialCard({
     >
       {/* content : date and time and caption */}
       <Card.Title
-        titleStyle={{fontSize: 20}}
+        titleStyle={{ fontSize: 20 }}
         title={post.author_data.display_name}
         subtitle={post.likes}
         left={LeftContent}
@@ -184,13 +189,17 @@ export default function SocialCard({
         onHandlerStateChange={onPinchStateChange}
       >
         <View style={{ position: "relative" }} collapsable={false}>
-          
           <Animated.Image
             resizeMode="cover"
             style={{
               height: imageHeight,
               width: "100%",
-              transform: [{ perspective: 5000 }, { scale: _scale }, { translateX: _translateX  }, {translateY: _translateY}],
+              transform: [
+                { perspective: 5000 },
+                { scale: _scale },
+                { translateX: _translateX },
+                { translateY: _translateY },
+              ],
             }}
             source={{ uri: post.image }}
           />
@@ -217,7 +226,6 @@ export default function SocialCard({
       </PinchGestureHandler>
 
       <Card.Actions>
-      
         <IconButton
           color={"#757676"}
           style={styles.button}
@@ -225,19 +233,20 @@ export default function SocialCard({
           onPress={() => {
             navigation.navigate("Comments", {
               comments: post.comments,
-              post_id: post.id
+              post_id: post.id,
             });
           }}
         />
       </Card.Actions>
-     { post.title ? (
-      <Card.Content>
-        <Paragraph
-          style={{ fontSize: 13, marginBottom:2 , textAlign: "justify" }}
-        >
-          {post.title}
-        </Paragraph>
-      </Card.Content>) : null}
+      {post.title ? (
+        <Card.Content>
+          <Paragraph
+            style={{ fontSize: 13, marginBottom: 2, textAlign: "justify" }}
+          >
+            {post.title}
+          </Paragraph>
+        </Card.Content>
+      ) : null}
     </Card>
   );
 }
@@ -248,6 +257,6 @@ const styles = StyleSheet.create({
   },
   button: {
     width: 35,
-    zIndex : -1
+    zIndex: -1,
   },
 });

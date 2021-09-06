@@ -2,7 +2,7 @@ import { observer } from "mobx-react-lite";
 import React from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 import { AnimatedCircularProgress } from "react-native-circular-progress";
-import { Text } from "react-native-paper"
+import { Text } from "react-native-paper";
 import {
   Chip,
   Colors,
@@ -30,8 +30,8 @@ const infoRow = (text: string, value: string | number): React.ReactElement => {
 };
 
 function calculateLectures(subject: Subject, req: number): string {
-  const att = parseInt(subject.Total_Attd);
-  const del = parseInt(subject.Total_Delv.toString());
+  const att = parseInt(subject.EligibilityAttended);
+  const del = parseInt(subject.EligibilityDelivered);
   if (del === 0 || att / del >= req / 100) return "NA";
   else {
     const lecs = (req * del - 100 * att) / (100 - req);
@@ -40,7 +40,7 @@ function calculateLectures(subject: Subject, req: number): string {
 }
 
 const DetailedAttendance = observer(({ route }: any) => {
-  const { subject, index }: RouteParam = route.params;
+  const { subject }: RouteParam = route.params;
   const attendanceStore = React.useContext(AttendanceStoreContext);
 
   return (
@@ -48,18 +48,20 @@ const DetailedAttendance = observer(({ route }: any) => {
       <ScrollView style={styles.container}>
         <Surface style={styles.surface}>
           <Chip textStyle={styles.chipText} style={styles.chip}>
-            {`${subject.Total_Attd}/${subject.Total_Delv}`}
+            {`${subject.EligibilityAttended}/${subject.EligibilityDelivered}`}
           </Chip>
           <AnimatedCircularProgress
             style={styles.cardPercent}
             size={110}
             width={9}
-            fill={subject.Total_Perc}
+            fill={parseFloat(subject.EligibilityPercentage)}
             tintColor={Colors.greenA700}
             backgroundColor="#3d5875"
           >
             {() => (
-              <Text style={styles.percentText}>{`${subject.Total_Perc}%`}</Text>
+              <Text style={styles.percentText}>{`${parseFloat(
+                subject.EligibilityPercentage
+              )}%`}</Text>
             )}
           </AnimatedCircularProgress>
           {attendanceStore.fullAttendance ? (
@@ -126,7 +128,7 @@ const styles = StyleSheet.create({
     marginTop: "2%",
   },
   percentText: {
-    fontSize: 20,
+    fontSize: 18,
   },
   calendarLoader: {
     height: 86,

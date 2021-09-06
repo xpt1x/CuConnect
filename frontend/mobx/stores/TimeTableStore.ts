@@ -10,12 +10,12 @@ export default class TimeTableStore {
   timetable: TimetableType | null = null;
 
   @action.bound
-  changeCurrentDay(day: number):void {
+  changeCurrentDay(day: number): void {
     this.currentDayNumber = day;
   }
 
   @action.bound
-  setTimetable(tt: TimetableType | null):void {
+  setTimetable(tt: TimetableType | null): void {
     this.timetable = tt;
   }
 

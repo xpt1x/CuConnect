@@ -1,7 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { ParamListBase, useNavigation } from "@react-navigation/core";
 import React from "react";
-import { View } from "react-native";
+import { Linking, View } from "react-native";
 import {
   Avatar,
   Button,
@@ -9,7 +9,9 @@ import {
   Headline,
   ProgressBar,
   Snackbar,
-  TextInput} from "react-native-paper";
+  Text,
+  TextInput,
+} from "react-native-paper";
 import { StackNavigationProp } from "react-navigation-stack/lib/typescript/src/vendor/types";
 
 import { getFullName } from "../../ApiLayer/Api";
@@ -26,12 +28,12 @@ export default function LoginPims(): React.ReactElement {
 
   const navigation = useNavigation<StackNavigationProp<ParamListBase>>();
 
-  const showMessage = (message: string):void => {
+  const showMessage = (message: string): void => {
     setMessage(message);
     setVisible(true);
   };
 
-  const recordCreds = async (uid: string, password: string):Promise<void> => {
+  const recordCreds = async (uid: string, password: string): Promise<void> => {
     try {
       AsyncStorage.setItem("uid", uid);
       AsyncStorage.setItem("password", password);
@@ -40,7 +42,7 @@ export default function LoginPims(): React.ReactElement {
     }
   };
 
-  const validate = async ():  Promise<void> => {
+  const validate = async (): Promise<void> => {
     setValidating(true);
     try {
       const { exists, full_name, error } = await getFullName(uid, password);
@@ -58,10 +60,13 @@ export default function LoginPims(): React.ReactElement {
     }
   };
 
-  const checkCredsInStorage = async () : Promise<void> => {
-    const {creds} = await readCreds();
+  const checkCredsInStorage = async (): Promise<void> => {
+    const { creds } = await readCreds();
     if (creds) {
-      const { full_name, exists } = await getFullName(creds.uid, creds.password);
+      const { full_name, exists } = await getFullName(
+        creds.uid,
+        creds.password
+      );
       if (full_name && exists) return navigation.replace("Home");
       else if (full_name && !exists) {
         // Send to new user flow
@@ -77,6 +82,10 @@ export default function LoginPims(): React.ReactElement {
     }
   };
 
+  const openLink = (): void => {
+    Linking.openURL("https://github.com/Shreyans13/Xenial-Xerus");
+  };
+
   React.useEffect(() => {
     checkCredsInStorage();
   }, []);
@@ -88,7 +97,6 @@ export default function LoginPims(): React.ReactElement {
         flexDirection: "column",
         justifyContent: "center",
         padding: 12,
-        
       }}
     >
       {credsFound ? (
@@ -99,11 +107,13 @@ export default function LoginPims(): React.ReactElement {
         </>
       ) : (
         <>
-        
-          <Avatar.Icon size={50} icon="shield-account" style={{alignSelf:"center" , marginBottom: 24}}/>
+          <Avatar.Icon
+            size={50}
+            icon="shield-account"
+            style={{ alignSelf: "center", marginBottom: 24, marginTop: "auto" }}
+          />
 
           <TextInput
-            textAlign
             style={{ marginVertical: 6 }}
             mode={"outlined"}
             label="UID"
@@ -111,7 +121,6 @@ export default function LoginPims(): React.ReactElement {
             onChangeText={(uid) => setUid(uid)}
           />
           <TextInput
-            textAlign
             style={{ marginVertical: 6 }}
             mode={"outlined"}
             label="Password"
@@ -129,6 +138,13 @@ export default function LoginPims(): React.ReactElement {
             onPress={validating ? undefined : validate}
           >
             Login
+          </Button>
+          <Button
+            style={{ marginTop: "auto" }}
+            icon={"github"}
+            onPress={openLink}
+          >
+            Checkout CuConnect
           </Button>
         </>
       )}

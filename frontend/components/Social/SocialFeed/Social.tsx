@@ -1,4 +1,4 @@
-import { Pacifico_400Regular,useFonts } from "@expo-google-fonts/pacifico";
+import { Pacifico_400Regular, useFonts } from "@expo-google-fonts/pacifico";
 import { ParamListBase, useNavigation } from "@react-navigation/core";
 import { StackNavigationProp } from "@react-navigation/stack";
 import AppLoading from "expo-app-loading";
@@ -20,7 +20,7 @@ import SocialCard from "./SocialCard";
 
 export default function Social(): React.ReactElement {
   const refRBSheet = React.useRef<RBSheet>() as React.MutableRefObject<RBSheet>;
-  const navigation = useNavigation<StackNavigationProp<ParamListBase>>()
+  const navigation = useNavigation<StackNavigationProp<ParamListBase>>();
   const tripleDotAction = (): void => {
     if (refRBSheet && refRBSheet.current) return refRBSheet.current.open();
   };
@@ -57,7 +57,7 @@ export default function Social(): React.ReactElement {
     setRefreshing(true);
     forceUpdate(!update);
   };
-  const renderSocialCard = ({ item }: {item: Post}): React.ReactElement => {
+  const renderSocialCard = ({ item }: { item: Post }): React.ReactElement => {
     return (
       <SocialCard
         tripleDotAction={tripleDotAction}

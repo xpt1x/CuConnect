@@ -2,12 +2,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { ParamListBase, useNavigation } from "@react-navigation/core";
 import { observer } from "mobx-react-lite";
 import React from "react";
-import {
-  RefreshControl,
-  ScrollView,
-  StyleSheet,
-} from "react-native";
-import { Button,FAB } from "react-native-paper";
+import { RefreshControl, ScrollView, StyleSheet } from "react-native";
+import { Button, FAB } from "react-native-paper";
 import RBSheet from "react-native-raw-bottom-sheet";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StackNavigationProp } from "react-navigation-stack/lib/typescript/src/vendor/types";

@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet,View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import {
   Button,
   Caption,
@@ -16,7 +16,11 @@ interface Props {
   captionSecondary?: string;
 }
 
-export default function ErrorScreen({ message, captionPrimary, captionSecondary }: Props) : React.ReactElement{
+export default function ErrorScreen({
+  message,
+  captionPrimary,
+  captionSecondary,
+}: Props): React.ReactElement {
   return (
     <View style={styles.container}>
       <IconButton icon="close-network" color={Colors.red400} size={70} />

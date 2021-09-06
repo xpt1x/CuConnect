@@ -1,6 +1,6 @@
 import React from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
-import { Colors, ProgressBar,Surface, Text,Title } from "react-native-paper";
+import { Colors, ProgressBar, Surface, Text, Title } from "react-native-paper";
 
 import { FullSubject } from "../../../../types/Subject";
 
@@ -13,7 +13,9 @@ function parseDate(date: string): ReadonlyArray<string> {
   return [splitDate[1], splitDate[2]];
 }
 
-export default function Calendar({ subject }: calendarProps): React.ReactElement {
+export default function Calendar({
+  subject,
+}: calendarProps): React.ReactElement {
   return (
     <>
       {subject && subject.FullAttendanceReport ? (

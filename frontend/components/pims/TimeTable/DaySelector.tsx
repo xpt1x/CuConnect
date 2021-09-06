@@ -5,7 +5,7 @@ import { IconSource } from "react-native-paper/lib/typescript/components/Icon";
 
 import { TimeTableStoreContext } from "../../../mobx/contexts";
 
-export const DaySelector = () : React.ReactElement => {
+export const DaySelector = (): React.ReactElement => {
   const [state, setState] = React.useState({ open: false });
   const TimeTableStore = useContext(TimeTableStoreContext);
 

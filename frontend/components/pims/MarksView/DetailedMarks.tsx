@@ -1,9 +1,12 @@
 import React from "react";
 import { ScrollView, StyleSheet } from "react-native";
-import { DataTable,Surface, Text } from "react-native-paper";
+import { DataTable, Surface, Text } from "react-native-paper";
 
 import { ElementMarks } from "../../../types/ElementMarks";
-const infoRow = (elementMarks: ElementMarks, idx: number): React.ReactElement => {
+const infoRow = (
+  elementMarks: ElementMarks,
+  idx: number
+): React.ReactElement => {
   return (
     <DataTable.Row key={idx}>
       <DataTable.Cell>{elementMarks.element}</DataTable.Cell>
@@ -20,10 +23,10 @@ interface RouteParam {
 }
 
 interface Props {
-  route: Record<string, RouteParam>
+  route: Record<string, RouteParam>;
 }
 
-export default function DetailedMarks({ route }: Props) : React.ReactElement {
+export default function DetailedMarks({ route }: Props): React.ReactElement {
   const { marks, name }: RouteParam = route.params;
   return (
     <>
