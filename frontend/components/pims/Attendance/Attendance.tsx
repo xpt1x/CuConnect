@@ -102,13 +102,17 @@ const Attendance = observer(({ navigation }: Props) => {
         }
       >
         {attendanceStore.attendance ? (
-          attendanceStore.attendance.map((subject: Subject, idx: number) => (
-            <AttendanceCard
-              subjectAttendance={subject}
-              key={idx}
-              navigation={navigation}
-            />
-          ))
+          attendanceStore.attendance.length > 0 ? (
+            attendanceStore.attendance.map((subject: Subject, idx: number) => (
+              <AttendanceCard
+                subjectAttendance={subject}
+                key={idx}
+                navigation={navigation}
+              />
+            ))
+          ) : (
+            <ErrorScreen message={"No attendance marked for this session"} />
+          )
         ) : error ? (
           <ErrorScreen message={error} />
         ) : (
@@ -122,6 +126,7 @@ const Attendance = observer(({ navigation }: Props) => {
 const styles = StyleSheet.create({
   container: {
     width: "100%",
+    height: "100%"
   },
   scrollContainer: {
     width: "100%",

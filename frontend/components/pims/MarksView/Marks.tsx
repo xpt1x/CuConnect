@@ -139,21 +139,25 @@ const Marks = observer(() => {
         </RBSheet>
 
         {MarksStore && MarksStore.marks ? (
-          MarksStore.marks.map((subjectMarks, idx) => (
-            <MarksCard
-              name={subjectMarks.name.substring(
-                0,
-                subjectMarks.name.lastIndexOf("(")
-              )}
-              subCode={subjectMarks.name.substring(
-                subjectMarks.name.lastIndexOf("(") + 1,
-                subjectMarks.name.lastIndexOf(")")
-              )}
-              marks={subjectMarks.marks}
-              key={idx}
-              navigation={navigation}
-            />
-          ))
+          MarksStore.marks.length > 0 ? (
+            MarksStore.marks.map((subjectMarks, idx) => (
+              <MarksCard
+                name={subjectMarks.name.substring(
+                  0,
+                  subjectMarks.name.lastIndexOf("(")
+                )}
+                subCode={subjectMarks.name.substring(
+                  subjectMarks.name.lastIndexOf("(") + 1,
+                  subjectMarks.name.lastIndexOf(")")
+                )}
+                marks={subjectMarks.marks}
+                key={idx}
+                navigation={navigation}
+              />
+            ))
+          ) : (
+            <ErrorScreen message={"No marks for this session"} />
+          )
         ) : error ? (
           <ErrorScreen message={error} />
         ) : (
@@ -175,9 +179,8 @@ const Marks = observer(() => {
 export default Marks;
 const styles = StyleSheet.create({
   container: {
-    // display: "flex",
-    // flexDirection: "column",
     width: "100%",
+    height: "100%"
   },
   appbar: {
     backgroundColor: "#1C95FF",
