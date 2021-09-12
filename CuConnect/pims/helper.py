@@ -1,5 +1,5 @@
-from .uims_api import SessionUIMS
-from .uims_api.exceptions import IncorrectCredentialsError
+from uims_api import SessionUIMS
+from uims_api.exceptions import IncorrectCredentialsError
 
 
 def create_uims_session(req):
