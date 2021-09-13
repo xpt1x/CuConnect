@@ -1,7 +1,5 @@
-requests
-Flask_Cors
 Django
-beautifulsoup4
+uims-api
 djangorestframework
 Pillow
 django-cors-headers

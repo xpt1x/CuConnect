@@ -5,7 +5,7 @@ from .helper import create_uims_session
 from .models import Post, Comment, UserProfile
 from rest_framework import viewsets
 from .serializers import PostSerializer, CommentSerializer, UserProfileSerializer
-from .uims_api.exceptions import UIMSInternalError
+from uims_api.exceptions import UIMSInternalError
 
 
 class PostViewSet(viewsets.ModelViewSet):
