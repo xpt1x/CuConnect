@@ -1,5 +1,5 @@
 Django
-uims-api==0.1.1
+uims-api==0.1.2
 djangorestframework
 Pillow
 django-cors-headers
