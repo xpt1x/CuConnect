@@ -14,7 +14,7 @@ const BottomNav = createMaterialTopTabNavigator();
 export function SwipeableBottomNav(): React.ReactElement {
   return (
     <BottomNav.Navigator
-      initialRouteName="Attendance"
+      initialRouteName="Social"
       backBehavior="initialRoute"
       tabBarPosition="bottom"
       tabBarOptions={{

@@ -5,7 +5,7 @@ import { IconButton } from "react-native-paper";
 import Attendance from "../components/pims/Attendance/Attendance";
 import Marks from "../components/pims/MarksView/Marks";
 import Timetable from "../components/pims/TimeTable/Timetable";
-import Social from "../components/Social/SocialFeed/ComingSoon";
+import Social from "../components/Social/SocialFeed/Social";
 
 interface TabBarIconProps {
   color: string;
@@ -72,6 +72,14 @@ const marksTBI = ({ color, focused }: TabBarIconProps): React.ReactElement => {
 
 export const SCREENS = [
   {
+    component: Social,
+    name: "Social",
+    options: {
+      tabBarIcon: socialTBI,
+      size: iconSize,
+    },
+  },
+  {
     component: Attendance,
     name: "Attendance",
     options: {
@@ -95,13 +103,5 @@ export const SCREENS = [
     },
 
     size: iconSize,
-  },
-  {
-    component: Social,
-    name: "Social",
-    options: {
-      tabBarIcon: socialTBI,
-      size: iconSize,
-    },
   },
 ];
