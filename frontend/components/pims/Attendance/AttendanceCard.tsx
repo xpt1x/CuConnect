@@ -34,8 +34,8 @@ export default function AttendanceCard({
         titleNumberOfLines={2}
       />
       <Card.Content>
-        <Text>Atended : {subjectAttendance.Total_Attd}</Text>
-        <Text>Delivered : {subjectAttendance.Total_Delv}</Text>
+        <Text>Atended : {subjectAttendance.EligibilityAttended}</Text>
+        <Text>Delivered : {subjectAttendance.EligibilityDelivered}</Text>
         <AnimatedCircularProgress
           style={styles.cardPercent}
           size={60}
@@ -50,7 +50,7 @@ export default function AttendanceCard({
             <Text>
               {subjectAttendance.Total_Delv == 0
                 ? "N/A"
-                : `${subjectAttendance.Total_Perc}%`}
+                : `${subjectAttendance.EligibilityPercentage}%`}
             </Text>
           )}
         </AnimatedCircularProgress>
