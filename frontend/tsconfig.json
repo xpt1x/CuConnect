@@ -4,7 +4,10 @@
     "baseUrl": "src",
     "allowSyntheticDefaultImports": true,
     "jsx": "react-native",
-    "lib": ["dom", "esnext"],
+    "lib": [
+      "dom",
+      "esnext"
+    ],
     "moduleResolution": "node",
     "noEmit": true,
     "skipLibCheck": true,
@@ -12,9 +15,16 @@
     "strict": true,
     "experimentalDecorators": true,
     "paths": {
-      "@components/*": ["components/*"],
-      "@TYPES/*": ["types/*"],
-      "@PIMS/*": ["components/pims/*"]
+      "@components/*": [
+        "components/*"
+      ],
+      "@TYPES/*": [
+        "types/*"
+      ],
+      "@PIMS/*": [
+        "components/pims/*"
+      ]
     }
-  }
+  },
+  "extends": "expo/tsconfig.base"
 }
